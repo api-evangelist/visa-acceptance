@@ -1,8 +1,7 @@
 aid: visa-acceptance
 name: Visa Acceptance
 description: >-
-  Find an API thats right for youDelight your customers with effortless payment
-  experiences. 
+  Find an API thats right for youDelight your customers with effortless payment experiences.
 type: Index
 position: Consumer
 access: 3rd-Party
@@ -18,8 +17,8 @@ apis:
   - aid: visa-acceptance:visa-acceptance
     name: Visa Acceptance
     description: >-
-      Find an API thats right for youDelight your customers with effortless
-      payment experiences. 
+      Find an API thats right for youDelight your customers with effortless payment
+      experiences.
     humanURL: ' https://developer.visaacceptance.com/'
     tags:
       - API
