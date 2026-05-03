@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/visa-acceptance/main/json-schema/visa-acceptance-payment-schema.json",
+  "title": "Visa Acceptance Payment",
+  "description": "Schema for a Visa Acceptance payment transaction, including authorization details, payment method information, and order data",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique payment transaction ID returned by the processor"
+    },
+    "status": {
+      "type": "string",
+      "description": "Current status of the payment transaction",
+      "enum": [
+        "AUTHORIZED",
+        "AUTHORIZED_PENDING_REVIEW",
+        "CAPTURED",
+        "DECLINED",
+        "INVALID_REQUEST",
+        "PENDING",
+        "TRANSMITTED",
+        "VOIDED",
+        "FAILED"
+      ]
+    },
+    "submitTimeUtc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the transaction was submitted in UTC"
+    },
+    "clientReferenceInformation": {
+      "type": "object",
+      "description": "Merchant reference data for correlating with internal order management",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Merchant's unique order reference code",
+          "maxLength": 50
+        }
+      }
+    },
+    "paymentInformation": {
+      "type": "object",
+      "description": "Payment method details",
+      "properties": {
+        "card": {
+          "type": "object",
+          "properties": {
+            "number": {
+              "type": "string",
+              "description": "Card number (PAN)",
+              "pattern": "^[0-9]{13,19}$"
+            },
+            "expirationMonth": {
+              "type": "string",
+              "description": "Card expiration month (MM)",
+              "pattern": "^(0[1-9]|1[0-2])$"
+            },
+            "expirationYear": {
+              "type": "string",
+              "description": "Card expiration year (YYYY)",
+              "pattern": "^[0-9]{4}$"
+            },
+            "securityCode": {
+              "type": "string",
+              "description": "Card security code (CVV/CVN)",
+              "pattern": "^[0-9]{3,4}$"
+            },
+            "type": {
+              "type": "string",
+              "description": "Card brand",
+              "enum": ["001", "002", "003", "004", "005"]
+            }
+          }
+        }
+      }
+    },
+    "orderInformation": {
+      "type": "object",
+      "description": "Order and amount details",
+      "properties": {
+        "amountDetails": {
+          "type": "object",
+          "required": ["totalAmount", "currency"],
+          "properties": {
+            "totalAmount": {
+              "type": "string",
+              "description": "Total transaction amount as a decimal string",
+              "pattern": "^[0-9]+\\.[0-9]{2}$"
+            },
+            "currency": {
+              "type": "string",
+              "description": "ISO 4217 3-letter currency code",
+              "pattern": "^[A-Z]{3}$"
+            },
+            "authorizedAmount": {
+              "type": "string",
+              "description": "Amount authorized by the issuer"
+            }
+          }
+        },
+        "billTo": {
+          "$ref": "#/$defs/address"
+        },
+        "shipTo": {
+          "$ref": "#/$defs/address"
+        }
+      }
+    },
+    "processorInformation": {
+      "type": "object",
+      "description": "Response data from the payment processor",
+      "properties": {
+        "approvalCode": {
+          "type": "string",
+          "description": "Authorization approval code from the issuing bank"
+        },
+        "responseCode": {
+          "type": "string",
+          "description": "Processor response code"
+        },
+        "transactionId": {
+          "type": "string",
+          "description": "Network transaction identifier"
+        }
+      }
+    }
+  },
+  "required": ["id", "status"],
+  "$defs": {
+    "address": {
+      "type": "object",
+      "description": "Billing or shipping address",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "address1": {
+          "type": "string"
+        },
+        "address2": {
+          "type": "string"
+        },
+        "locality": {
+          "type": "string",
+          "description": "City"
+        },
+        "administrativeArea": {
+          "type": "string",
+          "description": "State or province code"
+        },
+        "postalCode": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string",
+          "description": "ISO 3166-1 alpha-2 country code",
+          "pattern": "^[A-Z]{2}$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phoneNumber": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

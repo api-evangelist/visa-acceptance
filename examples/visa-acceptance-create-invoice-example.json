@@ -1,0 +1,41 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/pts/v2/invoices",
+    "headers": {
+      "Authorization": "Bearer {jwt_token}",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "customerInformation": {
+        "name": "Acme Corp",
+        "email": "billing@acme.com"
+      },
+      "orderInformation": {
+        "amountDetails": {
+          "totalAmount": "1500.00",
+          "currency": "USD"
+        },
+        "lineItems": [
+          {
+            "productName": "Annual Software License",
+            "quantity": 1,
+            "unitPrice": "1500.00",
+            "totalAmount": "1500.00"
+          }
+        ]
+      },
+      "dueDate": "2026-06-03"
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "id": "inv-20260503-001",
+      "status": "CREATED",
+      "invoiceUrl": "https://pay.visaacceptance.com/invoice/inv-20260503-001",
+      "createdDate": "2026-05-03T12:00:00Z",
+      "dueDate": "2026-06-03"
+    }
+  }
+}

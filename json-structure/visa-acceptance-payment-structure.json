@@ -1,0 +1,86 @@
+{
+  "name": "VisaAcceptancePayment",
+  "description": "Structure of a Visa Acceptance payment transaction",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "description": "Unique transaction ID",
+      "required": true
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "description": "Payment status (AUTHORIZED, CAPTURED, DECLINED, etc.)",
+      "required": true
+    },
+    {
+      "name": "submitTimeUtc",
+      "type": "string",
+      "description": "ISO 8601 UTC timestamp of submission",
+      "required": false
+    },
+    {
+      "name": "clientReferenceInformation",
+      "type": "object",
+      "description": "Merchant order reference data",
+      "required": false,
+      "fields": [
+        {
+          "name": "code",
+          "type": "string",
+          "description": "Merchant order reference code"
+        }
+      ]
+    },
+    {
+      "name": "paymentInformation",
+      "type": "object",
+      "description": "Payment method details",
+      "required": true,
+      "fields": [
+        {
+          "name": "card",
+          "type": "object",
+          "description": "Card payment details"
+        }
+      ]
+    },
+    {
+      "name": "orderInformation",
+      "type": "object",
+      "description": "Order amount and billing information",
+      "required": true,
+      "fields": [
+        {
+          "name": "amountDetails",
+          "type": "object",
+          "description": "Amount and currency"
+        },
+        {
+          "name": "billTo",
+          "type": "object",
+          "description": "Billing address"
+        }
+      ]
+    },
+    {
+      "name": "processorInformation",
+      "type": "object",
+      "description": "Processor response data",
+      "required": false,
+      "fields": [
+        {
+          "name": "approvalCode",
+          "type": "string",
+          "description": "Bank approval code"
+        },
+        {
+          "name": "responseCode",
+          "type": "string",
+          "description": "Processor response code"
+        }
+      ]
+    }
+  ]
+}

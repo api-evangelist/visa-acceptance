@@ -1,0 +1,61 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/pts/v2/payments",
+    "headers": {
+      "Authorization": "Bearer {jwt_token}",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "clientReferenceInformation": {
+        "code": "order-20260503-001"
+      },
+      "processingInformation": {
+        "capture": false
+      },
+      "paymentInformation": {
+        "card": {
+          "number": "4111111111111111",
+          "expirationMonth": "12",
+          "expirationYear": "2030",
+          "securityCode": "123"
+        }
+      },
+      "orderInformation": {
+        "amountDetails": {
+          "totalAmount": "250.00",
+          "currency": "USD"
+        },
+        "billTo": {
+          "firstName": "Jane",
+          "lastName": "Doe",
+          "address1": "123 Main Street",
+          "locality": "San Francisco",
+          "administrativeArea": "CA",
+          "postalCode": "94105",
+          "country": "US",
+          "email": "jane.doe@example.com"
+        }
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "id": "7084028073956085604104",
+      "status": "AUTHORIZED",
+      "submitTimeUtc": "2026-05-03T12:00:00Z",
+      "processorInformation": {
+        "approvalCode": "831000",
+        "responseCode": "00",
+        "transactionId": "123456789"
+      },
+      "orderInformation": {
+        "amountDetails": {
+          "authorizedAmount": "250.00",
+          "currency": "USD"
+        }
+      }
+    }
+  }
+}

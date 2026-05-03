@@ -1,0 +1,152 @@
+name: Visa Acceptance Vocabulary
+description: >-
+  Domain vocabulary for the Visa Acceptance Solutions (CyberSource) payment platform,
+  covering payment processing lifecycle, authentication, fraud management, and
+  merchant integration concepts.
+version: '2.0'
+source: https://developer.visaacceptance.com/
+terms:
+  - term: Authorization
+    definition: >-
+      A request to reserve funds on a cardholder's account. An authorization
+      places a hold on the specified amount without transferring funds. Must
+      be followed by a capture to complete the transaction.
+    tags:
+      - Payment Lifecycle
+      - Core
+
+  - term: Capture
+    definition: >-
+      The process of completing a previously authorized transaction, triggering
+      the actual transfer of funds from the cardholder's account to the merchant.
+    tags:
+      - Payment Lifecycle
+      - Core
+
+  - term: Sale
+    definition: >-
+      A combined authorization and capture in a single API call. The transaction
+      is authorized and immediately submitted for settlement.
+    aliases:
+      - Combined Auth-Capture
+    tags:
+      - Payment Lifecycle
+
+  - term: Refund
+    definition: >-
+      Return of funds to the cardholder for a previously captured transaction.
+      Partial refunds are supported. Refunds must be initiated within 180 days
+      of the original authorization.
+    aliases:
+      - Credit
+    tags:
+      - Payment Lifecycle
+
+  - term: Void
+    definition: >-
+      Cancellation of an authorized or captured transaction before settlement.
+      A void releases held funds immediately. Cannot be applied after settlement.
+    tags:
+      - Payment Lifecycle
+
+  - term: Authorization Reversal
+    definition: >-
+      A request to release an authorization hold before the capture is submitted.
+      Faster than a void and releases the hold without waiting for the settlement cycle.
+    tags:
+      - Payment Lifecycle
+
+  - term: Settlement
+    definition: >-
+      The final transfer of funds between the merchant's bank and the cardholder's
+      bank, completing the payment transaction cycle.
+    tags:
+      - Payment Lifecycle
+
+  - term: JWT
+    definition: >-
+      JSON Web Token — the RSA-signed authentication mechanism used by the
+      Visa Acceptance API. Tokens are generated using the merchant ID and an
+      RSA public/private key pair.
+    aliases:
+      - JSON Web Token
+    tags:
+      - Authentication
+      - Security
+
+  - term: PAN
+    definition: >-
+      Primary Account Number — the 13-19 digit card number embossed on a
+      payment card, used to identify the card account.
+    aliases:
+      - Card Number
+    tags:
+      - Payment Instruments
+
+  - term: CVV
+    definition: >-
+      Card Verification Value — the 3 or 4 digit security code on a payment
+      card used to verify card-not-present transactions.
+    aliases:
+      - CVN
+      - CVC
+      - Security Code
+    tags:
+      - Payment Instruments
+      - Security
+
+  - term: Pay by Link
+    definition: >-
+      A hosted payment page accessible via a shareable URL. Merchants generate
+      payment links to collect payments without building a checkout page.
+    tags:
+      - Payment Collection
+
+  - term: Invoice
+    definition: >-
+      A digital bill sent to customers with an embedded payment link and
+      line items. Invoices track payment status and support due dates.
+    tags:
+      - Payment Collection
+
+  - term: Intelligent Commerce
+    definition: >-
+      Visa Acceptance's unified API layer enabling AI-agent-initiated payments
+      for secure, cross-network agent-initiated card enrollment and transaction management.
+    tags:
+      - AI
+      - Emerging Capabilities
+
+  - term: Merchant ID
+    definition: >-
+      The unique identifier assigned to a merchant account in the Visa Acceptance
+      platform, used in API authentication and transaction records.
+    aliases:
+      - MID
+    tags:
+      - Authentication
+
+  - term: Approval Code
+    definition: >-
+      A code returned by the card-issuing bank to confirm an authorization was approved.
+      Used for reconciliation and customer service.
+    tags:
+      - Processing
+
+  - term: Sandbox
+    definition: >-
+      The test environment at apitest.visaacceptance.com where merchants can
+      test API integrations without processing real transactions.
+    tags:
+      - Development
+
+  - term: Payer Authentication
+    definition: >-
+      A two-step verification process (3D Secure) that authenticates cardholders
+      during online transactions to reduce fraud liability.
+    aliases:
+      - 3D Secure
+      - 3DS
+    tags:
+      - Security
+      - Fraud Prevention

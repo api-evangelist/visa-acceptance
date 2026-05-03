@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "POST",
+    "path": "/pts/v2/payments/7084028073956085604105/refunds",
+    "headers": {
+      "Authorization": "Bearer {jwt_token}",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "orderInformation": {
+        "amountDetails": {
+          "totalAmount": "50.00",
+          "currency": "USD"
+        }
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "id": "7084028073956085604106",
+      "status": "PENDING",
+      "submitTimeUtc": "2026-05-03T14:00:00Z"
+    }
+  }
+}

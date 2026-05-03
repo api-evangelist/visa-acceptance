@@ -1,0 +1,787 @@
+openapi: 3.1.0
+info:
+  title: Visa Acceptance Payments API
+  description: >-
+    The Visa Acceptance Payments API (powered by CyberSource) provides REST endpoints
+    for accepting payments online, in-person, and via mobile. The API supports
+    authorization, capture, refund, void, and reversal operations for credit cards,
+    debit cards, digital wallets (Apple Pay, Google Pay), and other payment methods.
+    Authentication uses JSON Web Token (JWT) with RSA key pairs.
+  version: '2.0'
+  contact:
+    name: Visa Acceptance Developer Portal
+    url: https://developer.visaacceptance.com/
+  license:
+    name: Commercial
+    url: https://developer.visaacceptance.com/
+externalDocs:
+  description: Visa Acceptance Developer Documentation
+  url: https://developer.visaacceptance.com/docs.html
+servers:
+  - url: https://api.visaacceptance.com
+    description: Production environment
+  - url: https://apitest.visaacceptance.com
+    description: Sandbox/test environment
+tags:
+  - name: Payments
+    description: Payment authorization, capture, sale, and reversal
+  - name: Refunds
+    description: Refund and credit operations
+  - name: Voids
+    description: Void authorized, captured, or credited transactions
+  - name: Captures
+    description: Capture previously authorized payments
+  - name: Invoices
+    description: Create and manage invoices for payment collection
+  - name: Pay by Link
+    description: Generate and manage payment links
+paths:
+  /pts/v2/payments:
+    post:
+      operationId: authorizePayment
+      summary: Authorize Payment
+      description: >-
+        Authorize a payment transaction. An authorization places a hold on the
+        customer's funds without completing the transfer. Supports credit cards,
+        debit cards, Apple Pay, Google Pay, and other payment methods.
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorizationRequest'
+            example:
+              clientReferenceInformation:
+                code: "order-1234"
+              processingInformation:
+                capture: false
+              paymentInformation:
+                card:
+                  number: "4111111111111111"
+                  expirationMonth: "12"
+                  expirationYear: "2030"
+                  securityCode: "123"
+              orderInformation:
+                amountDetails:
+                  totalAmount: "100.00"
+                  currency: "USD"
+                billTo:
+                  firstName: "Jane"
+                  lastName: "Doe"
+                  address1: "123 Main St"
+                  locality: "San Francisco"
+                  administrativeArea: "CA"
+                  postalCode: "94105"
+                  country: "US"
+                  email: "jane.doe@example.com"
+      responses:
+        '201':
+          description: Payment authorized successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '400':
+          description: Invalid request or declined transaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication failed
+        '502':
+          description: Processor error
+  /pts/v2/payments/{paymentId}/captures:
+    post:
+      operationId: capturePayment
+      summary: Capture Payment
+      description: >-
+        Capture a previously authorized payment, transferring the held funds
+        to the merchant account. Must be performed within the authorization's
+        validity period.
+      tags:
+        - Captures
+      parameters:
+        - name: paymentId
+          in: path
+          required: true
+          description: The payment ID returned from the authorization request
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaptureRequest'
+      responses:
+        '201':
+          description: Payment captured successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaptureResponse'
+        '400':
+          description: Invalid request
+        '404':
+          description: Payment not found
+  /pts/v2/payments/{paymentId}/refunds:
+    post:
+      operationId: refundPayment
+      summary: Refund Payment
+      description: >-
+        Refund a captured payment, returning funds to the customer. Refunds must
+        be requested within 180 days of the original authorization. Partial
+        refunds are supported.
+      tags:
+        - Refunds
+      parameters:
+        - name: paymentId
+          in: path
+          required: true
+          description: The payment ID of the captured transaction to refund
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundRequest'
+      responses:
+        '201':
+          description: Refund processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundResponse'
+        '400':
+          description: Invalid refund request
+        '404':
+          description: Payment not found
+  /pts/v2/payments/{paymentId}/voids:
+    post:
+      operationId: voidPayment
+      summary: Void Payment
+      description: >-
+        Void an authorization or capture before it settles. After voiding, the
+        funds are released back to the customer's account. A new transaction must
+        be created for any subsequent capture.
+      tags:
+        - Voids
+      parameters:
+        - name: paymentId
+          in: path
+          required: true
+          description: The payment or capture ID to void
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoidRequest'
+      responses:
+        '201':
+          description: Transaction voided successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoidResponse'
+        '400':
+          description: Invalid void request
+        '404':
+          description: Payment not found
+  /pts/v2/payments/{paymentId}/reversals:
+    post:
+      operationId: reverseAuthorization
+      summary: Reverse Authorization
+      description: >-
+        Reverse an authorization to release the held funds back to the customer.
+        An authorization reversal is faster than a void and releases the hold
+        without waiting for settlement.
+      tags:
+        - Payments
+      parameters:
+        - name: paymentId
+          in: path
+          required: true
+          description: The authorization payment ID to reverse
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReversalRequest'
+      responses:
+        '201':
+          description: Authorization reversed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReversalResponse'
+        '400':
+          description: Invalid reversal request
+  /pts/v2/invoices:
+    post:
+      operationId: createInvoice
+      summary: Create Invoice
+      description: >-
+        Create an invoice for payment collection. Invoices can be sent to customers
+        via email and include a payment link. Supports line items, tax, and
+        custom due dates.
+      tags:
+        - Invoices
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceRequest'
+      responses:
+        '201':
+          description: Invoice created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceResponse'
+        '400':
+          description: Invalid invoice request
+    get:
+      operationId: listInvoices
+      summary: List Invoices
+      description: Retrieve a list of invoices with optional filtering by status and date range.
+      tags:
+        - Invoices
+      parameters:
+        - name: status
+          in: query
+          required: false
+          description: Filter by invoice status
+          schema:
+            type: string
+            enum:
+              - CREATED
+              - SENT
+              - PAID
+              - CANCELLED
+              - EXPIRED
+        - name: limit
+          in: query
+          required: false
+          description: Maximum number of invoices to return
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+      responses:
+        '200':
+          description: List of invoices
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceListResponse'
+  /pts/v2/invoices/{invoiceId}:
+    get:
+      operationId: getInvoice
+      summary: Get Invoice
+      description: Retrieve details of a specific invoice by its ID.
+      tags:
+        - Invoices
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Invoice details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceResponse'
+        '404':
+          description: Invoice not found
+    patch:
+      operationId: updateInvoice
+      summary: Update Invoice
+      description: Update a draft invoice before sending it to the customer.
+      tags:
+        - Invoices
+      parameters:
+        - name: invoiceId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceRequest'
+      responses:
+        '200':
+          description: Invoice updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceResponse'
+  /pts/v2/paybylinks:
+    post:
+      operationId: createPayByLink
+      summary: Create Pay by Link
+      description: >-
+        Generate a payment link that can be shared with customers via email, SMS,
+        or messaging apps. The link redirects customers to a hosted payment page.
+      tags:
+        - Pay by Link
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayByLinkRequest'
+      responses:
+        '201':
+          description: Payment link created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayByLinkResponse'
+        '400':
+          description: Invalid request
+    get:
+      operationId: listPayByLinks
+      summary: List Pay by Links
+      description: Retrieve a list of all payment links with their current status.
+      tags:
+        - Pay by Link
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - EXPIRED
+              - COMPLETED
+              - CANCELLED
+      responses:
+        '200':
+          description: List of payment links
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayByLinkListResponse'
+  /pts/v2/paybylinks/{linkId}:
+    get:
+      operationId: getPayByLink
+      summary: Get Pay by Link
+      description: Retrieve details of a specific payment link including its status and transaction history.
+      tags:
+        - Pay by Link
+      parameters:
+        - name: linkId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment link details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayByLinkResponse'
+        '404':
+          description: Payment link not found
+    delete:
+      operationId: cancelPayByLink
+      summary: Cancel Pay by Link
+      description: Cancel an active payment link so it can no longer be used for payments.
+      tags:
+        - Pay by Link
+      parameters:
+        - name: linkId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Payment link cancelled
+        '404':
+          description: Payment link not found
+components:
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >-
+        RSA-signed JSON Web Token. Generate using your merchant ID and RSA key pair
+        from the Visa Acceptance Business Center.
+  schemas:
+    AuthorizationRequest:
+      type: object
+      description: Request body for authorizing a payment
+      required:
+        - paymentInformation
+        - orderInformation
+      properties:
+        clientReferenceInformation:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Merchant's unique order reference code
+        processingInformation:
+          type: object
+          properties:
+            capture:
+              type: boolean
+              description: Set to true to authorize and capture in a single request
+              default: false
+            commerceIndicator:
+              type: string
+              description: Transaction type indicator
+        paymentInformation:
+          type: object
+          description: Payment method details
+          properties:
+            card:
+              type: object
+              properties:
+                number:
+                  type: string
+                expirationMonth:
+                  type: string
+                expirationYear:
+                  type: string
+                securityCode:
+                  type: string
+        orderInformation:
+          type: object
+          properties:
+            amountDetails:
+              type: object
+              required:
+                - totalAmount
+                - currency
+              properties:
+                totalAmount:
+                  type: string
+                  description: Total transaction amount as decimal string
+                currency:
+                  type: string
+                  description: ISO 4217 3-letter currency code
+            billTo:
+              $ref: '#/components/schemas/Address'
+            shipTo:
+              $ref: '#/components/schemas/Address'
+    PaymentResponse:
+      type: object
+      description: Response from a payment authorization or sale
+      properties:
+        id:
+          type: string
+          description: Unique payment transaction ID
+        status:
+          type: string
+          enum:
+            - AUTHORIZED
+            - AUTHORIZED_PENDING_REVIEW
+            - DECLINED
+            - INVALID_REQUEST
+        submitTimeUtc:
+          type: string
+          format: date-time
+        processorInformation:
+          type: object
+          properties:
+            approvalCode:
+              type: string
+            responseCode:
+              type: string
+            transactionId:
+              type: string
+        orderInformation:
+          type: object
+          properties:
+            amountDetails:
+              type: object
+              properties:
+                authorizedAmount:
+                  type: string
+                currency:
+                  type: string
+    CaptureRequest:
+      type: object
+      properties:
+        orderInformation:
+          type: object
+          properties:
+            amountDetails:
+              type: object
+              properties:
+                totalAmount:
+                  type: string
+                currency:
+                  type: string
+    CaptureResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - PENDING
+            - TRANSMITTED
+            - FAILED
+    RefundRequest:
+      type: object
+      properties:
+        orderInformation:
+          type: object
+          properties:
+            amountDetails:
+              type: object
+              properties:
+                totalAmount:
+                  type: string
+                  description: Amount to refund (can be less than original for partial refund)
+                currency:
+                  type: string
+    RefundResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - PENDING
+            - TRANSMITTED
+            - FAILED
+    VoidRequest:
+      type: object
+      properties:
+        clientReferenceInformation:
+          type: object
+          properties:
+            code:
+              type: string
+    VoidResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - VOIDED
+            - FAILED
+    ReversalRequest:
+      type: object
+      properties:
+        clientReferenceInformation:
+          type: object
+          properties:
+            code:
+              type: string
+        reversalInformation:
+          type: object
+          properties:
+            amountDetails:
+              type: object
+              properties:
+                totalAmount:
+                  type: string
+    ReversalResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+    InvoiceRequest:
+      type: object
+      required:
+        - customerInformation
+        - orderInformation
+      properties:
+        customerInformation:
+          type: object
+          properties:
+            name:
+              type: string
+            email:
+              type: string
+              format: email
+        orderInformation:
+          type: object
+          properties:
+            amountDetails:
+              type: object
+              properties:
+                totalAmount:
+                  type: string
+                currency:
+                  type: string
+            lineItems:
+              type: array
+              items:
+                $ref: '#/components/schemas/LineItem'
+        dueDate:
+          type: string
+          format: date
+          description: Due date for the invoice payment
+    InvoiceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - CREATED
+            - SENT
+            - PAID
+            - CANCELLED
+            - EXPIRED
+        invoiceUrl:
+          type: string
+          format: uri
+          description: URL where the customer can pay the invoice
+        createdDate:
+          type: string
+          format: date-time
+        dueDate:
+          type: string
+          format: date
+    InvoiceListResponse:
+      type: object
+      properties:
+        invoices:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceResponse'
+        totalCount:
+          type: integer
+    PayByLinkRequest:
+      type: object
+      required:
+        - orderInformation
+      properties:
+        orderInformation:
+          type: object
+          properties:
+            amountDetails:
+              type: object
+              properties:
+                totalAmount:
+                  type: string
+                currency:
+                  type: string
+            description:
+              type: string
+              description: Payment description shown to customer
+        expirationDate:
+          type: string
+          format: date-time
+          description: When the payment link expires
+    PayByLinkResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - ACTIVE
+            - EXPIRED
+            - COMPLETED
+            - CANCELLED
+        paymentLink:
+          type: string
+          format: uri
+          description: The URL to share with customers for payment
+        expirationDate:
+          type: string
+          format: date-time
+    PayByLinkListResponse:
+      type: object
+      properties:
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayByLinkResponse'
+    Address:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        address1:
+          type: string
+        address2:
+          type: string
+        locality:
+          type: string
+          description: City
+        administrativeArea:
+          type: string
+          description: State or province code
+        postalCode:
+          type: string
+        country:
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+        email:
+          type: string
+          format: email
+        phoneNumber:
+          type: string
+    LineItem:
+      type: object
+      properties:
+        productName:
+          type: string
+        quantity:
+          type: integer
+        unitPrice:
+          type: string
+        totalAmount:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        reason:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              reason:
+                type: string
+security:
+  - JWT: []

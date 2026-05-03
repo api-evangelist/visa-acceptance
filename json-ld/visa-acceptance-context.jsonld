@@ -1,0 +1,95 @@
+{
+  "@context": {
+    "@vocab": "https://developer.visaacceptance.com/vocab/",
+    "schema": "https://schema.org/",
+    "payment": "https://developer.visaacceptance.com/vocab/payment/",
+    "fibo": "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/",
+
+    "Payment": {
+      "@id": "schema:PaymentService",
+      "@type": "@id"
+    },
+    "Invoice": {
+      "@id": "schema:Invoice",
+      "@type": "@id"
+    },
+    "PayByLink": {
+      "@id": "https://developer.visaacceptance.com/vocab/PayByLink",
+      "@type": "@id"
+    },
+    "Authorization": {
+      "@id": "https://developer.visaacceptance.com/vocab/Authorization",
+      "@type": "@id"
+    },
+    "Capture": {
+      "@id": "https://developer.visaacceptance.com/vocab/Capture",
+      "@type": "@id"
+    },
+    "Refund": {
+      "@id": "schema:RefundTypeEnumeration",
+      "@type": "@id"
+    },
+    "Void": {
+      "@id": "https://developer.visaacceptance.com/vocab/Void",
+      "@type": "@id"
+    },
+
+    "id": {
+      "@id": "schema:identifier"
+    },
+    "status": {
+      "@id": "schema:status"
+    },
+    "submitTimeUtc": {
+      "@id": "schema:datePosted",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    },
+    "totalAmount": {
+      "@id": "schema:totalPrice"
+    },
+    "currency": {
+      "@id": "schema:priceCurrency"
+    },
+    "approvalCode": {
+      "@id": "https://developer.visaacceptance.com/vocab/approvalCode"
+    },
+    "orderInformation": {
+      "@id": "schema:orderDetails"
+    },
+    "paymentInformation": {
+      "@id": "schema:paymentMethod"
+    },
+    "billTo": {
+      "@id": "schema:billingAddress"
+    },
+    "shipTo": {
+      "@id": "schema:deliveryAddress"
+    },
+    "firstName": {
+      "@id": "schema:givenName"
+    },
+    "lastName": {
+      "@id": "schema:familyName"
+    },
+    "email": {
+      "@id": "schema:email"
+    },
+    "phoneNumber": {
+      "@id": "schema:telephone"
+    },
+    "dueDate": {
+      "@id": "schema:paymentDueDate",
+      "@type": "http://www.w3.org/2001/XMLSchema#date"
+    },
+    "invoiceUrl": {
+      "@id": "schema:url"
+    },
+    "paymentLink": {
+      "@id": "schema:url"
+    },
+    "expirationDate": {
+      "@id": "schema:expires",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    }
+  }
+}

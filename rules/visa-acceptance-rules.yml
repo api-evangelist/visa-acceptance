@@ -1,0 +1,83 @@
+extends: spectral:oas
+rules:
+  visa-acceptance-operation-id-case:
+    description: Operation IDs must use camelCase consistent with Visa Acceptance SDK conventions
+    message: "Operation ID '{{value}}' should be camelCase"
+    severity: warn
+    given: "$.paths[*][*].operationId"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]+$"
+
+  visa-acceptance-tags-required:
+    description: All operations must have tags
+    message: "Operation is missing tags"
+    severity: error
+    given: "$.paths[*][*]"
+    then:
+      field: tags
+      function: truthy
+
+  visa-acceptance-amount-as-string:
+    description: >-
+      Visa Acceptance represents monetary amounts as decimal strings to avoid
+      floating-point precision issues
+    message: "Amount fields should be type string"
+    severity: warn
+    given: "$.components.schemas[*].properties.totalAmount"
+    then:
+      field: type
+      function: enumeration
+      functionOptions:
+        values:
+          - string
+
+  visa-acceptance-payment-id-in-path:
+    description: Payment-related follow-on operations should use paymentId path parameter
+    message: "Follow-on operations should include paymentId in path"
+    severity: warn
+    given: "$.paths['/pts/v2/payments/{paymentId}/captures','/pts/v2/payments/{paymentId}/refunds','/pts/v2/payments/{paymentId}/voids']"
+    then:
+      function: truthy
+
+  visa-acceptance-https-only:
+    description: All server URLs must use HTTPS for payment security
+    message: "Server URL '{{value}}' must use HTTPS"
+    severity: error
+    given: "$.servers[*].url"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^https://"
+
+  visa-acceptance-security-defined:
+    description: All payment operations must require authentication
+    message: "Operation must have security defined"
+    severity: error
+    given: "$.paths[*][post,get,patch,delete]"
+    then:
+      field: security
+      function: truthy
+
+  visa-acceptance-response-codes:
+    description: Payment endpoints should define error responses
+    message: "Payment operation should define 400 and 401 error responses"
+    severity: warn
+    given: "$.paths['/pts/v2/payments'][post]"
+    then:
+      field: responses
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          required: ['201', '400', '401']
+
+  visa-acceptance-currency-iso4217:
+    description: Currency fields should use ISO 4217 format
+    message: "Currency field should be described as ISO 4217 3-letter code"
+    severity: info
+    given: "$.components.schemas[*].properties.currency"
+    then:
+      field: description
+      function: truthy

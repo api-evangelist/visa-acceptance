@@ -1,0 +1,440 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Visa Acceptance Payments API"
+  description: >-
+    Shared capability definition for the Visa Acceptance Payments API (CyberSource).
+    Provides authorization, capture, refund, void, reversal, invoicing, and pay-by-link
+    operations for online and mobile payment acceptance.
+  tags:
+    - Credit Cards
+    - E-Commerce
+    - Fintech
+    - Invoicing
+    - Payment Links
+    - Payments
+  created: "2026-05-03"
+  modified: "2026-05-03"
+
+binds:
+  - namespace: env
+    keys:
+      VISA_ACCEPTANCE_JWT_TOKEN: VISA_ACCEPTANCE_JWT_TOKEN
+
+capability:
+  consumes:
+    - type: http
+      namespace: visa-acceptance-payments
+      baseUri: https://apitest.visaacceptance.com
+      description: "Visa Acceptance Payments REST API"
+      authentication:
+        type: bearer
+        token: "{{VISA_ACCEPTANCE_JWT_TOKEN}}"
+      resources:
+        - name: payments
+          path: /pts/v2/payments
+          description: "Payment authorization and sale"
+          operations:
+            - name: authorize-payment
+              method: POST
+              description: "Authorize a payment transaction"
+              inputParameters:
+                - name: capture
+                  in: body
+                  type: boolean
+                  required: false
+                  description: "Combine auth and capture"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: payment-captures
+          path: /pts/v2/payments/{paymentId}/captures
+          description: "Capture a previously authorized payment"
+          operations:
+            - name: capture-payment
+              method: POST
+              description: "Capture a previously authorized payment"
+              inputParameters:
+                - name: paymentId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Payment ID from authorization"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: payment-refunds
+          path: /pts/v2/payments/{paymentId}/refunds
+          description: "Refund a captured payment"
+          operations:
+            - name: refund-payment
+              method: POST
+              description: "Refund a captured payment"
+              inputParameters:
+                - name: paymentId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Payment ID to refund"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: payment-voids
+          path: /pts/v2/payments/{paymentId}/voids
+          description: "Void a payment before settlement"
+          operations:
+            - name: void-payment
+              method: POST
+              description: "Void a payment transaction"
+              inputParameters:
+                - name: paymentId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Payment ID to void"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: payment-reversals
+          path: /pts/v2/payments/{paymentId}/reversals
+          description: "Reverse an authorization"
+          operations:
+            - name: reverse-authorization
+              method: POST
+              description: "Reverse an authorization to release held funds"
+              inputParameters:
+                - name: paymentId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Authorization payment ID to reverse"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: invoices
+          path: /pts/v2/invoices
+          description: "Invoice creation and management"
+          operations:
+            - name: create-invoice
+              method: POST
+              description: "Create an invoice for payment collection"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: list-invoices
+              method: GET
+              description: "List invoices with optional status filter"
+              inputParameters:
+                - name: status
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter by invoice status"
+                - name: limit
+                  in: query
+                  type: integer
+                  required: false
+                  description: "Max results to return"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: invoice-by-id
+          path: /pts/v2/invoices/{invoiceId}
+          description: "Invoice management by ID"
+          operations:
+            - name: get-invoice
+              method: GET
+              description: "Get invoice details by ID"
+              inputParameters:
+                - name: invoiceId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Invoice ID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: update-invoice
+              method: PATCH
+              description: "Update a draft invoice"
+              inputParameters:
+                - name: invoiceId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Invoice ID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: paybylinks
+          path: /pts/v2/paybylinks
+          description: "Payment link creation and management"
+          operations:
+            - name: create-pay-by-link
+              method: POST
+              description: "Generate a shareable payment link"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: list-pay-by-links
+              method: GET
+              description: "List payment links with optional status filter"
+              inputParameters:
+                - name: status
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter by link status"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+        - name: paybylink-by-id
+          path: /pts/v2/paybylinks/{linkId}
+          description: "Payment link management by ID"
+          operations:
+            - name: get-pay-by-link
+              method: GET
+              description: "Get payment link details"
+              inputParameters:
+                - name: linkId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Payment link ID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: cancel-pay-by-link
+              method: DELETE
+              description: "Cancel an active payment link"
+              inputParameters:
+                - name: linkId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Payment link ID to cancel"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: rest
+      port: 8100
+      namespace: visa-acceptance-payments-api
+      resources:
+        - path: /v1/payments
+          operations:
+            - method: POST
+              name: authorize-payment
+              description: "Authorize a payment"
+              call: "visa-acceptance-payments.authorize-payment"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/payments/{paymentId}/captures
+          operations:
+            - method: POST
+              name: capture-payment
+              description: "Capture a payment"
+              call: "visa-acceptance-payments.capture-payment"
+              with:
+                paymentId: "rest.paymentId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/payments/{paymentId}/refunds
+          operations:
+            - method: POST
+              name: refund-payment
+              description: "Refund a payment"
+              call: "visa-acceptance-payments.refund-payment"
+              with:
+                paymentId: "rest.paymentId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/payments/{paymentId}/voids
+          operations:
+            - method: POST
+              name: void-payment
+              description: "Void a payment"
+              call: "visa-acceptance-payments.void-payment"
+              with:
+                paymentId: "rest.paymentId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/invoices
+          operations:
+            - method: POST
+              name: create-invoice
+              description: "Create an invoice"
+              call: "visa-acceptance-payments.create-invoice"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: GET
+              name: list-invoices
+              description: "List invoices"
+              call: "visa-acceptance-payments.list-invoices"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+        - path: /v1/pay-by-links
+          operations:
+            - method: POST
+              name: create-pay-by-link
+              description: "Create a payment link"
+              call: "visa-acceptance-payments.create-pay-by-link"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9100
+      namespace: visa-acceptance-payments-mcp
+      transport: http
+      tools:
+        - name: authorize-payment
+          description: "Authorize a payment transaction on the Visa Acceptance platform"
+          hints:
+            readOnly: false
+            idempotent: false
+          call: "visa-acceptance-payments.authorize-payment"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: capture-payment
+          description: "Capture a previously authorized payment"
+          hints:
+            readOnly: false
+            idempotent: true
+          call: "visa-acceptance-payments.capture-payment"
+          with:
+            paymentId: "tools.paymentId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: refund-payment
+          description: "Refund a captured payment"
+          hints:
+            readOnly: false
+            idempotent: false
+          call: "visa-acceptance-payments.refund-payment"
+          with:
+            paymentId: "tools.paymentId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: void-payment
+          description: "Void a payment transaction before settlement"
+          hints:
+            readOnly: false
+            destructive: true
+            idempotent: true
+          call: "visa-acceptance-payments.void-payment"
+          with:
+            paymentId: "tools.paymentId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: reverse-authorization
+          description: "Release an authorization hold without settlement"
+          hints:
+            readOnly: false
+            idempotent: true
+          call: "visa-acceptance-payments.reverse-authorization"
+          with:
+            paymentId: "tools.paymentId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-invoice
+          description: "Create an invoice with payment link for a customer"
+          hints:
+            readOnly: false
+            idempotent: false
+          call: "visa-acceptance-payments.create-invoice"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-invoices
+          description: "List invoices with optional status filtering"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "visa-acceptance-payments.list-invoices"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-invoice
+          description: "Get details of a specific invoice"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "visa-acceptance-payments.get-invoice"
+          with:
+            invoiceId: "tools.invoiceId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-pay-by-link
+          description: "Generate a shareable payment link"
+          hints:
+            readOnly: false
+            idempotent: false
+          call: "visa-acceptance-payments.create-pay-by-link"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: cancel-pay-by-link
+          description: "Cancel an active payment link"
+          hints:
+            readOnly: false
+            destructive: true
+            idempotent: true
+          call: "visa-acceptance-payments.cancel-pay-by-link"
+          with:
+            linkId: "tools.linkId"
+          outputParameters:
+            - type: object
+              mapping: "$."
