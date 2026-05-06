@@ -8,145 +8,81 @@ alignedWith:
   dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
 provider: Visa Acceptance
 providerId: visa-acceptance
-publisherName: Visa Acceptance
-serviceCategory: API
+publisherName: CyberSource Corporation (a Visa company)
+serviceCategory: Payments
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
-  - Payments
-  - E-Commerce
-  - Fintech
-  - Credit Cards
-  - Invoicing
-  - Payment Links
-  - Digital Wallets
   - FinOps
-  - Cost Management
   - FOCUS
-description: FinOps framework definition for the Visa Acceptance API surface. Provides a FOCUS-aligned
-  mapping for cost allocation, usage measurement, and unit-economics reporting across the provider's APIs.
-principles:
-  - name: Visibility
-    description: Make API consumption costs visible to engineering, product, and finance teams in near
-      real-time.
-  - name: Allocation
-    description: Tag every chargeable API call with the consuming team, environment, application, and
-      feature so cost can be allocated.
-  - name: Optimization
-    description: Continuously evaluate request patterns, caching, batching, and tier selection to reduce
-      cost per useful unit of work.
-  - name: Accountability
-    description: Establish budget owners and chargeback or showback flows for each consuming team.
-domains:
-  - name: Understand Usage and Cost
-    capabilities:
-      - Data Ingestion
-      - Allocation
-      - Reporting and Analytics
-      - Anomaly Management
-  - name: Quantify Business Value
-    capabilities:
-      - Planning and Estimating
-      - Forecasting
-      - Budgeting
-      - Benchmarking
-      - Unit Economics
-  - name: Optimize Usage and Cost
-    capabilities:
-      - Architecting for Cloud
-      - Rate Optimization
-      - Workload Optimization
-      - Cloud Sustainability
-      - Licensing and SaaS
-  - name: Manage the FinOps Practice
-    capabilities:
-      - FinOps Practice Operations
-      - FinOps Education and Enablement
-      - Invoicing and Chargeback
-      - Onboarding Workloads
-      - Intersecting Disciplines
+  - Payments
+  - Card Acceptance
+  - Cybersource
+description: FOCUS-aligned FinOps shape for Visa Acceptance / Cybersource. Pricing is contractual
+  per-merchant; meters reflect the canonical line items on a card-acceptance invoice rather than
+  publicly priced units.
+sources:
+  - https://developer.cybersource.com/
+notes: No public unit prices were available; per-transaction take rate, interchange, and
+  value-added-service fees are negotiated under the merchant processing agreement.
 billingModel:
-  pricingCategory: Usage-Based
+  pricingCategory: Take Rate + Subscription
   billingFrequency: Monthly
-  billingCurrency: USD
+  billingCurrency: USD (settlement varies)
   chargeCategories:
     - Usage
     - Purchase
     - Tax
-    - Credit
+    - Refund
     - Adjustment
-  chargeFrequency: Recurring
 focusColumns:
-  ServiceName: Visa Acceptance
-  ServiceCategory: Developer Tools / API
-  ProviderName: Visa Acceptance
-  PublisherName: Visa Acceptance
-  InvoiceIssuerName: Visa Acceptance
-  PricingCategory: Usage-Based
-  PricingUnit: request
+  ServiceName: Visa Acceptance / Cybersource
+  ServiceCategory: Payments
+  ProviderName: Visa Acceptance Solutions
+  PublisherName: CyberSource Corporation
+  InvoiceIssuerName: CyberSource Corporation
   BillingCurrency: USD
-  ChargeCategory: Usage
 meters:
-  - name: api_requests
-    description: Count of billable API requests
+  - name: card_transactions
+    unit: transaction
+    aggregation: sum
+    dimensions:
+      - card_brand
+      - region
+      - mcc
+  - name: transaction_volume
+    unit: USD
+    aggregation: sum
+    dimensions:
+      - card_brand
+      - region
+  - name: tokenization_requests
+    unit: request
+    aggregation: sum
+  - name: fraud_screen_requests
     unit: request
     aggregation: sum
     dimensions:
-      - api
-      - endpoint
-      - tier
-      - region
-      - consumer
-  - name: data_egress
-    description: Bytes returned over the network in API responses
-    unit: GB
+      - decision_outcome
+  - name: refunds
+    unit: transaction
     aggregation: sum
-    dimensions:
-      - api
-      - region
-      - consumer
-  - name: compute_seconds
-    description: Server-side compute consumed by the request, where applicable
-    unit: second
-    aggregation: sum
-    dimensions:
-      - api
-      - endpoint
-      - tier
-apis:
-  - name: Visa Acceptance Payments API
-    baseURL: ''
-    tags:
-      - Payments
-      - Authorization
-      - Capture
-      - Refunds
-      - Voids
-    serviceName: Visa Acceptance Payments API
-    serviceCategory: API
-  - name: Visa Acceptance Invoicing API
-    baseURL: ''
-    tags:
-      - Invoicing
-      - Payments
-      - Payment Links
-    serviceName: Visa Acceptance Invoicing API
-    serviceCategory: API
-  - name: Visa Acceptance Pay by Link API
-    baseURL: ''
-    tags:
-      - Payment Links
-      - Payments
-      - AI Agents
-    serviceName: Visa Acceptance Pay by Link API
-    serviceCategory: API
-unitEconomics:
-  - name: Cost per 1K Requests
-    metric: billed_cost / (api_requests / 1000)
-    target: TBD
-  - name: Cost per Active Consumer
-    metric: billed_cost / active_consumers
-    target: TBD
+principles:
+  - name: Visibility
+    description: Use the Business Center reports and Reporting / On-Demand Reporting REST APIs to
+      pull settlement, fee, and transaction-level detail; reconcile against the monthly merchant
+      statement.
+  - name: Allocation
+    description: Tag transactions with merchant_defined_data fields (MID, sub-merchant, brand) so
+      cost can be allocated across business units sharing a Visa Acceptance contract.
+  - name: Optimization
+    description: Levers include processor / acquirer routing, network tokenization to lift auth
+      rates, decision-manager rule tuning to reduce false declines, and renegotiating tier breaks
+      against settled volume.
+  - name: Accountability
+    description: Payments / treasury owns the merchant agreement; engineering owns API integration
+      and decision-manager rules; finance reconciles the monthly statement.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
