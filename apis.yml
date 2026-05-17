@@ -92,7 +92,7 @@ common:
     url: https://developer.visaacceptance.com/api/reference/response-codes.html
   - type: JSONSchema
     url: json-schema/visa-acceptance-payment-schema.json
-  - type: JSON-LD
+  - type: JSONLD
     url: json-ld/visa-acceptance-context.jsonld
   - type: Vocabulary
     url: vocabulary/visa-acceptance-vocabulary.yml
