@@ -1,0 +1,87 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Visa Acceptance Payments API — Refunds
+  description: 'Visa Acceptance Payments API — Refunds. 1 operations. Lead operation: Refund Payment. Self-contained Naftiko
+    capability covering one Visa Acceptance business surface.'
+  tags:
+  - Visa Acceptance
+  - Refunds
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    VISA_ACCEPTANCE_API_KEY: VISA_ACCEPTANCE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: payments-refunds
+    baseUri: https://api.visaacceptance.com
+    description: Visa Acceptance Payments API — Refunds business capability. Self-contained, no shared references.
+    resources:
+    - name: pts-v2-payments-paymentId-refunds
+      path: /pts/v2/payments/{paymentId}/refunds
+      operations:
+      - name: refundpayment
+        method: POST
+        description: Refund Payment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: paymentId
+          in: path
+          type: string
+          description: The payment ID of the captured transaction to refund
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.VISA_ACCEPTANCE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: payments-refunds-rest
+    port: 8080
+    description: REST adapter for Visa Acceptance Payments API — Refunds. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/pts/v2/payments/{paymentid}/refunds
+      name: pts-v2-payments-paymentid-refunds
+      description: REST surface for pts-v2-payments-paymentId-refunds.
+      operations:
+      - method: POST
+        name: refundpayment
+        description: Refund Payment
+        call: payments-refunds.refundpayment
+        with:
+          paymentId: rest.paymentId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: payments-refunds-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Visa Acceptance Payments API — Refunds. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: refund-payment
+      description: Refund Payment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: payments-refunds.refundpayment
+      with:
+        paymentId: tools.paymentId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

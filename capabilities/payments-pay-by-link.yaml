@@ -1,0 +1,188 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Visa Acceptance Payments API — Pay by Link
+  description: 'Visa Acceptance Payments API — Pay by Link. 4 operations. Lead operation: Create Pay by Link. Self-contained
+    Naftiko capability covering one Visa Acceptance business surface.'
+  tags:
+  - Visa Acceptance
+  - Pay by Link
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    VISA_ACCEPTANCE_API_KEY: VISA_ACCEPTANCE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: payments-pay-by-link
+    baseUri: https://api.visaacceptance.com
+    description: Visa Acceptance Payments API — Pay by Link business capability. Self-contained, no shared references.
+    resources:
+    - name: pts-v2-paybylinks
+      path: /pts/v2/paybylinks
+      operations:
+      - name: createpaybylink
+        method: POST
+        description: Create Pay by Link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: listpaybylinks
+        method: GET
+        description: List Pay by Links
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: status
+          in: query
+          type: string
+    - name: pts-v2-paybylinks-linkId
+      path: /pts/v2/paybylinks/{linkId}
+      operations:
+      - name: getpaybylink
+        method: GET
+        description: Get Pay by Link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: linkId
+          in: path
+          type: string
+          required: true
+      - name: cancelpaybylink
+        method: DELETE
+        description: Cancel Pay by Link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: linkId
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.VISA_ACCEPTANCE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: payments-pay-by-link-rest
+    port: 8080
+    description: REST adapter for Visa Acceptance Payments API — Pay by Link. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/pts/v2/paybylinks
+      name: pts-v2-paybylinks
+      description: REST surface for pts-v2-paybylinks.
+      operations:
+      - method: POST
+        name: createpaybylink
+        description: Create Pay by Link
+        call: payments-pay-by-link.createpaybylink
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: listpaybylinks
+        description: List Pay by Links
+        call: payments-pay-by-link.listpaybylinks
+        with:
+          status: rest.status
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/pts/v2/paybylinks/{linkid}
+      name: pts-v2-paybylinks-linkid
+      description: REST surface for pts-v2-paybylinks-linkId.
+      operations:
+      - method: GET
+        name: getpaybylink
+        description: Get Pay by Link
+        call: payments-pay-by-link.getpaybylink
+        with:
+          linkId: rest.linkId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: cancelpaybylink
+        description: Cancel Pay by Link
+        call: payments-pay-by-link.cancelpaybylink
+        with:
+          linkId: rest.linkId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: payments-pay-by-link-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Visa Acceptance Payments API — Pay by Link. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: create-pay-link
+      description: Create Pay by Link
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: payments-pay-by-link.createpaybylink
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-pay-links
+      description: List Pay by Links
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: payments-pay-by-link.listpaybylinks
+      with:
+        status: tools.status
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-pay-link
+      description: Get Pay by Link
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: payments-pay-by-link.getpaybylink
+      with:
+        linkId: tools.linkId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cancel-pay-link
+      description: Cancel Pay by Link
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: payments-pay-by-link.cancelpaybylink
+      with:
+        linkId: tools.linkId
+      outputParameters:
+      - type: object
+        mapping: $.
