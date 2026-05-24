@@ -108,6 +108,8 @@ common:
     url: vocabulary/visa-acceptance-vocabulary.yml
   - type: SpectralRules
     url: rules/visa-acceptance-rules.yml
+  - type: LLMsTxt
+    url: https://developer.visaacceptance.com/llms.txt
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
