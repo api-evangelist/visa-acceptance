@@ -1,81 +1,111 @@
-# Visa Acceptance
+# Visa Acceptance (visa-acceptance)
 
-Visa Acceptance Solutions (powered by CyberSource) is the developer platform for accepting payments online, in-person, and via mobile. The platform provides REST APIs for the complete payment lifecycle including authorization, capture, refund, void, reversal, invoicing, and pay-by-link.
+Visa Acceptance Solutions (powered by CyberSource) is the developer platform for accepting payments online, in-person, and via mobile. The platform provides REST APIs for payment authorization, capture, refund, void, reversal, invoicing, and pay-by-link. Authentication uses JWT with RSA key pairs, with support for Intelligent Commerce APIs enabling AI agent-initiated payments.
 
-**Developer Portal:** https://developer.visaacceptance.com/  
-**API Reference:** https://developer.visaacceptance.com/api-reference-assets/index.html  
-**Sandbox:** https://developer.visaacceptance.com/hello-world/sandbox.html
+**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/visa-acceptance/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/visa-acceptance/refs/heads/main/apis.yml)
+
+## Scope
+
+- **Type:** Index
+- **Position:** Consumer
+- **Access:** 3rd-Party
+
+## Tags
+
+- Payments
+- E-Commerce
+- Fintech
+- Credit Cards
+- Invoicing
+- Payment Links
+- Digital Wallets
+
+## Timestamps
+
+- **Created:** 2025-02-17
+- **Modified:** 2026-05-19
 
 ## APIs
 
 ### Visa Acceptance Payments API
 
-REST API for accepting and processing payments.
+REST API for accepting and processing payments including authorization, capture, refund, void, and reversal operations. Supports credit cards, debit cards, Apple Pay, Google Pay, and other payment methods.
 
-- **OpenAPI Spec:** [openapi/visa-acceptance-payments-openapi.yml](openapi/visa-acceptance-payments-openapi.yml)
-- **Documentation:** https://developer.visaacceptance.com/docs.html
-- **Getting Started:** https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html
-- **Base URL (Test):** https://apitest.visaacceptance.com
+- **Human URL:** [https://developer.visaacceptance.com/](https://developer.visaacceptance.com/)
 
-## Capabilities
+#### Tags
 
-### Shared Definitions
+- Payments
+- Authorization
+- Capture
+- Refunds
+- Voids
 
-| File | Description |
-|------|-------------|
-| [capabilities/shared/visa-acceptance-payments.yaml](capabilities/shared/visa-acceptance-payments.yaml) | Per-API capability definition for the Payments API |
+#### Properties
 
-### Workflow Capabilities
+- [OpenAPI](openapi/visa-acceptance-payments-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Postman Collection](collections/visa-acceptance-payments.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/visa-acceptance-payments.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Documentation](https://developer.visaacceptance.com/docs.html)
+- [Getting Started](https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html)
+- [Authentication](https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html)
+- [Sandbox](https://developer.visaacceptance.com/hello-world/sandbox.html)
+- [Testing](https://developer.visaacceptance.com/hello-world/testing-guide.html)
 
-| File | Description |
-|------|-------------|
-| [capabilities/payment-acceptance-workflow.yaml](capabilities/payment-acceptance-workflow.yaml) | Full payment lifecycle workflow (authorize, capture, refund, void, invoice, pay-by-link) |
+### Visa Acceptance Invoicing API
 
-## JSON Schemas
+Create, manage, and send invoices to customers with payment links. Supports line items, custom due dates, and real-time payment status.
 
-| File | Description |
-|------|-------------|
-| [json-schema/visa-acceptance-payment-schema.json](json-schema/visa-acceptance-payment-schema.json) | Schema for payment transactions |
+- **Human URL:** [https://developer.visaacceptance.com/](https://developer.visaacceptance.com/)
 
-## JSON Structure
+#### Tags
 
-| File | Description |
-|------|-------------|
-| [json-structure/visa-acceptance-payment-structure.json](json-structure/visa-acceptance-payment-structure.json) | Structure documentation for payment objects |
+- Invoicing
+- Payments
+- Payment Links
 
-## JSON-LD Context
+#### Properties
 
-| File | Description |
-|------|-------------|
-| [json-ld/visa-acceptance-context.jsonld](json-ld/visa-acceptance-context.jsonld) | Linked data context mapping payment concepts to schema.org |
+- [OpenAPI](openapi/visa-acceptance-payments-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Postman Collection](collections/visa-acceptance-payments.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/visa-acceptance-payments.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Documentation](https://developer.visaacceptance.com/docs.html)
 
-## Examples
+### Visa Acceptance Pay by Link API
 
-| File | Description |
-|------|-------------|
-| [examples/visa-acceptance-authorize-payment-example.json](examples/visa-acceptance-authorize-payment-example.json) | Authorize a payment |
-| [examples/visa-acceptance-capture-payment-example.json](examples/visa-acceptance-capture-payment-example.json) | Capture a payment |
-| [examples/visa-acceptance-refund-payment-example.json](examples/visa-acceptance-refund-payment-example.json) | Refund a payment |
-| [examples/visa-acceptance-create-invoice-example.json](examples/visa-acceptance-create-invoice-example.json) | Create an invoice |
-| [examples/visa-acceptance-create-pay-by-link-example.json](examples/visa-acceptance-create-pay-by-link-example.json) | Generate a payment link |
+Generate shareable payment links that redirect customers to a hosted payment page. Supports AI agent-initiated payments via the Agent Toolkit.
 
-## Rules
+- **Human URL:** [https://developer.visaacceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.html](https://developer.visaacceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.html)
 
-| File | Description |
-|------|-------------|
-| [rules/visa-acceptance-rules.yml](rules/visa-acceptance-rules.yml) | Spectral ruleset for Visa Acceptance API conventions |
+#### Tags
 
-## Vocabulary
+- Payment Links
+- Payments
+- AI Agents
 
-| File | Description |
-|------|-------------|
-| [vocabulary/visa-acceptance-vocabulary.yml](vocabulary/visa-acceptance-vocabulary.yml) | Domain vocabulary for payment processing concepts |
+#### Properties
 
-## Tags
+- [OpenAPI](openapi/visa-acceptance-payments-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Postman Collection](collections/visa-acceptance-payments.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/visa-acceptance-payments.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Documentation](https://developer.visaacceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.html)
 
-Payments, E-Commerce, Fintech, Credit Cards, Invoicing, Payment Links, Digital Wallets
+## Common Properties
+
+- [GitHub Organization](https://github.com/visaacceptance)
+- [LinkedIn](https://www.linkedin.com/company/visa-acceptance-solutions)
+- [Website](https://developer.visaacceptance.com/)
+- [Documentation](https://developer.visaacceptance.com/docs.html)
+- [Sandbox](https://developer.visaacceptance.com/hello-world/sandbox.html)
+- [Support](https://developer.visaacceptance.com/support/contact-us.html)
+- [Response Codes](https://developer.visaacceptance.com/api/reference/response-codes.html)
+- [JSON Schema](json-schema/visa-acceptance-payment-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON-LD](json-ld/visa-acceptance-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
+- [Vocabulary](vocabulary/visa-acceptance-vocabulary.yml)
+- [Spectral Rules](rules/visa-acceptance-rules.yml)
+- [L L Ms Txt](https://developer.visaacceptance.com/llms.txt)
 
 ## Maintainers
 
-**FN:** Kin Lane  
+**FN:** Kin Lane
 **Email:** kin@apievangelist.com

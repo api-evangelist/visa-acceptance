@@ -1,0 +1,320 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Visa Acceptance Payments API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Authorize Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.visaacceptance.com/pts/v2/payments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Authorize a payment transaction. An authorization places a hold on the customer's funds without completing the transfer. Supports credit cards, debit cards, Apple Pay, Google Pay, and other payment methods."
+        },
+        {
+          "info": {
+            "name": "Reverse Authorization",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.visaacceptance.com/pts/v2/payments/:paymentId/reversals",
+            "params": [
+              {
+                "name": "paymentId",
+                "value": "",
+                "type": "path",
+                "description": "The authorization payment ID to reverse"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reverse an authorization to release the held funds back to the customer. An authorization reversal is faster than a void and releases the hold without waiting for settlement."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Captures",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Capture Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.visaacceptance.com/pts/v2/payments/:paymentId/captures",
+            "params": [
+              {
+                "name": "paymentId",
+                "value": "",
+                "type": "path",
+                "description": "The payment ID returned from the authorization request"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Capture a previously authorized payment, transferring the held funds to the merchant account. Must be performed within the authorization's validity period."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Refunds",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Refund Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.visaacceptance.com/pts/v2/payments/:paymentId/refunds",
+            "params": [
+              {
+                "name": "paymentId",
+                "value": "",
+                "type": "path",
+                "description": "The payment ID of the captured transaction to refund"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Refund a captured payment, returning funds to the customer. Refunds must be requested within 180 days of the original authorization. Partial refunds are supported."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Voids",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Void Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.visaacceptance.com/pts/v2/payments/:paymentId/voids",
+            "params": [
+              {
+                "name": "paymentId",
+                "value": "",
+                "type": "path",
+                "description": "The payment or capture ID to void"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Void an authorization or capture before it settles. After voiding, the funds are released back to the customer's account. A new transaction must be created for any subsequent capture."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Invoices",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.visaacceptance.com/pts/v2/invoices",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by invoice status"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of invoices to return"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of invoices with optional filtering by status and date range."
+        },
+        {
+          "info": {
+            "name": "Create Invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.visaacceptance.com/pts/v2/invoices",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an invoice for payment collection. Invoices can be sent to customers via email and include a payment link. Supports line items, tax, and custom due dates."
+        },
+        {
+          "info": {
+            "name": "Get Invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.visaacceptance.com/pts/v2/invoices/:invoiceId",
+            "params": [
+              {
+                "name": "invoiceId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific invoice by its ID."
+        },
+        {
+          "info": {
+            "name": "Update Invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.visaacceptance.com/pts/v2/invoices/:invoiceId",
+            "params": [
+              {
+                "name": "invoiceId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a draft invoice before sending it to the customer."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Pay by Link",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Pay by Links",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.visaacceptance.com/pts/v2/paybylinks",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of all payment links with their current status."
+        },
+        {
+          "info": {
+            "name": "Create Pay by Link",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.visaacceptance.com/pts/v2/paybylinks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate a payment link that can be shared with customers via email, SMS, or messaging apps. The link redirects customers to a hosted payment page."
+        },
+        {
+          "info": {
+            "name": "Get Pay by Link",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.visaacceptance.com/pts/v2/paybylinks/:linkId",
+            "params": [
+              {
+                "name": "linkId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific payment link including its status and transaction history."
+        },
+        {
+          "info": {
+            "name": "Cancel Pay by Link",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.visaacceptance.com/pts/v2/paybylinks/:linkId",
+            "params": [
+              {
+                "name": "linkId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Cancel an active payment link so it can no longer be used for payments."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
