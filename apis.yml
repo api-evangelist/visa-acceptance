@@ -82,6 +82,10 @@ apis:
         url: >-
           https://developer.visaacceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.html
 common:
+  - type: DomainSecurity
+    url: security/visa-acceptance-domain-security.yml
+  - type: Authentication
+    url: authentication/visa-acceptance-authentication.yml
   - type: GitHubOrganization
     url: https://github.com/visaacceptance
   - type: LinkedIn

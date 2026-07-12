@@ -1,0 +1,15 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/visa-acceptance-payments-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: JWT
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: RSA-signed JSON Web Token. Generate using your merchant ID and RSA key pair from
+    the Visa Acceptance Business Center.
+  sources:
+  - openapi/visa-acceptance-payments-openapi.yml
