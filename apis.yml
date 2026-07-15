@@ -82,6 +82,8 @@ apis:
         url: >-
           https://developer.visaacceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.html
 common:
+  - type: AgenticAccess
+    url: agentic-access/visa-acceptance-agentic-access.yml
   - type: DomainSecurity
     url: security/visa-acceptance-domain-security.yml
   - type: Authentication
