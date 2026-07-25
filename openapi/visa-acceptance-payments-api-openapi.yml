@@ -1,0 +1,279 @@
+openapi: 3.1.0
+info:
+  title: Visa Acceptance Captures Payments API
+  description: The Visa Acceptance Payments API (powered by CyberSource) provides REST endpoints for accepting payments online, in-person, and via mobile. The API supports authorization, capture, refund, void, and reversal operations for credit cards, debit cards, digital wallets (Apple Pay, Google Pay), and other payment methods. Authentication uses JSON Web Token (JWT) with RSA key pairs.
+  version: '2.0'
+  contact:
+    name: Visa Acceptance Developer Portal
+    url: https://developer.visaacceptance.com/
+  license:
+    name: Commercial
+    url: https://developer.visaacceptance.com/
+servers:
+- url: https://api.visaacceptance.com
+  description: Production environment
+- url: https://apitest.visaacceptance.com
+  description: Sandbox/test environment
+security:
+- JWT: []
+tags:
+- name: Payments
+  description: Payment authorization, capture, sale, and reversal
+paths:
+  /pts/v2/payments:
+    post:
+      operationId: authorizePayment
+      summary: Authorize Payment
+      description: Authorize a payment transaction. An authorization places a hold on the customer's funds without completing the transfer. Supports credit cards, debit cards, Apple Pay, Google Pay, and other payment methods.
+      tags:
+      - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorizationRequest'
+            example:
+              clientReferenceInformation:
+                code: order-1234
+              processingInformation:
+                capture: false
+              paymentInformation:
+                card:
+                  number: '4111111111111111'
+                  expirationMonth: '12'
+                  expirationYear: '2030'
+                  securityCode: '123'
+              orderInformation:
+                amountDetails:
+                  totalAmount: '100.00'
+                  currency: USD
+                billTo:
+                  firstName: Jane
+                  lastName: Doe
+                  address1: 123 Main St
+                  locality: San Francisco
+                  administrativeArea: CA
+                  postalCode: '94105'
+                  country: US
+                  email: jane.doe@example.com
+      responses:
+        '201':
+          description: Payment authorized successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '400':
+          description: Invalid request or declined transaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Authentication failed
+        '502':
+          description: Processor error
+  /pts/v2/payments/{paymentId}/reversals:
+    post:
+      operationId: reverseAuthorization
+      summary: Reverse Authorization
+      description: Reverse an authorization to release the held funds back to the customer. An authorization reversal is faster than a void and releases the hold without waiting for settlement.
+      tags:
+      - Payments
+      parameters:
+      - name: paymentId
+        in: path
+        required: true
+        description: The authorization payment ID to reverse
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReversalRequest'
+      responses:
+        '201':
+          description: Authorization reversed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReversalResponse'
+        '400':
+          description: Invalid reversal request
+components:
+  schemas:
+    PaymentResponse:
+      type: object
+      description: Response from a payment authorization or sale
+      properties:
+        id:
+          type: string
+          description: Unique payment transaction ID
+        status:
+          type: string
+          enum:
+          - AUTHORIZED
+          - AUTHORIZED_PENDING_REVIEW
+          - DECLINED
+          - INVALID_REQUEST
+        submitTimeUtc:
+          type: string
+          format: date-time
+        processorInformation:
+          type: object
+          properties:
+            approvalCode:
+              type: string
+            responseCode:
+              type: string
+            transactionId:
+              type: string
+        orderInformation:
+          type: object
+          properties:
+            amountDetails:
+              type: object
+              properties:
+                authorizedAmount:
+                  type: string
+                currency:
+                  type: string
+    AuthorizationRequest:
+      type: object
+      description: Request body for authorizing a payment
+      required:
+      - paymentInformation
+      - orderInformation
+      properties:
+        clientReferenceInformation:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Merchant's unique order reference code
+        processingInformation:
+          type: object
+          properties:
+            capture:
+              type: boolean
+              description: Set to true to authorize and capture in a single request
+              default: false
+            commerceIndicator:
+              type: string
+              description: Transaction type indicator
+        paymentInformation:
+          type: object
+          description: Payment method details
+          properties:
+            card:
+              type: object
+              properties:
+                number:
+                  type: string
+                expirationMonth:
+                  type: string
+                expirationYear:
+                  type: string
+                securityCode:
+                  type: string
+        orderInformation:
+          type: object
+          properties:
+            amountDetails:
+              type: object
+              required:
+              - totalAmount
+              - currency
+              properties:
+                totalAmount:
+                  type: string
+                  description: Total transaction amount as decimal string
+                currency:
+                  type: string
+                  description: ISO 4217 3-letter currency code
+            billTo:
+              $ref: '#/components/schemas/Address'
+            shipTo:
+              $ref: '#/components/schemas/Address'
+    ReversalRequest:
+      type: object
+      properties:
+        clientReferenceInformation:
+          type: object
+          properties:
+            code:
+              type: string
+        reversalInformation:
+          type: object
+          properties:
+            amountDetails:
+              type: object
+              properties:
+                totalAmount:
+                  type: string
+    Address:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        address1:
+          type: string
+        address2:
+          type: string
+        locality:
+          type: string
+          description: City
+        administrativeArea:
+          type: string
+          description: State or province code
+        postalCode:
+          type: string
+        country:
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+        email:
+          type: string
+          format: email
+        phoneNumber:
+          type: string
+    ReversalResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        reason:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              reason:
+                type: string
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: RSA-signed JSON Web Token. Generate using your merchant ID and RSA key pair from the Visa Acceptance Business Center.
+externalDocs:
+  description: Visa Acceptance Developer Documentation
+  url: https://developer.visaacceptance.com/docs.html

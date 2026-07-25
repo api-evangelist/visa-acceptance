@@ -1,0 +1,82 @@
+openapi: 3.1.0
+info:
+  title: Visa Acceptance Payments Captures Voids API
+  description: The Visa Acceptance Payments API (powered by CyberSource) provides REST endpoints for accepting payments online, in-person, and via mobile. The API supports authorization, capture, refund, void, and reversal operations for credit cards, debit cards, digital wallets (Apple Pay, Google Pay), and other payment methods. Authentication uses JSON Web Token (JWT) with RSA key pairs.
+  version: '2.0'
+  contact:
+    name: Visa Acceptance Developer Portal
+    url: https://developer.visaacceptance.com/
+  license:
+    name: Commercial
+    url: https://developer.visaacceptance.com/
+servers:
+- url: https://api.visaacceptance.com
+  description: Production environment
+- url: https://apitest.visaacceptance.com
+  description: Sandbox/test environment
+security:
+- JWT: []
+tags:
+- name: Voids
+  description: Void authorized, captured, or credited transactions
+paths:
+  /pts/v2/payments/{paymentId}/voids:
+    post:
+      operationId: voidPayment
+      summary: Void Payment
+      description: Void an authorization or capture before it settles. After voiding, the funds are released back to the customer's account. A new transaction must be created for any subsequent capture.
+      tags:
+      - Voids
+      parameters:
+      - name: paymentId
+        in: path
+        required: true
+        description: The payment or capture ID to void
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoidRequest'
+      responses:
+        '201':
+          description: Transaction voided successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoidResponse'
+        '400':
+          description: Invalid void request
+        '404':
+          description: Payment not found
+components:
+  schemas:
+    VoidResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - VOIDED
+          - FAILED
+    VoidRequest:
+      type: object
+      properties:
+        clientReferenceInformation:
+          type: object
+          properties:
+            code:
+              type: string
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: RSA-signed JSON Web Token. Generate using your merchant ID and RSA key pair from the Visa Acceptance Business Center.
+externalDocs:
+  description: Visa Acceptance Developer Documentation
+  url: https://developer.visaacceptance.com/docs.html

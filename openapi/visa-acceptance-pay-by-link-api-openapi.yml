@@ -1,0 +1,166 @@
+openapi: 3.1.0
+info:
+  title: Visa Acceptance Payments Captures Pay by Link API
+  description: The Visa Acceptance Payments API (powered by CyberSource) provides REST endpoints for accepting payments online, in-person, and via mobile. The API supports authorization, capture, refund, void, and reversal operations for credit cards, debit cards, digital wallets (Apple Pay, Google Pay), and other payment methods. Authentication uses JSON Web Token (JWT) with RSA key pairs.
+  version: '2.0'
+  contact:
+    name: Visa Acceptance Developer Portal
+    url: https://developer.visaacceptance.com/
+  license:
+    name: Commercial
+    url: https://developer.visaacceptance.com/
+servers:
+- url: https://api.visaacceptance.com
+  description: Production environment
+- url: https://apitest.visaacceptance.com
+  description: Sandbox/test environment
+security:
+- JWT: []
+tags:
+- name: Pay by Link
+  description: Generate and manage payment links
+paths:
+  /pts/v2/paybylinks:
+    post:
+      operationId: createPayByLink
+      summary: Create Pay by Link
+      description: Generate a payment link that can be shared with customers via email, SMS, or messaging apps. The link redirects customers to a hosted payment page.
+      tags:
+      - Pay by Link
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayByLinkRequest'
+      responses:
+        '201':
+          description: Payment link created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayByLinkResponse'
+        '400':
+          description: Invalid request
+    get:
+      operationId: listPayByLinks
+      summary: List Pay by Links
+      description: Retrieve a list of all payment links with their current status.
+      tags:
+      - Pay by Link
+      parameters:
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - ACTIVE
+          - EXPIRED
+          - COMPLETED
+          - CANCELLED
+      responses:
+        '200':
+          description: List of payment links
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayByLinkListResponse'
+  /pts/v2/paybylinks/{linkId}:
+    get:
+      operationId: getPayByLink
+      summary: Get Pay by Link
+      description: Retrieve details of a specific payment link including its status and transaction history.
+      tags:
+      - Pay by Link
+      parameters:
+      - name: linkId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Payment link details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayByLinkResponse'
+        '404':
+          description: Payment link not found
+    delete:
+      operationId: cancelPayByLink
+      summary: Cancel Pay by Link
+      description: Cancel an active payment link so it can no longer be used for payments.
+      tags:
+      - Pay by Link
+      parameters:
+      - name: linkId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Payment link cancelled
+        '404':
+          description: Payment link not found
+components:
+  schemas:
+    PayByLinkListResponse:
+      type: object
+      properties:
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayByLinkResponse'
+    PayByLinkRequest:
+      type: object
+      required:
+      - orderInformation
+      properties:
+        orderInformation:
+          type: object
+          properties:
+            amountDetails:
+              type: object
+              properties:
+                totalAmount:
+                  type: string
+                currency:
+                  type: string
+            description:
+              type: string
+              description: Payment description shown to customer
+        expirationDate:
+          type: string
+          format: date-time
+          description: When the payment link expires
+    PayByLinkResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - EXPIRED
+          - COMPLETED
+          - CANCELLED
+        paymentLink:
+          type: string
+          format: uri
+          description: The URL to share with customers for payment
+        expirationDate:
+          type: string
+          format: date-time
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: RSA-signed JSON Web Token. Generate using your merchant ID and RSA key pair from the Visa Acceptance Business Center.
+externalDocs:
+  description: Visa Acceptance Developer Documentation
+  url: https://developer.visaacceptance.com/docs.html
