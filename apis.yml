@@ -6,10 +6,23 @@ description: >-
   and pay-by-link. Authentication uses JWT with RSA key pairs, with support for Intelligent Commerce APIs enabling AI
   agent-initiated payments.
 type: Index
+accessModel:
+  pricing: enterprise
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Enterprise · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 position: Consumer
 access: 3rd-Party
 url: https://raw.githubusercontent.com/api-evangelist/visa-acceptance/refs/heads/main/apis.yml
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/visa-acceptance.png
 tags:
   - Payments
   - E-Commerce
@@ -22,65 +35,150 @@ created: '2025-02-17'
 modified: '2026-05-19'
 specificationVersion: '0.19'
 apis:
-  - aid: visa-acceptance:visa-acceptance-payments
-    name: Visa Acceptance Payments API
-    description: >-
-      REST API for accepting and processing payments including authorization, capture, refund, void, and reversal
-      operations. Supports credit cards, debit cards, Apple Pay, Google Pay, and other payment methods.
-    humanURL: https://developer.visaacceptance.com/
-    tags:
-      - Payments
-      - Authorization
-      - Capture
-      - Refunds
-      - Voids
-    properties:
-      - type: OpenAPI
-        url: openapi/visa-acceptance-payments-openapi.yml
-      - type: Documentation
-        url: https://developer.visaacceptance.com/docs.html
-      - type: GettingStarted
-        url: >-
-          https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html
-      - type: Authentication
-        url: >-
-          https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html
-      - type: Sandbox
-        url: https://developer.visaacceptance.com/hello-world/sandbox.html
-      - type: Testing
-        url: https://developer.visaacceptance.com/hello-world/testing-guide.html
-  - aid: visa-acceptance:visa-acceptance-invoicing
-    name: Visa Acceptance Invoicing API
-    description: >-
-      Create, manage, and send invoices to customers with payment links. Supports line items, custom due dates, and
-      real-time payment status.
-    humanURL: https://developer.visaacceptance.com/
-    tags:
-      - Invoicing
-      - Payments
-      - Payment Links
-    properties:
-      - type: OpenAPI
-        url: openapi/visa-acceptance-payments-openapi.yml
-      - type: Documentation
-        url: https://developer.visaacceptance.com/docs.html
-  - aid: visa-acceptance:visa-acceptance-pay-by-link
-    name: Visa Acceptance Pay by Link API
-    description: >-
-      Generate shareable payment links that redirect customers to a hosted payment page. Supports AI agent-initiated
-      payments via the Agent Toolkit.
-    humanURL: >-
+- aid: visa-acceptance:visa-acceptance-captures-api
+  name: Visa Acceptance Captures API
+  description: Capture previously authorized payments
+  humanURL: https://developer.visaacceptance.com/
+  tags:
+  - Captures
+  properties:
+  - type: OpenAPI
+    url: openapi/visa-acceptance-captures-api-openapi.yml
+  - type: Documentation
+    url: https://developer.visaacceptance.com/docs.html
+  - type: GettingStarted
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html
+  - type: Authentication
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html
+  - type: Sandbox
+    url: https://developer.visaacceptance.com/hello-world/sandbox.html
+  - type: Testing
+    url: https://developer.visaacceptance.com/hello-world/testing-guide.html
+  - type: Documentation
+    url: >-
       https://developer.visaacceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.html
-    tags:
-      - Payment Links
-      - Payments
-      - AI Agents
-    properties:
-      - type: OpenAPI
-        url: openapi/visa-acceptance-payments-openapi.yml
-      - type: Documentation
-        url: >-
-          https://developer.visaacceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.html
+- aid: visa-acceptance:visa-acceptance-invoices-api
+  name: Visa Acceptance Invoices API
+  description: Create and manage invoices for payment collection
+  humanURL: https://developer.visaacceptance.com/
+  tags:
+  - Invoices
+  properties:
+  - type: OpenAPI
+    url: openapi/visa-acceptance-invoices-api-openapi.yml
+  - type: Documentation
+    url: https://developer.visaacceptance.com/docs.html
+  - type: GettingStarted
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html
+  - type: Authentication
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html
+  - type: Sandbox
+    url: https://developer.visaacceptance.com/hello-world/sandbox.html
+  - type: Testing
+    url: https://developer.visaacceptance.com/hello-world/testing-guide.html
+  - type: Documentation
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.html
+- aid: visa-acceptance:visa-acceptance-pay-by-link-api
+  name: Visa Acceptance Pay by Link API
+  description: Generate and manage payment links
+  humanURL: https://developer.visaacceptance.com/
+  tags:
+  - Pay by Link
+  properties:
+  - type: OpenAPI
+    url: openapi/visa-acceptance-pay-by-link-api-openapi.yml
+  - type: Documentation
+    url: https://developer.visaacceptance.com/docs.html
+  - type: GettingStarted
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html
+  - type: Authentication
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html
+  - type: Sandbox
+    url: https://developer.visaacceptance.com/hello-world/sandbox.html
+  - type: Testing
+    url: https://developer.visaacceptance.com/hello-world/testing-guide.html
+  - type: Documentation
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.html
+- aid: visa-acceptance:visa-acceptance-payments-api
+  name: Visa Acceptance Payments API
+  description: Payment authorization, capture, sale, and reversal
+  humanURL: https://developer.visaacceptance.com/
+  tags:
+  - Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/visa-acceptance-payments-api-openapi.yml
+  - type: Documentation
+    url: https://developer.visaacceptance.com/docs.html
+  - type: GettingStarted
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html
+  - type: Authentication
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html
+  - type: Sandbox
+    url: https://developer.visaacceptance.com/hello-world/sandbox.html
+  - type: Testing
+    url: https://developer.visaacceptance.com/hello-world/testing-guide.html
+  - type: Documentation
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.html
+- aid: visa-acceptance:visa-acceptance-refunds-api
+  name: Visa Acceptance Refunds API
+  description: Refund and credit operations
+  humanURL: https://developer.visaacceptance.com/
+  tags:
+  - Refunds
+  properties:
+  - type: OpenAPI
+    url: openapi/visa-acceptance-refunds-api-openapi.yml
+  - type: Documentation
+    url: https://developer.visaacceptance.com/docs.html
+  - type: GettingStarted
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html
+  - type: Authentication
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html
+  - type: Sandbox
+    url: https://developer.visaacceptance.com/hello-world/sandbox.html
+  - type: Testing
+    url: https://developer.visaacceptance.com/hello-world/testing-guide.html
+  - type: Documentation
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.html
+- aid: visa-acceptance:visa-acceptance-voids-api
+  name: Visa Acceptance Voids API
+  description: Void authorized, captured, or credited transactions
+  humanURL: https://developer.visaacceptance.com/
+  tags:
+  - Voids
+  properties:
+  - type: OpenAPI
+    url: openapi/visa-acceptance-voids-api-openapi.yml
+  - type: Documentation
+    url: https://developer.visaacceptance.com/docs.html
+  - type: GettingStarted
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html
+  - type: Authentication
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.html
+  - type: Sandbox
+    url: https://developer.visaacceptance.com/hello-world/sandbox.html
+  - type: Testing
+    url: https://developer.visaacceptance.com/hello-world/testing-guide.html
+  - type: Documentation
+    url: >-
+      https://developer.visaacceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.html
 common:
   - type: AgenticAccess
     url: agentic-access/visa-acceptance-agentic-access.yml
