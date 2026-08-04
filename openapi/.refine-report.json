@@ -1,0 +1,24 @@
+{
+  "provider": "visa-acceptance",
+  "sources": [
+    "visa-acceptance-captures-api-openapi.yml",
+    "visa-acceptance-invoices-api-openapi.yml",
+    "visa-acceptance-pay-by-link-api-openapi.yml",
+    "visa-acceptance-payments-api-openapi.yml",
+    "visa-acceptance-refunds-api-openapi.yml",
+    "visa-acceptance-voids-api-openapi.yml"
+  ],
+  "outputs": [
+    "visa-acceptance-captures-api-openapi.yml",
+    "visa-acceptance-invoices-api-openapi.yml",
+    "visa-acceptance-pay-by-link-api-openapi.yml",
+    "visa-acceptance-payments-api-openapi.yml",
+    "visa-acceptance-refunds-api-openapi.yml",
+    "visa-acceptance-voids-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
