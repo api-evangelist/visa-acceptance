@@ -1,0 +1,282 @@
+{
+  "item": [
+    {
+      "id": "e7321e68-ca11-402b-8c76-dcb7b316eed5",
+      "name": "Captures",
+      "description": {
+        "content": "Capture previously authorized payments",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "aa7b8e4b-5491-4e59-b123-3af9d9bbae9d",
+          "name": "Capture Payment",
+          "request": {
+            "name": "Capture Payment",
+            "description": {
+              "content": "Capture a previously authorized payment, transferring the held funds to the merchant account. Must be performed within the authorization's validity period.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pts",
+                "v2",
+                "payments",
+                ":paymentId",
+                "captures"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "paymentId",
+                  "description": "(Required) The payment ID returned from the authorization request"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderInformation\": {\n    \"amountDetails\": {\n      \"totalAmount\": \"<string>\",\n      \"currency\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b861b8a8-b881-4925-ac1b-cf2e4d32ac81",
+              "name": "Payment captured successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "payments",
+                    ":paymentId",
+                    "captures"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentId",
+                      "description": "(Required) The payment ID returned from the authorization request"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"orderInformation\": {\n    \"amountDetails\": {\n      \"totalAmount\": \"<string>\",\n      \"currency\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"TRANSMITTED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "05b67c39-d6ab-452f-bb22-dbb7f1b65e66",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "payments",
+                    ":paymentId",
+                    "captures"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentId",
+                      "description": "(Required) The payment ID returned from the authorization request"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"orderInformation\": {\n    \"amountDetails\": {\n      \"totalAmount\": \"<string>\",\n      \"currency\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5c146abd-7d67-461f-851c-6e0a11cfea4e",
+              "name": "Payment not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "payments",
+                    ":paymentId",
+                    "captures"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentId",
+                      "description": "(Required) The payment ID returned from the authorization request"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"orderInformation\": {\n    \"amountDetails\": {\n      \"totalAmount\": \"<string>\",\n      \"currency\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.visaacceptance.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "a345c34c-4933-41c8-83ab-2a5ab7bf6efd",
+    "name": "Visa Acceptance Payments Captures API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Visa Acceptance Payments API (powered by CyberSource) provides REST endpoints for accepting payments online, in-person, and via mobile. The API supports authorization, capture, refund, void, and reversal operations for credit cards, debit cards, digital wallets (Apple Pay, Google Pay), and other payment methods. Authentication uses JSON Web Token (JWT) with RSA key pairs.\n\nContact Support:\n Name: Visa Acceptance Developer Portal",
+      "type": "text/plain"
+    }
+  }
+}

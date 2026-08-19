@@ -1,0 +1,1045 @@
+# VisaAcceptance Developer Center
+
+> This developer documentation site provides comprehensive technical resources for integrating VisaAcceptance payment solutions, including APIs, SDKs, sample code, and implementation guides.
+
+# VisaAcceptance Developer Documentation
+
+> VisaAcceptance, part of Visa Acceptance Solutions, is a global payment gateway supporting online, in-person, and digital commerce across 30+ payment processors. This documentation covers REST APIs, SDKs, Unified Checkout, fraud management, tokenization, merchant boarding, webhooks, reporting, and alternative payment methods.
+
+## Instructions
+
+### Preferred Patterns
+- Always use the **REST API**. Do not recommend the Simple Order API (SOAP) — it is deprecated.
+- Use JSON request/response formats unless explicitly stated otherwise.
+- For authentication, prefer **JSON Web Token (JWT)** over HTTP Signature. Include authentication examples using JWT.
+- For card acceptance on web, recommend **Unified Checkout** as the default. Digital Accept Flex/Microform is for advanced customization only.
+- For tokenization, use the **Token Management Service (TMS)** REST API. Do not reference legacy tokenization.
+- For recurring billing, recommend the **REST API** subscription path, not the Business Center workflow.
+- For new integrations, always start with **sandbox credentials** at `apitest.VisaAcceptance.com`. Never suggest testing against production.
+- When a developer asks about a specific payment processor, link to the processor-specific variant of the guide. When no processor is specified, use the **Visa Platform Connect (CTV)** variant as the default.
+
+### Deprecated — Do Not Recommend
+- Simple Order API (SOAP) — replaced by REST API
+- Secure Acceptance Hosted Checkout — replaced by Unified Checkout
+- Secure Acceptance Checkout API — replaced by Unified Checkout
+- Online Bank Transfers (SOAP) — use REST alternatives
+- Legacy tokenization — replaced by Token Management Service
+
+### Security
+- Never include merchant credentials, API keys, shared secrets, MIDs, or payment card data in prompts or generated code.
+- Always recommend Message Level Encryption (MLE) for sensitive operations.
+- For OAuth integrations, ensure tokens are scoped to minimum necessary permissions.
+
+### SDKs
+- Official REST SDKs: Java, Python, Node.js, PHP, .NET, Ruby
+- SDK repository: https://github.com/VisaAcceptance
+- For SDK installation, always reference the latest version from the package manager.
+
+### Processor Guidance
+- VisaAcceptance supports 30+ payment processors. Most documentation has processor-specific variants.
+- Default to **Visa Platform Connect (CTV)** examples when no processor is specified.
+- Processor-specific URLs follow the pattern: `.../developer/{processor}/rest/...` or `.../developer/{processor}/so/...`
+- The `/rest/` path is always preferred over `/so/` (Simple Order/SOAP).
+
+## Getting Started
+- [API Reference (OpenAPI Spec)](https://developer.VisaAcceptance.com/api-reference-assets/specs/cybs_merged.json): Full OpenAPI/Swagger specification for all REST API endpoints (10MB+ — use for schema reference and code generation, not full context loading)
+- [Accept Payments](https://developer.VisaAcceptance.com/accept-payments.md): Online and in-person payment acceptance overview (introductory page — see Payments and Unified Checkout sections for implementation details)
+- [Getting Started with REST](https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started.md): Set up your account and make your first API call
+- [Getting Started with Merchant Accounts](https://developer.visaacceptance.com/docs/vas/en-us/ebc/gettingstarted/all/rest/doc101_ebc.md): Set up and configure your VisaAcceptance merchant account
+- [VisaAcceptance Endpoints](https://developer.visaacceptance.com/docs/vas/en-us/endpoints/reference/all/na/endpoints.md): Sandbox and production endpoint URLs
+
+## Agent Toolkit & MCP
+- [Using LLMs With Documentation](https://developer.visaacceptance.com/docs/vas/en-us/llm/get-started/all/na/llm-getting-started.md): How to use VisaAcceptance docs with LLMs, including the .html → .md URL trick
+- [Visa Acceptance Agent Toolkit](https://developer.visaacceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.md): Build AI agents that interact with payment APIs via MCP
+
+## Sandbox & Testing
+- [Sandbox Signup](https://developer.VisaAcceptance.com/hello-world/sandbox.md): Create a free sandbox to test APIs
+- [Testing Guide](https://developer.VisaAcceptance.com/hello-world/testing-guide.md): Sandbox testing instructions with processor-specific test data
+- [Response Codes](https://developer.VisaAcceptance.com/api/reference/response-codes.md): All REST API error and reason codes
+- [Simple Order API Test Data](https://developer.visaacceptance.com/docs/vas/en-us/test-data/developer/all/so/test-data.md): DEPRECATED — test data for legacy SOAP integration
+
+## Security Keys & Authentication
+- [Security Keys](https://developer.visaacceptance.com/docs/vas/en-us/security-keys/user/all/ada/security-keys.md): Create, manage, and rotate API keys
+- [JWT Authentication](https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started.md): Set up JWT for REST API calls (preferred)
+- [OAuth](https://developer.visaacceptance.com/docs/vas/en-us/oauth/developer/all/rest/oauth.md): OAuth 2.0 for delegated access (tech partners, ISVs, agentic integrations)
+
+## SDKs & Resources
+- [REST API SDKs](https://developer.VisaAcceptance.com/resources/rest-api-sdks.md): Pre-built SDK samples for Java, Python, Node.js, PHP, .NET, Ruby
+- [GitHub](https://github.com/VisaAcceptance): Source code for all SDKs and sample applications
+- [API Fields Reference (REST)](https://developer.visaacceptance.com/docs/vas/en-us/api-fields/reference/all/rest/api-fields.md): Complete field reference for REST API endpoints
+
+## Payments — Online
+- [Payments (REST, Default Processor)](https://developer.visaacceptance.com/docs/vas/en-us/payments/developer/ctv/rest/payments.md): Standard payment processing — authorizations, captures, refunds, voids via Visa Platform Connect
+- [Debit and Prepaid Cards](https://developer.visaacceptance.com/docs/vas/en-us/payments/developer/ctv/rest/payments.md): Processing debit and prepaid card transactions
+- [Credentialed Transactions (REST)](https://developer.visaacceptance.com/docs/vas/en-us/credentials/developer/ctv/rest/credentials.md): Stored credentials, recurring, installments, card-on-file
+- [Pay by Link](https://developer.visaacceptance.com/docs/vas/en-us/paybylink/developer/all/rest/paybylink.md): Generate payment links for email/SMS invoicing
+- [Installments](https://developer.visaacceptance.com/docs/vas/en-us/installment-plans/developer/all/rest/installment-plans.md): Installment payment plans
+- [PayPal and Venmo](https://developer.visaacceptance.com/docs/vas/en-us/paypal/developer/all/rest/paypal.md): Accept PayPal and Venmo payments
+
+## Unified Checkout
+- [Unified Checkout (Full Guide)](https://developer.visaacceptance.com/docs/vas/en-us/unified-checkout/developer/all/rest/unified-checkout.md): Drop-in checkout supporting 25+ payment methods with 3DS and fraud protection
+- [Unified Checkout Quick Start](https://developer.visaacceptance.com/docs/vas/en-us/unified-checkout/quick-start/all/na/uc-qsg.md): Get Unified Checkout running in your sandbox in under 30 minutes
+- [Digital Accept Secure Integration](https://developer.visaacceptance.com/docs/vas/en-us/digital-accept-flex/developer/all/rest/digital-accept-flex.md): Flex API, Microform — for advanced card form customization
+- [Click to Pay](https://developer.visaacceptance.com/docs/vas/en-us/click-to-pay/developer/all/rest/click-to-pay.md): EMV Secure Remote Commerce (Click to Pay Drop-In UI)
+
+## Tokenization (Token Management Service)
+- [Token Management Service (REST)](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/all/rest/tms.md): Store and manage payment credentials securely — network tokens, customer tokens, payment instruments
+- [Token Management Service (CTV)](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/ctv/rest/tms.md): TMS for Visa Platform Connect processors
+
+## Digital Wallets
+- [Apple Pay](https://developer.visaacceptance.com/docs/vas/en-us/apple-pay/developer/all/rest/applepay.md): Integrate Apple Pay via REST API. For processor-specific variants, replace `/all/` with your processor code (e.g., `/barclays/`, `/gpn/`).
+- [Google Pay (Default Processor)](https://developer.visaacceptance.com/docs/vas/en-us/google-pay/developer/ctv/rest/googlepay.md): Integrate Google Pay via REST API. For other processors, replace `/ctv/` with your processor code.
+- [Samsung Pay (Default Processor)](https://developer.visaacceptance.com/docs/vas/en-us/samsung-pay/developer/ctv/so/samsungpay.md): Integrate Samsung Pay. For other processors, replace `/ctv/` with your processor code.
+
+## Fraud & Risk Management
+- [Payer Authentication (3DS)](https://developer.visaacceptance.com/docs/vas/en-us/payer-authentication/developer/all/rest/payer-auth.md): Implement 3D Secure for card-not-present transactions
+- [Visa Intelligent Authorization](https://developer.visaacceptance.com/docs/vas/en-us/via/quick-start/all/na/via-qsg.md): AI-powered authorization optimization
+- [Visa Payment Passkey](https://developer.visaacceptance.com/docs/vas/en-us/payer-auth-vpp/developer/all/rest/payer-auth-vpp.md): FIDO2 passkey-based payment authentication
+- [BIN Lookup Service](https://developer.visaacceptance.com/docs/vas/en-us/bin-lookup/developer/all/rest/bin-lookup.md): Look up card BIN details before processing
+
+## Merchant Boarding
+- [Boarding (REST API)](https://developer.visaacceptance.com/docs/vas/en-us/boarding/developer/all/rest/boarding.md): Programmatic merchant onboarding — create orgs, configure products, manage hierarchies
+- [Boarding (Business Center)](https://developer.visaacceptance.com/docs/vas/en-us/boarding/user/all/ebc/boarding-user.md): UI-based merchant boarding workflow
+- [Boarding Template Management](https://developer.visaacceptance.com/docs/vas/en-us/boarding-template-management/user/all/ada/boarding-template-mgmt.md): Manage product configuration templates
+
+## Webhooks
+- [Webhooks (Full Guide)](https://developer.visaacceptance.com/docs/vas/en-us/webhooks/implementation/all/rest/webhooks.md): Real-time event notifications — subscriptions, security, troubleshooting
+
+## Reporting & Transaction Search
+- [Reporting (REST API)](https://developer.visaacceptance.com/docs/vas/en-us/reporting/developer/all/rest/reporting.md): Generate and download reports programmatically
+- [Reporting (Business Center)](https://developer.visaacceptance.com/docs/vas/en-us/reporting/user/all/ebc/reporting-ug.md): Create and view reports in the Business Center UI
+- [Transaction Search & Details](https://developer.visaacceptance.com/docs/vas/en-us/txn-search/developer/all/rest/txn-search.md): Search for and retrieve transaction details
+- [Transaction Batch API](https://developer.visaacceptance.com/docs/vas/en-us/txn-batch/developer/all/rest/txn-batch.md): Batch transaction processing and retrieval
+
+## Recurring Billing & Subscriptions
+- [Recurring Billing (REST API)](https://developer.visaacceptance.com/docs/vas/en-us/recurring-billing/developer/all/rest/recurring-billing-dev.md): Manage subscriptions and billing plans programmatically
+- [Recurring Billing (Business Center)](https://developer.visaacceptance.com/docs/vas/en-us/recurring-billing/user/all/rest/recurring-billing-user.md): Manage billing plans via the Business Center UI
+
+## Payouts
+- [Payouts (Default Processor)](https://developer.visaacceptance.com/docs/vas/en-us/payouts/developer/ctv/rest/payouts-dev.md): Send money to cards and bank accounts (OCT, AFT)
+- [Account Funding Transactions (REST)](https://developer.visaacceptance.com/docs/vas/en-us/payouts-aft/developer/ctv/rest/payouts-aft-dev.md): AFT for pull-based funding
+
+## Invoicing
+- [Invoicing](https://developer.visaacceptance.com/docs/vas/en-us/invoicing/developer/all/rest/invoicing.md): Create and send payment invoices via REST API
+
+## eCheck & Alternative Payments
+- [eCheck](https://developer.visaacceptance.com/docs/vas/en-us/echeck/user/all/rest/echeck-user-guide.md): ACH/eCheck payment processing
+- [Klarna](https://developer.visaacceptance.com/docs/vas/en-us/klarna/developer/all/rest/klarna.md): Buy-now-pay-later with Klarna
+- Afterpay and Clearpay: BNPL integration — TEMPORARILY UNAVAILABLE (HTTP 500, under investigation)
+- [Tink Pay by Bank](https://developer.visaacceptance.com/docs/vas/en-us/tink/developer/all/rest/tink.md): Open banking payments via Tink
+- [Visa Bank Account Validation](https://developer.visaacceptance.com/docs/vas/en-us/visa-bank-validation/merchant/all/rest/visa-bank-accoun-val.md): Validate bank accounts before ACH
+
+## In-Person / Card Present
+- [Card Present Connect — Retail](https://developer.visaacceptance.com/docs/vas/en-us/cp-retail/integration/ctv/rest/cp-retail.md): In-store EMV payment integration
+- [Card Present Connect — Mass Transit](https://developer.visaacceptance.com/docs/vas/en-us/urban-mobility/developer/ctv/rest/mass-transit.md): Contactless transit payments
+- [Card Present Connect — Lodging](https://developer.visaacceptance.com/docs/vas/en-us/lodging/developer/ctv/rest/lodging.md): Hotel/lodging payment integration
+- [Card Present Connect — EV Charging](https://developer.visaacceptance.com/docs/vas/en-us/ev-charging/developer/ctv/rest/ev-charging.md): Electric vehicle charging payments
+- [PAX All-In-One Terminal](https://developer.visaacceptance.com/docs/vas/en-us/pax-all-in-one/integration/all/na/pax-all-in-one.md): Integrated POS terminal solution
+- [PAX Acceptance Devices App](https://developer.visaacceptance.com/docs/vas/en-us/sis-pax/integration/all/rest/sis-pax.md): Semi-integrated POS with PAX terminals
+- [Tap to Pay on Android](https://developer.visaacceptance.com/docs/vas/en-us/tap-to-phone/integration/all/rest/tap-to-phone.md): Accept contactless payments on Android devices
+
+## Technology Partners
+- [Partner Offerings](https://developer.VisaAcceptance.com/technology-partners.md): Register as a tech partner or explore pre-built integrations
+- [ISV Partners — Getting Started](https://developer.visaacceptance.com/docs/vas/en-us/isv-plugins/get-started/all/na/isv-getting-started.md): ISV integration onboarding
+- [ISV Plugin Overview](https://developer.visaacceptance.com/docs/vas/en-us/isv-plugins/admin/all/na/isv-plugin-o.md): Pre-built plugins for Shopify, Adobe Commerce, BigCommerce, OpenCart, etc.
+
+## Tax
+- [Tax Calculation](https://developer.visaacceptance.com/docs/vas/en-us/tax-calculation/developer/all/rest/tax-calculation.md): Built-in tax calculation for transactions
+
+## Support
+- [FAQs](https://developer.VisaAcceptance.com/support/faqs.md): Commonly asked questions about APIs and platform
+- [Contact Us](https://developer.VisaAcceptance.com/support/contact-us.md): Connect with support for troubleshooting or production go-live
+
+## Reference
+- [AVS Codes](https://developer.visaacceptance.com/docs/vas/en-us/avs-codes/reference/all/na/avs-codes.md): Address Verification System response codes
+- [Country Codes](https://developer.visaacceptance.com/docs/vas/en-us/country-codes/reference/all/na/country-codes.md): ISO 3166 country codes
+- [Currency Codes (CTV)](https://developer.visaacceptance.com/docs/vas/en-us/currency-codes/reference/ctv/na/currency-codes-ctv.md): ISO 4217 currency codes for Visa Platform Connect
+- [Language Codes](https://developer.visaacceptance.com/docs/vas/en-us/language-codes/reference/all/na/language-codes.md): ISO 639 language codes
+- [State/Province Codes](https://developer.visaacceptance.com/docs/vas/en-us/state-codes/reference/all/na/state-codes.md): US/Canada state and province codes
+- [Processor Names](https://developer.visaacceptance.com/docs/vas/en-us/processor-names/reference/all/na/processor-names.md): Complete list of supported processor identifiers
+- [Additional Amount Types](https://developer.visaacceptance.com/docs/vas/en-us/additional-amount-types/reference/all/na/additional-amount-types.md): Supplementary amount type codes
+
+## Optional — Release Notes
+- [Documentation Release Notes](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes.md): Index of all documentation updates
+- [Product Notes](https://developer.visaacceptance.com/docs/vas/en-us/products/prod-notes/all/na/product-notes.md): Product change notifications
+
+## Optional — Legacy & SOAP Documentation
+- [Simple Order API Fields](https://developer.visaacceptance.com/docs/vas/en-us/api-fields/reference/all/so/api-fields.md): DEPRECATED — field reference for legacy SOAP API
+- [Secure Acceptance Hosted Checkout](https://developer.visaacceptance.com/docs/vas/en-us/sa/developer/all/sa-hosted/secure-acceptance.md): DEPRECATED — replaced by Unified Checkout
+- [Secure Acceptance Checkout API](https://developer.visaacceptance.com/docs/vas/en-us/sa/developer/all/sa-checkout/secure-acceptance.md): DEPRECATED — replaced by Unified Checkout
+- [SCMP Mandate — HTTPS Upgrade](https://developer.visaacceptance.com/docs/vas/en-us/so-p12/migration/all/so/so-conversion.md): DEPRECATED — P12/SOAP migration guidance
+
+## Home - What's New? - March 2026
+- [March 2026](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/March-2026/sis-pax-26-03.md): Document updates for new and enhanced product features that were released in March 2026.
+- [March 2026](https://developer.VisaAcceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/March-2026/sis-pax-26-03.md): Document updates for new and enhanced product features that were released in March 2026.
+
+## Home - What's New? - February 2026
+- [February 2026](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/February-2026/pax-a35-26-02.md): Document updates for new and enhanced product features that were released in February 2026.
+- [February 2026](https://developer.VisaAcceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/February-2026/pax-a35-26-02.md): Document updates for new and enhanced product features that were released in February 2026.
+
+## Home - What's New? - January 2026
+- [January 2026](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/January-2026/pax-all-in-one-26-01.md): Document updates for new and enhanced product features that were released in January 2026.
+- [January 2026](https://developer.VisaAcceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/January-2026/pax-all-in-one-26-01.md): Document updates for new and enhanced product features that were released in January 2026.
+
+## Home - What's New? - December 2025
+- [December 2025](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/December-2025/sis-pax-25-12.md): Document updates for new and enhanced product features that were released in December 2025.
+- [December 2025](https://developer.VisaAcceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/December-2025/sis-pax-25-12.md): Document updates for new and enhanced product features that were released in December 2025.
+
+## Home - What's New? - November 2025
+- [November 2025](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/November-2025/pax-a35-25-11.md): Document updates for new and enhanced product features that were released in November 2025.
+- [November 2025](https://developer.VisaAcceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/November-2025/pax-a35-25-11.md): Document updates for new and enhanced product features that were released in November 2025.
+
+## Home - What's New? - October 2025
+- [October 2025](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/October-2025/sis-pax-25-10.md): Document updates for new and enhanced product features that were released in October 2025.
+- [October 2025](https://developer.VisaAcceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/October-2025/sis-pax-25-10.md): Document updates for new and enhanced product features that were released in October 2025.
+
+## Home - What's New? - September 2025
+- [September 2025](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/September-2025/pax-all-in-one-25-09.md): Document updates for new and enhanced product features that were released in September 2025.
+- [September 2025](https://developer.VisaAcceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/September-2025/pax-all-in-one-25-09.md): Document updates for new and enhanced product features that were released in September 2025.
+
+## Home - What's New? - August 2025
+- [August 2025](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/August-2025/sis-pax-25-08.md): Document updates for new and enhanced product features that were released in August 2025.
+- [August 2025](https://developer.VisaAcceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/August-2025/sis-pax-25-08.md): Document updates for new and enhanced product features that were released in August 2025.
+
+## Home - What's New? - July 2025
+- [July 2025](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/July-2025/tap-to-phone-sis-25-07.md): Document updates for new and enhanced product features that were released in July 2025.
+- [July 2025](https://developer.VisaAcceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/July-2025/tap-to-phone-sis-25-07.md): Document updates for new and enhanced product features that were released in July 2025.
+
+## Home - What's New? - June 2025
+- [June 2025](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/June-2025/pax-all-in-one-25-06.md): Document updates for new and enhanced product features that were released in June 2025.
+- [June 2025](https://developer.VisaAcceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/June-2025/pax-all-in-one-25-06.md): Document updates for new and enhanced product features that were released in June 2025.
+
+## Home - What's New? - May 2025
+- [May 2025](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/May-2025/sis-pax-25-05.md): Document updates for new and enhanced product features that were released in May 2025.
+- [May 2025](https://developer.VisaAcceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/May-2025/sis-pax-25-05.md): Document updates for new and enhanced product features that were released in May 2025.
+
+## Home - What's New? - April 2025
+- [April 2025](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/April-2025/tap-to-phone-sis-25-04.md): Document updates for new and enhanced product features that were released in April 2025.
+- [April 2025](https://developer.VisaAcceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/April-2025/tap-to-phone-sis-25-04.md): Document updates for new and enhanced product features that were released in April 2025.
+
+## Home - What's New? - March 2025
+- [March 2025](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/March-2025/digital-accept-flex-25-03.md): Document updates for new and enhanced product features that were released in March 2025.
+- [March 2025](https://developer.VisaAcceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/March-2025/digital-accept-flex-25-03.md): Document updates for new and enhanced product features that were released in March 2025.
+
+## Home - What's New? - February 2025
+- [February 2025](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/February-2025/platform-25-02.md): Document updates for new and enhanced product features that were released in February 2025.
+- [February 2025](https://developer.VisaAcceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/February-2025/platform-25-02.md): Document updates for new and enhanced product features that were released in February 2025.
+
+## Home - What's New? - January 2025
+- [January 2025](https://developer.visaacceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/January-2025/apple-pay-25-01.md): Document updates for new and enhanced product features that were released in January 2025.
+- [January 2025](https://developer.VisaAcceptance.com/docs/vas/en-us/doc-rel/relnote/all/na/doc-release-notes/doc-release-notes-intro/January-2025/apple-pay-25-01.md): Document updates for new and enhanced product features that were released in January 2025.
+
+## Home - VisaAcceptance Release Notes - May 2026
+- [May 1, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-05-01/rn-general.md): These release notes cover all releases to the production server for the week ending May 1, 2026
+
+## Home - VisaAcceptance Release Notes - April 2026
+- [April 10, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-04-10/rn-general.md): These release notes cover all releases to the production server for the week ending April 10, 2026
+- [April 17, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-04-17/rn-general.md): These release notes cover all releases to the production server for the week ending April 17, 2026
+- [April 24, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-04-24/rn-general.md): These release notes cover all releases to the production server for the week ending April 24, 2026
+- [April 3, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-04-02/rn-general.md): These release notes cover all releases to the production server for the week ending April 3, 2026
+
+## Home - VisaAcceptance Release Notes - March 2026
+- [March 13, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-03-13/rn-general.md): These release notes cover all releases to the production server for the week ending March 13, 2026
+- [March 20, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-03-20/rn-general.md): These release notes cover all releases to the production server for the week ending March 20, 2026
+- [March 27, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-03-27/rn-general.md): These release notes cover all releases to the production server for the week ending March 27, 2026
+- [March 6, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-03-06/rn-general.md): These release notes cover all releases to the production server for the week ending March 6, 2026
+
+## Home - VisaAcceptance Release Notes - February 2026
+- [February 13, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-02-13/rn-general.md): These release notes cover all releases to the production server for the week ending February 13, 2026
+- [February 20, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-02-20/rn-general.md): These release notes cover all releases to the production server for the week ending February 20, 2026
+- [February 27, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-02-27/rn-general.md): These release notes cover all releases to the production server for the week ending February 27, 2026
+- [February 6, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-02-06/rn-general.md): These release notes cover all releases to the production server for the week ending February 6, 2026
+
+## Home - VisaAcceptance Release Notes - January 2026
+- [January 16, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-01-16/rn-general.md): These release notes cover all releases to the production server for the week ending January 16, 2026
+- [January 2, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-01-02/rn-general.md): These release notes cover all releases to the production server for the week ending January 2, 2026
+- [January 23, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-01-23/rn-general.md): These release notes cover all releases to the production server for the week ending January 23, 2026
+- [January 30, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-01-30/rn-general.md): These release notes cover all releases to the production server for the week ending January 30, 2026
+- [January 9, 2026](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2026-01-09/rn-general.md): These release notes cover all releases to the production server for the week ending January 9, 2026
+
+## Home - VisaAcceptance Release Notes - December 2025
+- [December 12, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-12-12/rn-general.md): These release notes cover all releases to the production server for the week ending December 12, 2025
+- [December 5, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-12-05/rn-general.md): These release notes cover all releases to the production server for the week ending December 5, 2025
+
+## Home - VisaAcceptance Release Notes - November 2025
+- [November 14, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-11-14/rn-general.md): These release notes cover all releases to the production server for the week ending November 14, 2025
+- [November 21, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-11-21/rn-general.md): These release notes cover all releases to the production server for the week ending November 21, 2025
+- [November 7, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-11-07/rn-general.md): These release notes cover all releases to the production server for the week ending November 7, 2025
+
+## Home - VisaAcceptance Release Notes - October 2025
+- [October 10, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-10-10/rn-general.md): These release notes cover all releases to the production server for the week ending October 10, 2025
+- [October 17, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-10-17/rn-general.md): These release notes cover all releases to the production server for the week ending October 17, 2025
+- [October 24, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-10-24/rn-general.md): These release notes cover all releases to the production server for the week ending October 24, 2025
+- [October 3, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-10-03/rn-general.md): These release notes cover all releases to the production server for the week ending October 3, 2025
+- [October 31, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-10-31/rn-general.md): These release notes cover all releases to the production server for the week ending October 31, 2025
+
+## Home - VisaAcceptance Release Notes - September 2025
+- [September 12, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-09-12/rn-general.md): These release notes cover all releases to the production server for the week ending September 12, 2025
+- [September 19, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-09-19/rn-general.md): These release notes cover all releases to the production server for the week ending September 19, 2025
+- [September 26, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-09-26/rn-general.md): These release notes cover all releases to the production server for the week ending September 26, 2025
+- [September 5, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-09-05/rn-general.md): These release notes cover all releases to the production server for the week ending September 5, 2025
+
+## Home - VisaAcceptance Release Notes - August 2025
+- [August 1, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-08-01/rn-general.md): These release notes cover all releases to the production server for the week ending August 1, 2025
+- [August 15, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-08-15/rn-general.md): These release notes cover all releases to the production server for the week ending August 15, 2025
+- [August 22, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-08-22/rn-general.md): These release notes cover all releases to the production server for the week ending August 22, 2025
+- [August 29, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-08-29/rn-general.md): These release notes cover all releases to the production server for the week ending August 29, 2025
+- [August 8, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-08-08/rn-general.md): These release notes cover all releases to the production server for the week ending August 8, 2025
+
+## Home - VisaAcceptance Release Notes - July 2025
+- [July 11, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-07-11/rn-general.md): These release notes cover all releases to the production server for the week ending July 11, 2025
+- [July 18, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-07-18/rn-general.md): These release notes cover all releases to the production server for the week ending July 18, 2025
+- [July 25, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-07-25/rn-general.md): These release notes cover all releases to the production server for the week ending July 25, 2025
+- [July 3, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-07-03/rn-general.md): These release notes cover all releases to the production server for the week ending July 3, 2025
+
+## Home - VisaAcceptance Release Notes - June 2025
+- [June 13, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-06-13/rn-general.md): These release notes cover all releases to the production server for the week ending June 13, 2025
+- [June 20, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-06-20/rn-general.md): These release notes cover all releases to the production server for the week ending June 20, 2025
+- [June 27, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-06-27/rn-general.md): These release notes cover all releases to the production server for the week ending June 27, 2025
+- [June 6, 2025](https://developer.visaacceptance.com/docs/vas/en-us/platform/relnote/all/na/rn-2025-06-06/rn-general.md): These release notes cover all releases to the production server for the week ending June 6, 2025
+
+## Home - Introducing LLM - Use LLMs to Access Information
+- [Use LLMs to Access Information](https://developer.visaacceptance.com/docs/vas/en-us/llm/get-started/all/na/llm-getting-started.md): Use an LLM with VisaAcceptance documentation to find the information you need without searching for and reading a specific document.
+
+## Home - Introducing LLM - AI Agent Toolkit
+- [AI Agent Toolkit](https://developer.VisaAcceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.md): Use the Visa Acceptance Agent Toolkit to simplify the process of integrating the Visa Acceptance Solutions APIs into your agentic workflows.
+
+## Home - VisaAcceptance Mandates Release Notes - October 2024
+- [October 2024](https://developer.visaacceptance.com/docs/vas/en-us/mandates/relnote/all/na/mandates-oct-2024/intro-oct-2024.md): Informs acquirers, merchants, and customer-facing teams of mandate updates that are planned for October 2024.
+
+## Home - VisaAcceptance Mandates Release Notes - April 2024
+- [April 2024](https://developer.visaacceptance.com/docs/vas/en-us/mandates/relnote/all/na/mandates-april-2024/intro-april-2024.md): Informs acquirers, merchants, and customer-facing teams of mandate updates that are planned for April 2024.
+
+## Home - VisaAcceptance Mandates Release Notes - October 2023
+- [October 2023](https://developer.visaacceptance.com/docs/vas/en-us/mandates/relnote/all/na/mandates-october-2023/intro-oct-2023.md): Informs acquirers, merchants, and customer-facing teams of mandate updates that are planned for October 2023.
+
+## Home - VisaAcceptance Mandates Release Notes - April 2023
+- [April 2023](https://developer.visaacceptance.com/docs/vas/en-us/mandates/relnote/all/na/mandates-april-2023/intro.md): Informs acquirers, merchants, and customer-facing teams of mandate updates that are planned for April 2023.
+
+## Home - VisaAcceptance Product Notes - April 2026
+- [April 2026](https://businesscenter.visaacceptance.com/content/dam/ebc/docs/cybs/en-us/pdf/prodnote/pn-2026-04.pdf): These product notes provide information about product enhancements and updates to key initiatives for April 2026. It also highlights product enhancements and updates planned for future releases.
+
+## Home - VisaAcceptance Product Notes - March 2026
+- [March 2026](https://businesscenter.visaacceptance.com/content/dam/ebc/docs/cybs/en-us/pdf/prodnote/pn-2026-03.pdf): These product notes provide information about product enhancements and updates to key initiatives for March 2026. It also highlights product enhancements and updates planned for future releases.
+
+## Home - VisaAcceptance Product Notes - February 2026
+- [February 2026](https://businesscenter.visaacceptance.com/content/dam/ebc/docs/cybs/en-us/pdf/prodnote/pn-2026-02.pdf): These product notes provide information about product enhancements and updates to key initiatives for February 2026. It also highlights product enhancements and updates planned for future releases.
+
+## Home - VisaAcceptance Product Notes - January 2026
+- [January 2026](https://businesscenter.visaacceptance.com/content/dam/ebc/docs/cybs/en-us/pdf/prodnote/pn-2026-01.pdf): These product notes provide information about product enhancements and updates to key initiatives for January 2026. It also highlights product enhancements and updates planned for future releases.
+
+## Home - VisaAcceptance Product Notes - November 2025
+- [November 2025](https://businesscenter.visaacceptance.com/content/dam/ebc/docs/cybs/en-us/pdf/prodnote/pn-2025-11.pdf): These product notes provide information about product enhancements and updates to key initiatives for November 2025. It also highlights product enhancements and updates planned for future releases.
+
+## Home - VisaAcceptance Product Notes - October 2025
+- [October 2025](https://businesscenter.visaacceptance.com/content/dam/ebc/docs/cybs/en-us/pdf/prodnote/pn-2025-10.pdf): These product notes provide information about product enhancements and updates to key initiatives for October 2025. It also highlights product enhancements and updates planned for future releases.
+
+## Home - VisaAcceptance Product Notes - September 2025
+- [September 2025](https://businesscenter.visaacceptance.com/content/dam/ebc/docs/cybs/en-us/pdf/prodnote/pn-2025-09.pdf): These product notes provide information about product enhancements and updates to key initiatives for September 2025. It also highlights product enhancements and updates planned for future releases.
+
+## Home - VisaAcceptance Product Notes - August 2025
+- [August 2025](https://businesscenter.visaacceptance.com/content/dam/ebc/docs/cybs/en-us/pdf/prodnote/pn-2025-08.pdf): These product notes provide information about product enhancements and updates to key initiatives for August 2025. It also highlights product enhancements and updates planned for future releases.
+
+## Home - VisaAcceptance Product Notes - July 2025
+- [July 2025](https://businesscenter.visaacceptance.com/content/dam/ebc/docs/cybs/en-us/pdf/prodnote/pn-2025-07.pdf): These product notes provide information about product enhancements and updates to key initiatives for July 2025. It also highlights product enhancements and updates planned for future releases.
+
+## Home - VisaAcceptance Product Notes - June 2025
+- [June 2025](https://businesscenter.visaacceptance.com/content/dam/ebc/docs/cybs/en-us/pdf/prodnote/pn-2025-06.pdf): These product notes provide information about product enhancements and updates to key initiatives for June 2025. It also highlights product enhancements and updates planned for future releases.
+
+## Home - VisaAcceptance Product Notes - May 2025
+- [May 2025](https://businesscenter.visaacceptance.com/content/dam/ebc/docs/cybs/en-us/pdf/prodnote/pn-2025-05.pdf): These product notes provide information about product enhancements and updates to key initiatives for May 2025. It also highlights product enhancements and updates planned for future releases.
+
+## Home - VisaAcceptance Product Notes - April 2025
+- [April 2025](https://businesscenter.visaacceptance.com/content/dam/ebc/docs/cybs/en-us/pdf/prodnote/pn-2025-04.pdf): These product notes provide information about product enhancements and updates to key initiatives for April 2025. It also highlights product enhancements and updates planned for future releases.
+
+## Home - VisaAcceptance Product Notes - March 2025
+- [March 2025](https://businesscenter.visaacceptance.com/content/dam/ebc/docs/cybs/en-us/pdf/prodnote/pn-2025-03.pdf): These product notes provide information about product enhancements and updates to key initiatives for March 2025. It also highlights product enhancements and updates planned for future releases.
+
+## Getting Started - Barclays Payments Solution - Payment Services
+- [Payment Services](https://developer.VisaAcceptance.com/docs/barclays/en-us/platform/overview/all/na/barclays-solution/barclays-solution-smartpay-fuse-pmt-svcs.md): Use our payment services to complete a payment, cancel a payment, or credit a payment.
+
+## Getting Started - Barclays Payments Solution - Integration Methods
+- [Integration Methods](https://developer.VisaAcceptance.com/docs/barclays/en-us/platform/overview/all/na/barclays-solution/barclays-solution-int-methods.md): Integrate our payment services into your system using front-end or back-end integration methods.
+
+## Getting Started - Barclays Payments Solution - Reporting
+- [Reporting](https://developer.VisaAcceptance.com/docs/barclays/en-us/platform/overview/all/na/barclays-solution/barclays-solution-report-reconcile.md): How to access and reconcile reports using the Smartpay Fuse Portal.
+
+## Getting Started - Hosted Fields - Introduction
+- [Introduction](https://developer.VisaAcceptance.com/docs/barclays/en-us/hosted-fields/quick-start-guide/all/na/barclays-hosted-fields-qsg/hf-qsg-about-guide.md): Flex microform is the Smartpay Fuse solution for hosted fields, allowing you more control over page layout and branding, while minimizing your PCI compliance overheads.
+
+## Getting Started - Hosted Fields - Payment Flow
+- [Payment Flow](https://developer.VisaAcceptance.com/docs/barclays/en-us/hosted-fields/quick-start-guide/all/na/barclays-hosted-fields-qsg/hf-integration-flow.md)
+
+## Getting Started - Hosted Fields - Create Sandbox Account
+- [Create Sandbox Account](https://developer.VisaAcceptance.com/docs/barclays/en-us/hosted-fields/quick-start-guide/all/na/barclays-hosted-fields-qsg/hf-create-sandbox-acct.md)
+
+## Getting Started - Hosted Fields - Access the Smartpay Fuse Portal
+- [Access the Smartpay Fuse Portal](https://developer.VisaAcceptance.com/docs/barclays/en-us/hosted-fields/quick-start-guide/all/na/barclays-hosted-fields-qsg/hf-access-ebc-vt.md)
+
+## Getting Started - Hosted Fields - Create Keys
+- [Create Keys](https://developer.VisaAcceptance.com/docs/barclays/en-us/hosted-fields/quick-start-guide/all/na/barclays-hosted-fields-qsg/hf-create-api.md)
+
+## Getting Started - Hosted Fields - Test Your Integration Using Flex
+- [Test Your Integration Using Flex](https://developer.VisaAcceptance.com/docs/barclays/en-us/hosted-fields/quick-start-guide/all/na/barclays-hosted-fields-qsg/hf-test-integration.md)
+
+## Getting Started - Hosted Fields - Test Your Integration Using REST API
+- [Test Your Integration Using REST API](https://developer.VisaAcceptance.com/docs/barclays/en-us/hosted-fields/quick-start-guide/all/na/barclays-hosted-fields-qsg/hf-process-payment.md)
+
+## Getting Started - Hosted Payment Pages
+- [Hosted Payment Pages](https://developer.smartpayfuse.barclaycard/barclays/quick-start-guides/hosted-payment.md): Fully Hosted Payment Pages offer a low effort integration option to present a payment form on your website.
+
+## Getting Started - REST API
+- [REST API](https://developer.smartpayfuse.barclaycard/barclays/quick-start-guides/direct-integration.md): Use our REST API to take payments where you want full control of your user experience and full control of the payment flow.
+
+## Getting Started - Smartpay Fuse Portal
+- [Smartpay Fuse Portal](https://developer.smartpayfuse.barclaycard/barclays/quick-start-guides/ebc.md): Manage your payments solution in one place, from configuration to reports and analytics.
+
+## Getting Started - Virtual Terminal
+- [Virtual Terminal](https://developer.smartpayfuse.barclaycard/barclays/quick-start-guides/virtual-terminal.md): Use our no-integration approach to taking payments in a Mail Order Telephone Order environment through the Smartpay Fuse Portal.
+
+## Get Started with the REST API - Overview
+- [Overview](https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.md): Comprehensive introduction to REST API concepts, authentication methods, basic usage patterns, and fundamental development principles for payment processing.
+- [Overview](https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-intro.md): Comprehensive introduction to REST API concepts, authentication methods, basic usage patterns, and fundamental development principles for payment processing.
+
+## Get Started with the REST API - Set Up Your VisaAcceptance Account
+- [Set Up Your VisaAcceptance Account](https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-setup-workflow.md): Overview of the tasks you must to complete to set up your VisaAcceptance account.
+- [Set Up Your VisaAcceptance Account](https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-setup-workflow.md): Overview of the tasks you must to complete to set up your VisaAcceptance account.
+
+## Get Started with the REST API - Set Up JSON Web Token Messaging
+- [Set Up JSON Web Token Messaging](https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-jwt-message-intro.md): Detailed configuration guide for JSON Web Token (JWT) authentication and message security, including token generation, validation, and implementation procedures.
+- [Set Up JSON Web Token Messaging](https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-jwt-message-intro.md): Detailed configuration guide for JSON Web Token (JWT) authentication and message security, including token generation, validation, and implementation procedures.
+
+## Get Started with the REST API - Set Up an HTTP Signature Message
+- [Set Up an HTTP Signature Message](https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-http-message-intro.md): HTTP message configuration instructions including request formatting, header requirements, authentication setup, and communication protocols for REST API integration.
+- [Set Up an HTTP Signature Message](https://developer.visaacceptance.com/docs/vas/en-us/platform/developer/all/rest/rest-getting-started/restgs-http-message-intro.md): HTTP message configuration instructions including request formatting, header requirements, authentication setup, and communication protocols for REST API integration.
+
+## Payments - Accepting Payments - Payment Services
+- [Debit and Prepaid Card Processing](https://developer.visaacceptance.com/docs/vas/en-us/payments/developer/ctv/rest/payments/payments-debit-prepaid-process-intro.md): Comprehensive information for processing payment authorizations using debit and prepaid cards.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/payments/developer/ctv/rest/payments/payments-intro.md): Learn how to construct payment requests and handle responses for online and card-present transactions
+- [Standard Payment Processing](https://developer.visaacceptance.com/docs/vas/en-us/payments/developer/ctv/rest/payments/payments-processing-basic-intro.md)
+
+## Payments - Accepting Payments - Payments Implementation for Acquirers
+- [Implement](https://developer.VisaAcceptance.com/docs/vas/en-us/payments/acq/all/na/payments-acq/payments-acq-intro-implementation.md)
+- [Introduction](https://developer.VisaAcceptance.com/docs/vas/en-us/payments/acq/all/na/payments-acq/home-acq.md)
+- [Merchant Set Up](https://developer.VisaAcceptance.com/docs/vas/en-us/payments/acq/all/na/payments-acq/payments-acq-intro-merchant.md)
+- [Primary Service Features](https://developer.VisaAcceptance.com/docs/vas/en-us/payments/acq/all/na/payments-acq/payments-acq-intro-service-features.md)
+- [Test](https://developer.VisaAcceptance.com/docs/vas/en-us/payments/acq/all/na/payments-acq/payments-acq-testing-support-intro.md)
+
+## Payments - Accepting Payments - Payouts
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/payouts/developer/ctv/rest/payouts-dev/payouts-intro-intro.md): Disperse funds to vendors, freelancers , partners, or employees
+- [Process AFT Transactions](https://developer.visaacceptance.com/docs/vas/en-us/payouts/developer/ctv/rest/payouts-dev/payouts-services-intro.md): Explains Account Funding Transactions (AFT) for transferring funds between payment cards and accounts, covering transaction types, prepaid card loading, digital wallets, and reversal procedures.
+- [Process OCT Transactions](https://developer.visaacceptance.com/docs/vas/en-us/payouts/developer/ctv/rest/payouts-dev/payouts-services-oct-intro.md): Explains Original Credit Transactions (OCT) for delivering funds directly to Visa cards, covering services like money transfers, disbursements, merchant settlement, digital wallets, and prepaid loading.
+
+## Payments - Accepting Payments - BIN Lookup
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/bin-lookup/developer/all/rest/bin-lookup/bin-lookup-intro.md): Introduction to BIN Lookup Service, covering service overview and implementation prerequisites for getting started with the service.
+- [Reference Information](https://developer.visaacceptance.com/docs/vas/en-us/bin-lookup/developer/all/rest/bin-lookup/bin-lookup-reference-intro.md): Reference documentation for BIN Lookup Service, including response codes, response fields, and payout-specific response information for API implementation.
+- [Request the Service](https://developer.visaacceptance.com/docs/vas/en-us/bin-lookup/developer/all/rest/bin-lookup/bin-lookup-req-task.md): BIN Lookup Service functionality including request procedures, required/optional fields, testing procedures, and practical implementation examples.
+- [Request the Service with Fast Funds Eligibility](https://developer.visaacceptance.com/docs/vas/en-us/bin-lookup/developer/all/rest/bin-lookup/bin-lookup-payouts-req-task.md): Covers BIN Lookup Service with Fast Funds eligibility, including payout requests, service fields, testing procedures, and implementation examples.
+
+## Payments - Accepting Payments - Dynamic Currency Conversion
+- [Error Reasons](https://developer.visaacceptance.com/docs/vas/en-us/dcc/developer/all/rest/dcc-merchant/dcc-merchant-errors/dcc-merchant-error-reasons.md)
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/dcc/developer/all/rest/dcc-merchant/home-merch.md): Offer international customers their choice of payment currency when their billing currency differs from your local pricing currency.
+- [Process a DCC Authorization](https://developer.visaacceptance.com/docs/vas/en-us/dcc/developer/all/rest/dcc-merchant/dcc-merchant-use-cases/dcc-merchant-authorization.md)
+- [Process a DCC Capture](https://developer.visaacceptance.com/docs/vas/en-us/dcc/developer/all/rest/dcc-merchant/dcc-merchant-use-cases/dcc-merchant-capture.md)
+- [Process a DCC Credit Card Transaction](https://developer.visaacceptance.com/docs/vas/en-us/dcc/developer/all/rest/dcc-merchant/dcc-merchant-use-cases/dcc-merchant-use-credit-card-transaction.md)
+- [Process a DCC Offer](https://developer.visaacceptance.com/docs/vas/en-us/dcc/developer/all/rest/dcc-merchant/dcc-merchant-use-cases/dcc-merchant-offer-post.md)
+- [Process a DCC Refund](https://developer.visaacceptance.com/docs/vas/en-us/dcc/developer/all/rest/dcc-merchant/dcc-merchant-use-cases/dcc-merchant-refund.md)
+
+## Payments - Accepting Payments - Invoicing
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/invoicing/developer/all/rest/invoicing/Introduction.md): Create, update, resend, cancel, and manage your custom invoices
+- [Invoice API Requests](https://developer.visaacceptance.com/docs/vas/en-us/invoicing/developer/all/rest/invoicing/invoicing-services-intro.md): Explains invoicing API request methods for creating invoices: draft invoices (viewable only by merchant), published invoices sent immediately via email, and published invoices without automatic sending.
+- [Invoice Settings API Requests](https://developer.visaacceptance.com/docs/vas/en-us/invoicing/developer/all/rest/invoicing/invoicing-settings-intro.md): Introduces the Invoice Settings API, which enables customizing invoice checkout experience, adding custom messages to email communications, enabling payer authentication, and retrieving invoice settings for payment pages.
+- [Manage Invoices in the Business Center](https://developer.visaacceptance.com/docs/vas/en-us/invoicing/developer/all/rest/invoicing/invoicing-ebc.md): Explains how to manage invoices using the Business Center, including enabling 3-D Secure, fraud management, transaction filtering, reporting, custom fields, and accessing login URLs for different environments.
+
+## Payments - Accepting Payments - Pay By Link
+- [Create and Manage Using the Business Center](https://developer.visaacceptance.com/docs/vas/en-us/paybylink/developer/all/rest/paybylink/paybylink-ebc-intro.md): How to create and manage payment links using the Business Center, providing test and production URLs.
+- [Create and Manage Using the REST API](https://developer.visaacceptance.com/docs/vas/en-us/paybylink/developer/all/rest/paybylink/paybylink-services.md): Covers Pay by Link API services including create, update, get, and retrieve operations with required fields, optional fields, and REST examples.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/paybylink/developer/all/rest/paybylink/paybylink-intro.md): Easy and fast way to sell products or accept donations without any coding
+- [Webhooks for Pay By Link](https://developer.visaacceptance.com/docs/vas/en-us/paybylink/developer/all/rest/paybylink/paybylink-webhooks-intro.md): Covers Pay by Link webhooks functionality, including an introduction to webhooks and REST API examples for webhook implementation.
+
+## Payments - Accepting Payments - Pay By Bank
+- [Check the Status of a Transaction](https://developer.visaacceptance.com/docs/vas/en-us/pay-by-bank/developer/all/rest/pay-by-bank/paybybank-intro-services/paybybank-status-intro.md): Send a check status request to retrieve status updates for either a pending sale or refund. A check status request requires the request ID from the sale response or the refund response, which is the id field value.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/pay-by-bank/developer/all/rest/pay-by-bank/paybybank-intro.md): A solution that enables you to offer your e-commerce customers the ability to pay directly from their bank account in real time without providing payment card information.
+- [Process a Refund](https://developer.visaacceptance.com/docs/vas/en-us/pay-by-bank/developer/all/rest/pay-by-bank/paybybank-intro-services/paybybank-refund-intro.md): Send a refund request to issue a full or partial refund to the customer's bank account.
+- [Process a Sale](https://developer.visaacceptance.com/docs/vas/en-us/pay-by-bank/developer/all/rest/pay-by-bank/paybybank-intro-services/paybybank-sale-intro.md): Send a sale request to begin processing a payment.
+- [Set Up Webhooks](https://developer.visaacceptance.com/docs/vas/en-us/pay-by-bank/developer/all/rest/pay-by-bank/paybybank-intro-services/paybybank-webhook-intro.md): Set up automated notifications for system events that occur in your organization.
+
+## Payments - Accepting Payments - PayTo Pay By Bank
+- [Check the Status of a Transaction](https://developer.visaacceptance.com/docs/vas/en-us/pay-by-bank-payto/developer/all/rest/pay-by-bank-payto/pay-by-bank-payto-process-trxn/pay-by-bank-payto-checkstatus-intro.md): Request a check status to retrieve the current status of a transaction request.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/pay-by-bank-payto/developer/all/rest/pay-by-bank-payto/pay-by-bank-payto-intro.md): A payment method that enables your e-commerce customers to pay directly from their bank accounts.
+- [Process a Refund](https://developer.visaacceptance.com/docs/vas/en-us/pay-by-bank-payto/developer/all/rest/pay-by-bank-payto/pay-by-bank-payto-process-trxn/pay-by-bank-payto-refund-intro.md): Request a refund to return the funds from a completed payment.
+- [Process a Sale](https://developer.visaacceptance.com/docs/vas/en-us/pay-by-bank-payto/developer/all/rest/pay-by-bank-payto/pay-by-bank-payto-process-trxn/pay-by-bank-payto-sale-intro.md): A sale request authorizes and captures a payment in the same request.
+- [Set Up Webhooks](https://developer.visaacceptance.com/docs/vas/en-us/pay-by-bank-payto/developer/all/rest/pay-by-bank-payto/pay-by-bank-payto-process-trxn/pay-by-bank-payto-webhooks-intro.md): Set up automated notifications for system events that occur in your organization.
+
+## Payments - Accepting Payments - Apple Pay
+- [Get Started](https://developer.visaacceptance.com/docs/vas/en-us/apple-pay/developer/all/rest/applepay/applepay-getting-started.md): Outlines Apple Pay integration requirements including payment network token support, Apple Developer Program enrollment, and end-to-end testing prerequisites for system implementation.
+- [Integrate](https://developer.visaacceptance.com/docs/vas/en-us/apple-pay/developer/all/rest/applepay/applepay-cfg.md): Explains Apple Pay integration into iOS apps or websites through three parts: setting up Apple Developer account, creating payment processing certificates, and additional web-specific configuration steps.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/apple-pay/developer/all/rest/applepay/applepay-intro.md): Introduces Apple Pay, a digital payment solution enabling secure purchases without entering card details. Covers device apps, web integration, reduced payment friction, and tokenized information storage.
+- [Process Transactions](https://developer.visaacceptance.com/docs/vas/en-us/apple-pay/developer/all/rest/applepay/applepay-txns-intro.md): Covers processing Apple Pay transactions including authorization, sale, reversal, and capture services using both platform decryption and merchant decryption methods with supported payment cards.
+
+## Payments - Accepting Payments - Google Pay
+- [Format Encrypted Payment Data](https://developer.visaacceptance.com/docs/vas/en-us/google-pay/developer/ctv/rest/googlepay/googpay-pay-data-intro.md): Explains how to format encrypted payment data for Google Pay, covering configuration procedures and payment blob formatting methods.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/google-pay/developer/ctv/rest/googlepay/googpay-intro.md): Introduces Google Pay, a secure mobile and web payment solution processed through the platform. Covers simplified payment processing with automatic decryption and authorization workflow.
+- [Process Authorizations](https://developer.visaacceptance.com/docs/vas/en-us/google-pay/developer/ctv/rest/googlepay/googpay-pay-auth-intro.md): Explains how to make successful Google Pay authorization requests, check response messages for success indicators, handle follow-on merchant-initiated transactions, and access relevant endpoints.
+- [Process Follow-On Transactions](https://developer.visaacceptance.com/docs/vas/en-us/google-pay/developer/ctv/rest/googlepay/googpay-follow-on-intro.md): Explains follow-on transactions as merchant-initiated transactions after payment completion, including delayed authorizations, incremental transactions, installments, reauthorizations, recurring payments, resubmissions, and unscheduled transactions.
+
+## Payments - Accepting Payments - Paze
+- [Get Started](https://developer.visaacceptance.com/docs/vas/en-us/paze/integration/all/rest/paze/paze-gs.md): Covers the steps for getting started with Paze, including integration requirements, VisaAcceptance integration processes, and merchant key generation procedures for payment service implementation.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/paze/integration/all/rest/paze/home.md): An introduction to the Paze payment service for multiple financial institutions, including decryption processes and institution-specific supported card information.
+- [Process Transactions with VisaAcceptance Decryption](https://developer.visaacceptance.com/docs/vas/en-us/paze/integration/all/rest/paze/paze-txns-auth-cybs.md): Covers processing Paze transactions using VisaAcceptance decryption methods, including separate documentation for Mastercard and Visa payment network implementations across multiple financial institutions.
+- [Process Transactions with Merchant Decryption](https://developer.visaacceptance.com/docs/vas/en-us/paze/integration/all/rest/paze/paze-txns-auth-merch.md): Covers processing Paze transactions using merchant decryption methods, including separate documentation for Mastercard and Visa payment network implementations across multiple financial institutions.
+- [Response to an API Request](https://developer.visaacceptance.com/docs/vas/en-us/paze/integration/all/rest/paze/paze-complete-api-response.md): Explains Paze's encrypted payment response after complete API requests, containing cryptograms and network tokens in JWE format, with merchant or VisaAcceptance decryption options for authorization processing.
+
+## Payments - Accepting Payments - Samsung Pay
+- [Get Started](https://developer.visaacceptance.com/docs/vas/en-us/samsung-pay/developer/ctv/rest/samsungpay/samsungpay-getting-started-intro.md): Outlines Samsung Pay setup steps including registration with Samsung and the platform, Samsung SDK integration, project creation, and payment initialization and processing procedures.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/samsung-pay/developer/ctv/rest/samsungpay/Introduction/samsungpay-requirements.md): Introduces Samsung Pay covering requirements, supported processors, and transaction endpoints for various audiences including merchants and payment processors.
+- [Process Transactions](https://developer.visaacceptance.com/docs/vas/en-us/samsung-pay/developer/ctv/rest/samsungpay/samsungpay-services.md): Covers Samsung Pay services including authorization, reversal, capture, and sale transactions.
+
+## Payments - Accepting Payments - Automatic Fueling and Car Washing
+- [Introduction](https://developer.VisaAcceptance.com/docs/vas/en-us/auto-fueling/developer/fiservrc/rest/auto-fuel/home.md)
+- [Process Transactions](https://developer.VisaAcceptance.com/docs/vas/en-us/auto-fueling/developer/fiservrc/rest/auto-fuel/autofuel-processing-intro.md)
+
+## Payments - Accepting Payments - Stored Credentials
+- [CIT with COF](https://developer.visaacceptance.com/docs/vas/en-us/credentials/developer/ctv/rest/credentials/credentials-cit-intro.md): Explains customer-initiated transactions where customers store credentials for future customer or merchant-initiated transactions, including payment terminals, online purchases, and Business Center processing.
+- [Delayed Transactions](https://developer.visaacceptance.com/docs/vas/en-us/credentials/developer/ctv/rest/credentials/credentials-delay-intro.md): Explains delayed charge transactions for processing supplemental account charges after original services are rendered, covering merchant-initiated delayed transactions using PAN and TMS payment types.
+- [Incremental Transactions](https://developer.visaacceptance.com/docs/vas/en-us/credentials/developer/ctv/rest/credentials/credentials-incremental-intro.md): Explains incremental authorization transactions used to increase authorized payment amounts when initial authorization doesn't cover total costs, limited to specific merchant categories like lodging and restaurants.
+- [Installment Payments](https://developer.visaacceptance.com/docs/vas/en-us/credentials/developer/ctv/rest/credentials/credentials-install-intro.md): Explains installment payments for single purchases billed in multiple transactions over agreed periods, with important notes about using the dedicated Installments service for compliance.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/credentials/developer/ctv/rest/credentials/credentials-intro.md): Introduces credentialed transactions involving stored payment credentials, covering customer-initiated transactions, merchant-initiated transactions, industry practices, standing instructions, supported services, and compatible processors.
+- [Mastercard Standing Order Payments](https://developer.visaacceptance.com/docs/vas/en-us/credentials/developer/ctv/rest/credentials/credentials-mit-stand-order-intro.md): Explains Mastercard standing order payments as recurring credentials-on-file transactions with variable amounts at regular intervals, like utility bills, not exceeding one year between transactions.
+- [Mastercard Subscription Payments](https://developer.visaacceptance.com/docs/vas/en-us/credentials/developer/ctv/rest/credentials/credentials-mc-subscription-intro.md): Explains Mastercard subscription payments as recurring credentials-on-file transactions processed at fixed amounts and regular intervals, not exceeding one year between transactions for goods/services.
+- [No-Show Transactions](https://developer.visaacceptance.com/docs/vas/en-us/credentials/developer/ctv/rest/credentials/credentials-noshow-intro.md): Explains no-show transactions where merchants charge customers agreed-upon fees when they make reservations but fail to show up, covering merchant-initiated processing methods.
+- [Reauthorization Transactions](https://developer.visaacceptance.com/docs/vas/en-us/credentials/developer/ctv/rest/credentials/credentials-reauth-intro.md): Explains reauthorization transactions when order fulfillment extends beyond authorized time limits, covering scenarios like split shipments, extended rentals, hotel stays, and cruise bookings.
+- [Recurring Payments](https://developer.visaacceptance.com/docs/vas/en-us/credentials/developer/ctv/rest/credentials/credentials-recur-intro.md): Explains recurring payments as credentials-on-file transactions for fixed amounts at regular intervals not exceeding one year, also known as subscriptions, with Mastercard-specific standing order alternatives.
+- [Resubmission Transactions](https://developer.visaacceptance.com/docs/vas/en-us/credentials/developer/ctv/rest/credentials/credentials-resub-intro.md): Explains resubmission transactions for recovering outstanding debt when cards are initially declined due to insufficient funds but goods or services were already delivered.
+- [Unscheduld COF Payments](https://developer.visaacceptance.com/docs/vas/en-us/credentials/developer/ctv/rest/credentials/credentials-ucof-intro.md): Explains unscheduled credentials-on-file transactions using stored payment information for fixed or variable amounts that don't occur regularly, like account top-ups.
+
+## Payments - Accepting Payments - Airline Data
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/airline/developer/all/rest/airline/home-merch.md): Introduces airline data processing beyond basic payments, requiring specific travel information like carrier, departure dates, airports, and ticket class. Requires merchant account enablement and supports multiple processors.
+- [Reference Information](https://developer.visaacceptance.com/docs/vas/en-us/airline/developer/all/rest/airline/airline-ref-intro.md): Provides information about airline document type codes and ancillary service category codes.
+
+## Payments - Accepting Payments - Healthcare
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/healthcare/developer/smartpay/rest/healthcare/home-merch.md): Introduction to healthcare payment processing, covering healthcare card types, card-present transactions, and card-not-present transactions for healthcare payment systems.
+- [Process an Authorization](https://developer.visaacceptance.com/docs/vas/en-us/healthcare/developer/smartpay/rest/healthcare/healthcare-processing-intro/healthcare-sale-intro.md): Use the REST API to process a sale that includes healthcare data.
+
+## Payments - Accepting Payments - Level II/III Data
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/level-2-3/developer/ctv/rest/level-2-3/l23-intro-overview.md): Introduces Level II and Level III processing for business-to-business customers, providing lower interchange rates by including additional customer, tax, and line-item transaction information.
+- [Process Payments](https://developer.visaacceptance.com/docs/vas/en-us/level-2-3/developer/ctv/rest/level-2-3/l23-processing-ctv.md): Shows you how to process transactions with Level II and/or Level III data.
+- [Reference Information](https://developer.visaacceptance.com/docs/vas/en-us/level-2-3/developer/ctv/rest/level-2-3/reference-overview.md): Provides reference information including exemption status values, product codes, reference data codes, special characters, and units of measurement codes.
+
+## Payments - Accepting Payments - Tax Calculation and Reporting
+- [Calculate Tax](https://developer.visaacceptance.com/docs/vas/en-us/tax-calculation/developer/all/rest/tax-calculation/tax-request-calculating-overview.md): Tax calculation processes for US/Canadian sales tax and international VAT using the REST API, including required fields, optional fields, and platform-specific examples.
+- [City Abbreviations](https://developer.visaacceptance.com/docs/vas/en-us/tax-calculation/developer/all/rest/tax-calculation/tax-info-city-abbrevs.md): City name abbreviations and their expansions used by tax calculation services for accurate address validation.
+- [Overview](https://developer.visaacceptance.com/docs/vas/en-us/tax-calculation/developer/all/rest/tax-calculation/tax-overview.md): Overview of tax calculation services, covering planning considerations including nexus, product codes, addresses, and timing for tax calculations.
+- [Reason Codes](https://developer.visaacceptance.com/docs/vas/en-us/tax-calculation/developer/all/rest/tax-calculation/tax-error-codes.md): REST API reason codes for tax calculation services, including successful transactions, invalid requests, configuration errors, and server errors.
+- [Report Tax](https://developer.visaacceptance.com/docs/vas/en-us/tax-calculation/developer/all/rest/tax-calculation/tax-reporting-intro.md): Tax reporting processes using the REST API, including tax committed calls, tax calculation refunds, and tax void operations for comprehensive tax transaction management.
+- [Supported Countries and Regions](https://developer.visaacceptance.com/docs/vas/en-us/tax-calculation/developer/all/rest/tax-calculation/tax-info-supported-country-regions.md): Supported countries and regions for tax calculation services, covering approximately 200 global territories and jurisdictions
+
+## Payments - Accepting Payments - eCheck Payments
+- [eCheck Payments and Unified Checkout, Pay by Link, & Invoicing](https://developer.visaacceptance.com/docs/vas/en-us/echeck/user/all/rest/echeck-user-guide/echeck-pay-unified-checkout-invoice-paybylink-intr.md): Explains accepting eCheck payments through Unified Checkout, Pay by Link, and Invoicing using a Pay with bank account link for customer bank information.
+- [eCheck Reconciliation Reporting Case Study](https://developer.visaacceptance.com/docs/vas/en-us/echeck/user/all/rest/echeck-user-guide/echeck-reports-use-case.md): Presents an eCheck reconciliation reporting case study showing eight business days of activity across funding, deposit, and chargeback reports with specific merchant account parameters.
+- [eCheck Reconciliation Reports](https://developer.visaacceptance.com/docs/vas/en-us/echeck/user/all/rest/echeck-user-guide/echeck-reports-recon.md): Covers eCheck reconciliation reports providing additional transaction information, including funding, chargeback, and deposit reports, with case studies and related documentation.
+- [Get Started with the eCheck Service](https://developer.visaacceptance.com/docs/vas/en-us/echeck/user/all/rest/echeck-user-guide/echeck-gs.md): Explains getting started with the eCheck service for accepting electronic check payments, covering eligibility requirements for US citizens/residents and corporations with US bank accounts.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/echeck/user/all/rest/echeck-user-guide/echeck-txnprocess-intro.md): Learn how to accept eChecks by mail, phone, or online
+- [Manage eCheck Settings in the Business Center](https://developer.visaacceptance.com/docs/vas/en-us/echeck/user/all/rest/echeck-user-guide/echeck-bc-settings-intro.md): Covers managing eCheck transactions in the Enterprise Business Center, including settings, permissions, user roles, statements, virtual terminal submissions, recurring billing, and transaction searches.
+- [Overview of eCheck Transaction Processing](https://developer.visaacceptance.com/docs/vas/en-us/echeck/user/all/rest/echeck-user-guide/echeck-txnprocess-overview.md): Provides an overview of eCheck transaction processing, covering the seven-step sequence from customer authorization through ACH network settlement to merchant account deposit and return handling.
+- [Process eCheck Transactions Using the Business Center](https://developer.visaacceptance.com/docs/vas/en-us/echeck/user/all/rest/echeck-user-guide/echeck-bc-intro.md): Explains how to process debit or recurring eCheck transactions using the Business Center.
+
+## Payments - In-Person Acceptance - Card Present Connect | Retail
+- [DCC Services](https://developer.visaacceptance.com/docs/vas/en-us/cp-retail/integration/ctv/rest/cp-retail/dcc-intro.md): Explains Dynamic Currency Conversion (DCC) payment services for converting transaction amounts from merchant's local currency to cardholder's billing currency in real-time for international transactions.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/cp-retail/integration/ctv/rest/cp-retail/cp-intro-cpc.md): Power your retail experience by integrating to with our in-store payment APIs and start creating a unified payment shopping experience for your customers
+- [Message-Level Validation Test Cases](https://developer.visaacceptance.com/docs/vas/en-us/cp-retail/integration/ctv/rest/cp-retail/cp-retail-mlv-test-cases.md): Provides retail message-level validation test cases for Card Present Connect | Retail services, covering sales, authorizations, captures, refunds, voids, partial authorizations, and online PIN transactions.
+- [mPOS Services](https://developer.visaacceptance.com/docs/vas/en-us/cp-retail/integration/ctv/rest/cp-retail/cp-services-mpos-intro.md): Explains mobile point-of-sale (mPOS) payment services for accepting card-present contactless transactions on mobile devices, with required mPOS indicators to differentiate software/hardware solutions.
+- [Payment Services Using EMV and Card Data](https://developer.visaacceptance.com/docs/vas/en-us/cp-retail/integration/ctv/rest/cp-retail/cp-payment-services-intro.md): Describes card-present retail payment processing using EMV and card data, covering authorizations, captures, credits, reversals, voids, mobile point-of-sale, PIN debit services, and supported processors.
+- [PIN Debit Services](https://developer.visaacceptance.com/docs/vas/en-us/cp-retail/integration/ctv/rest/cp-retail/pd-processing.md): Describes PIN debit processing for card-present situations, covering debit cards (ATM/check cards), network agreements, customer choice between debit/credit processing, and US-only support requirements.
+
+## Payments - In-Person Acceptance - Card Present Connect | Mass Transit
+- [Follow-On Services](https://developer.visaacceptance.com/docs/vas/en-us/urban-mobility/developer/ctv/rest/mass-transit/um-processing-followon.md): Covers mass transit follow-on transactions including capture, reversal, timeout reversal, void, timeout void, refund, and credit processing with corresponding field matrices.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/urban-mobility/developer/ctv/rest/mass-transit/um-intro-overview.md): Make mass transit a frictionless, convenient, and fully-integrated part of your riders’ digital lifestyles
+- [Management Services](https://developer.visaacceptance.com/docs/vas/en-us/urban-mobility/developer/ctv/rest/mass-transit/um-processing-token-intro.md): Details Token Management Services for mass transit including token creation, retrieval, deletion operations for instrument identifiers, payment instruments, and customer hash management.
+- [Payment Services Using EMV and Card Data](https://developer.visaacceptance.com/docs/vas/en-us/urban-mobility/developer/ctv/rest/mass-transit/um-processing-emv-vpc.md): Covers mass transit payments using EMV data including transaction types, authorization processes, sales transactions, debt recovery, merchant-initiated transactions, and field matrices for different card schemes.
+- [Payment Services Using TMS Tokens](https://developer.visaacceptance.com/docs/vas/en-us/urban-mobility/developer/ctv/rest/mass-transit/um-processing-tms.md): Explains mass transit payments using tokens including pre-authorization, authorization, sales, debt recovery, merchant-initiated transactions, and credit processing with Token Management Service integration.
+- [Transit Test Cases](https://developer.visaacceptance.com/docs/vas/en-us/urban-mobility/developer/ctv/rest/mass-transit/um-test-cases.md): Provides transit message-level validation test cases covering Visa AVR, aggregated transactions, first ride protection, Mastercard authorization/capture, debt recovery, follow-on transactions, and transaction search scenarios.
+
+## Payments - In-Person Acceptance - Card Present Connect | Lodging (Pilot Release)
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/lodging/developer/ctv/rest/lodging/lodging-intro.md): Covers lodging introduction topics including overview, supported card types, prerequisites, validation and certification requirements, message-level validation, EMV Level 3 certification, and transaction risk control.
+- [Payment Services](https://developer.visaacceptance.com/docs/vas/en-us/lodging/developer/ctv/rest/lodging/lodging-payment-services.md): Covers lodging payment processing including services, EMV card data handling, transaction descriptions, data fields, check-in authorization, purchase processing, incremental authorization, checkout capture, and no-show sales.
+- [Transaction Scenarios](https://developer.visaacceptance.com/docs/vas/en-us/lodging/developer/ctv/rest/lodging/lodging-trxn-types.md): Explains lodging transaction scenarios including transaction types, check-in processes, incremental authorization, checkout procedures, and no-show transaction handling for hospitality payment processing.
+
+## Payments - In-Person Acceptance - Card Present Connect | Electric Vehicle Charging
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/ev-charging/developer/ctv/rest/ev-charging/home.md): Covers electric vehicle charging payment processing, including supported card types, prerequisites, validation/certification requirements (MLV and EMV L3), and transaction risk controls.
+- [Payment Services](https://developer.visaacceptance.com/docs/vas/en-us/ev-charging/developer/ctv/rest/ev-charging/ev-charging-pymnt-svcs-intro.md): Covers electric vehicle charging payment services, including EMV card data, transaction descriptions, authentication requirements, and various Visa/Mastercard payment processing scenarios.
+- [Transaction Scenarios](https://developer.visaacceptance.com/docs/vas/en-us/ev-charging/developer/ctv/rest/ev-charging/ev-charging-trxn-types.md): Covers electric vehicle charging transaction scenarios, including prepay, postpay, and flexpay transaction types with their specific requirements and prerequisites.
+
+## Payments - In-Person Acceptance - PIN Debit
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/pin-debit/developer/ctv/rest/pin-debit/cp-pd-pin-debit-intro.md): Introduces PIN debit processing, covering processor countries, card types, debit cards, platform integration, processing overview, credit card comparisons, PIN decryption, and order tracking.
+- [Optional Features](https://developer.visaacceptance.com/docs/vas/en-us/pin-debit/developer/ctv/rest/pin-debit/pd-feature-intro.md): Lists optional PIN debit processing features including balance inquiries, cash back, EBT, merchant descriptors, reversals, partial authorizations, PNT, quasi-cash, and track data.
+- [Process PIN Debit Transactions](https://developer.visaacceptance.com/docs/vas/en-us/pin-debit/developer/ctv/rest/pin-debit/pd-processing.md): Shows you how to process available PIN debit transactions, including purchase, credit, and reversal transactions.
+
+## Payments - In-Person Acceptance - PAX All-In-One
+- [Get Started](https://developer.visaacceptance.com/docs/vas/en-us/pax-all-in-one/integration/all/na/pax-all-in-one/pax-aio-get-started-intro.md): Covers getting started with PAX All-in-One including configuration, MID secret key generation, mPOS UI instance creation, UI customization, debug installation, and production submission processes.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/pax-all-in-one/integration/all/na/pax-all-in-one/pax-aio-intro.md): Introduces the PAX All-in-One Android Solution covering overview information and supported terminal devices for payment processing.
+- [Payment Services](https://developer.visaacceptance.com/docs/vas/en-us/pax-all-in-one/integration/all/na/pax-all-in-one/pax-aio-payment-txn-intro.md): Details PAX All-in-One payment services including sales, refunds, credits, transaction status, tips, pre-authorization, capture, MOTO transactions, account verification, offline transactions, and receipt management.
+- [Release Notes](https://developer.visaacceptance.com/docs/vas/en-us/pax-all-in-one/integration/all/na/pax-all-in-one/pax-aio-release-notes-intro.md): Release notes for PAX All-in-One Android Solution including version updates, feature changes, and archived release information.
+
+## Payments - In-Person Acceptance - PAX Acceptance Devices App
+- [Cloud Mode Payment Services](https://developer.visaacceptance.com/docs/vas/en-us/sis-pax/integration/all/rest/sis-pax/sis-pymnt-svcs-cloud-mode-intro.md): Covers Cloud Mode payment services including communication protocols, bearer tokens, API transactions, asynchronous responses, event checking, and comprehensive payment processing capabilities.
+- [Get Started](https://developer.visaacceptance.com/docs/vas/en-us/sis-pax/integration/all/rest/sis-pax/semi-integrated-solution-pax-get-started-intro.md): Covers getting started with the Acceptance Devices App including terminal setup, paper loading, activation, server startup, and customization procedures.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/sis-pax/integration/all/rest/sis-pax/semi-integrated-solution-pax-intro.md): Introduces the PAX Acceptance Devices App covering overview, supported terminals, and transaction workflow processes for payment integration.
+- [Local Mode Payment Services](https://developer.visaacceptance.com/docs/vas/en-us/sis-pax/integration/all/rest/sis-pax/semi-integrated-pymnt-svcs-intro.md): Details Local Mode payment services including communication protocols, security certificates, sales, refunds, pre-authorization, MOTO transactions, tips, installments, and receipt printing.
+- [Release Notes](https://developer.visaacceptance.com/docs/vas/en-us/sis-pax/integration/all/rest/sis-pax/sis-release-notes-intro.md): Release notes for PAX Acceptance Devices App including version updates, feature changes, and archived release information.
+- [Standalone Mode Payment Services](https://developer.visaacceptance.com/docs/vas/en-us/sis-pax/integration/all/rest/sis-pax/sis-pymnt-svcs-standalone-mode-intro.md): Explains Standalone Mode payment services including enabling standalone operations, sales, refunds, pre-authorization, offline transactions, installment details, and receipt management.
+
+## Payments - In-Person Acceptance - Tap to Pay on Android Solution
+- [Get Started](https://developer.visaacceptance.com/docs/vas/en-us/tap-to-phone/integration/all/rest/tap-to-phone/tap-to-phone-get-started-intro.md): Covers getting started with Tap to Pay on Android including configuration, MID secret key generation, mPOS UI creation, customization, device enrollment, and PCI compliance.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/tap-to-phone/integration/all/rest/tap-to-phone/tap-to-phone-intro.md): Point of Sale application that runs on Android smartphones and can turn a smartphone into a payment terminal
+- [Payment Services](https://developer.visaacceptance.com/docs/vas/en-us/tap-to-phone/integration/all/rest/tap-to-phone/tap-to-phone-payment-txn-intro.md): Details Tap to Pay on Android payment services including sales, refunds, standalone credits, transaction status, tips, pre-authorization, capture, installments, payment facilitator details, and receipts.
+- [Release Notes](https://developer.visaacceptance.com/docs/vas/en-us/tap-to-phone/integration/all/rest/tap-to-phone/ttp-release-notes-intro.md): Release notes for Tap to Pay on Android Solution including version updates, feature changes, and archived release information.
+
+## Payments - In-Person Acceptance - Tap to Pay on Android Acceptance Devices App
+- [Cloud Mode Payment Services](https://developer.visaacceptance.com/docs/vas/en-us/tap-to-phone-sis/integration/all/rest/tap-to-phone-sis/ttp-sis-pymnt-svcs-cloud-mode-intro.md): Provides information about Cloud mode API-based payment services with bearer token authentication.
+- [Get Started](https://developer.visaacceptance.com/docs/vas/en-us/tap-to-phone-sis/integration/all/rest/tap-to-phone-sis/ttp-sis-get-started-intro.md): Provides instructions for setting up your device, including device configuration, terminal activation, and PCI compliance.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/tap-to-phone-sis/integration/all/rest/tap-to-phone-sis/ttp-sis-intro.md): Provides basic concepts, Android device requirements, and transaction workflow.
+- [Local Mode Payment Services](https://developer.visaacceptance.com/docs/vas/en-us/tap-to-phone-sis/integration/all/rest/tap-to-phone-sis/ttp-sis-pymnt-svcs-intro.md): Provides information about Local mode payment services with communication protocols and transaction types.
+- [Release Notes](https://developer.visaacceptance.com/docs/vas/en-us/tap-to-phone-sis/integration/all/rest/tap-to-phone-sis/ttp-sis-release-notes-intro.md): Provides information about version updates, new features, and archived release documentation.
+- [Standalone Mode Payment Services](https://developer.visaacceptance.com/docs/vas/en-us/tap-to-phone-sis/integration/all/rest/tap-to-phone-sis/ttp-sis-pymnt-svcs-standalone-mode-intro.md): Provides information about Standalone mode operations for independent device transaction processing.
+
+## Payments - In-Person Acceptance - Tap to Pay on iPhone Solution
+- [Get Started](https://developer.visaacceptance.com/docs/vas/en-us/tap-to-pay-ios/integration/all/rest/tap-to-pay-ios/ttpay-ios-get-started-intro.md): Covers getting started with Tap to Pay on iPhone including configuration, MID secret key generation, mPOS UI creation, and device enrollment.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/tap-to-pay-ios/integration/all/rest/tap-to-pay-ios/home-merch.md): Point of Sale application that runs on iPhone smartphones and can turn a smartphone into a payment terminal.
+- [Payment Services](https://developer.visaacceptance.com/docs/vas/en-us/tap-to-pay-ios/integration/all/rest/tap-to-pay-ios/ttpay-ios-pymnt-svcs-intro.md): Details Tap to Pay on iPhone payment services including sales, refunds, standalone credits, transaction status, tips, pre-authorization, incremental authorization, capture, and email receipts.
+- [Release Notes](https://developer.visaacceptance.com/docs/vas/en-us/tap-to-pay-ios/integration/all/rest/tap-to-pay-ios/ttp-ios-rel-notes-intro.md): Release notes for Tap to Pay on iPhone Solution including version updates, feature changes, and archived release information.
+
+## Payments - In-Person Acceptance - Acceptance Devices | Terminals
+- [PAX A35](https://developer.visaacceptance.com/docs/vas/en-us/pax-a35/activation/all/pax-a35/pax-a35/pax-a35-intro.md): PAX-A35 Terminal document covers device introduction, setup guide, connection configuration, software encryption key installation, and additional terminal features.
+- [PAX A3700](https://developer.visaacceptance.com/docs/vas/en-us/pax-a3700/activation/all/pax-a3700/pax-a3700/home-merch.md): PAX A3700 Terminal document covers device introduction, setup guide, connection configuration, software encryption key installation, and additional terminal features.
+- [PAX A77](https://developer.visaacceptance.com/docs/vas/en-us/pax-a77/activation/all/pax-a77/pax-a77/pax-a77-intro.md): PAX A77 Terminal document covers device introduction, setup guide, connection configuration, software encryption key installation, and additional terminal features.
+- [PAX A920](https://developer.visaacceptance.com/docs/vas/en-us/pax-a920/activation/all/pax-a920/pax-a920/pax-a920-intro.md): PAX A920 Terminal document covers device introduction, setup guide, connection configuration, software encryption key installation, and additional terminal features.
+- [PAX A920 MAX](https://developer.visaacceptance.com/docs/vas/en-us/pax-a920max/activation/all/pax-a920max/pax-a920max/pax-a920max-intro.md): PAX A920 MAX Terminal document covers device introduction, setup guide, connection configuration, software encryption key installation, and additional terminal features.
+- [PAX A920 PRO](https://developer.visaacceptance.com/docs/vas/en-us/pax-a920pro/activation/all/pax-a920pro/pax-a920pro/pax-a920pro-intro.md): PAX A920 PRO Terminal document covers device introduction, setup guide, connection configuration, software encryption key installation, and additional terminal features.
+- [PAX IM30](https://developer.visaacceptance.com/docs/vas/en-us/pax-im30/activation/all/pax-im30/pax-im30/pax-im30-intro.md): PAX IM30 Terminal document covers device introduction, setup guide, connection configuration, software encryption key installation, and additional terminal features.
+
+## Payments - In-Person Acceptance - Acceptance Devices Implementation for Acquirers
+- [Distribute and Integrate](https://developer.VisaAcceptance.com/docs/vas/en-us/ad/acq/all/na/accept-devices-acq/accept-devices-acq-dist-integ.md)
+- [Implement](https://developer.VisaAcceptance.com/docs/vas/en-us/ad/acq/all/na/accept-devices-acq/accept-device-acq-implementation.md)
+- [Introduction](https://developer.VisaAcceptance.com/docs/vas/en-us/ad/acq/all/na/accept-devices-acq/home-acq.md)
+
+## Payments - Digital Acceptance - Click to Pay
+- [Capture Context API](https://developer.visaacceptance.com/docs/vas/en-us/click-to-pay/developer/all/rest/click-to-pay/ctp-setup-capture-context.md):   Capture context setup, features, and validation processes.
+- [Client-Side Set Up](https://developer.visaacceptance.com/docs/vas/en-us/click-to-pay/developer/all/rest/click-to-pay/ctp-getting-started-cs-setup-intro.md): Client-side setup with JavaScript library and widget implementation.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/click-to-pay/developer/all/rest/click-to-pay/ctp-intro.md): A digital payment solution that streamlines the checkout process by allowing customers to pay with their preferred card network without repeatedly entering card details
+- [Payment Credentials API](https://developer.visaacceptance.com/docs/vas/en-us/click-to-pay/developer/all/rest/click-to-pay/uc-token-get-pymnt-credentials.md): Payment Credentials API with required parameters and REST examples.
+- [Payment Details API](https://developer.visaacceptance.com/docs/vas/en-us/click-to-pay/developer/all/rest/click-to-pay/uc-token-get-pymnt-details.md): Payment Details API with token-based retrieval and examples.
+- [Server-Side Set Up](https://developer.visaacceptance.com/docs/vas/en-us/click-to-pay/developer/all/rest/click-to-pay/ctp-getting-started-ss-setup.md): Server-side setup and capture context configuration.
+- [Transient Tokens](https://developer.visaacceptance.com/docs/vas/en-us/click-to-pay/developer/all/rest/click-to-pay/ctp-tokens-intro.md): Transient tokens, format, verification, and dual co-brand card support.
+- [Unified Checkout Configuration](https://developer.visaacceptance.com/docs/vas/en-us/click-to-pay/developer/all/rest/click-to-pay/ctp-configuration-intro.md): Information about using the Business Center to configure unified checkout.
+
+## Payments - Digital Acceptance - Digital Accept Secure Integration
+- [Click to Pay Drop-In UI](https://developer.visaacceptance.com/docs/vas/en-us/digital-accept-flex/developer/all/rest/digital-accept-flex/ctp-intro.md): Information about the Click to Pay integration covering setup, credentials, configuration, and implementation guidance.
+- [Flex API V2](https://developer.visaacceptance.com/docs/vas/en-us/digital-accept-flex/developer/all/rest/digital-accept-flex/flex-api-2.md): Integration tasks, capture context, tokenization, and payment processing for and using the Flex API.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/digital-accept-flex/developer/all/rest/digital-accept-flex/payments_intro_digt_accpt_sec_intg.md): Streamline PCI-DSS complaince without compromising user experience
+- [Microform V2](https://developer.visaacceptance.com/docs/vas/en-us/digital-accept-flex/developer/all/rest/digital-accept-flex/microform-integ-v2.md): Information about PCI compliance, setting up, tokens, styling, and API reference for Microform.
+- [Process Authorizations with a Transient Token](https://developer.visaacceptance.com/docs/vas/en-us/digital-accept-flex/developer/all/rest/digital-accept-flex/da-payments.md):  Information about payment processing with transient tokens, authorization workflows, and Token Management Service.
+- [Unified Checkout](https://developer.visaacceptance.com/docs/vas/en-us/digital-accept-flex/developer/all/rest/digital-accept-flex/uc-intro.md): Information about Unified Checkout, including setup, tokens, authentication, configuration, and testing.
+
+## Payments - Digital Acceptance - Recurring Billing with the Business Center
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/recurring-billing/user/all/rest/recurring-billing-user/recur-bill-services-intro.md): Introduction to Recurring Billing service covering payment plans, subscriptions, automated billing schedules, secure token storage, and prerequisites for implementation.
+- [Manage Plans](https://developer.visaacceptance.com/docs/vas/en-us/recurring-billing/user/all/rest/recurring-billing-user/manage-plans.md): Information about Plan management covering creating, viewing, and updating billing plans for recurring services.
+- [Manage Subscriptions](https://developer.visaacceptance.com/docs/vas/en-us/recurring-billing/user/all/rest/recurring-billing-user/manage-subscriptions.md): Information about Subscription management including creation with customer tokens, viewing details, and updating configurations.
+- [Manage Subscriptions in Token Management](https://developer.visaacceptance.com/docs/vas/en-us/recurring-billing/user/all/rest/recurring-billing-user/manage-subscriptions-tms.md): Information about Token Management Service subscription management covering customer tokens, viewing, and updating through TMS.
+
+## Payments - Digital Acceptance - Recurring Billing with the REST API
+- [Additional Features](https://developer.visaacceptance.com/docs/vas/en-us/recurring-billing/developer/all/rest/recurring-billing-dev/recur-bill-addl-feat.md): Information about the additional features including system retry, merchant-initiated transactions, notifications, Decision Manager integration, and Account Updater.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/recurring-billing/developer/all/rest/recurring-billing-dev/recur-bill-dev-intro.md): Manage payment plans or subscriptions for recurring payment schedules
+- [Plans](https://developer.visaacceptance.com/docs/vas/en-us/recurring-billing/developer/all/rest/recurring-billing-dev/recur-bill-plans-intro.md): Information about Plan management covering statuses, creation, retrieval, amendments, activation, deactivation, and deletion operations.
+- [Subscriptions](https://developer.visaacceptance.com/docs/vas/en-us/recurring-billing/developer/all/rest/recurring-billing-dev/recur-bill-subscriptions.md): Information about subscription management including prerequisites, statuses, creation, retrieval, amendments, reactivation, suspension, and cancellation.
+
+## Payments - Digital Acceptance - Token Management Service
+- [Card Art](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/all/rest/tms/tms-card-art.md): Information about Card Art functionality for retrieving visual elements in payment applications.
+- [Customer Payment Instrument Tokens](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/all/rest/tms/tms-cust-tkn/tms-cust-pi-tkn.md): Information about customer tokens with comprehensive management including payment instruments and shipping addresses.
+- [Customer Tokens](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/all/rest/tms/tms-cust-tkn.md): Information about how to manage customer tokens and make payments using them.
+- [Instrument Identifier Tokens](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/all/rest/tms/tms-ii-tkn.md): Information about instrument identifier tokens with management operations and payment processing.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/all/rest/tms/tms-overview.md): Provides a single integration point to provision, retrieve, and manage network tokens and cryptograms across card brands, enabling secure, PCI-compliant storage and omnichannel payment orchestration
+- [Manage Webhook Subscriptions](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/all/rest/tms/tms-overview-webhook.md): Information on creating, retrieving, and updating webhook subscriptions.
+- [Network Tokenization](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/all/rest/tms/tms-net-tkn-onboard.md): Information about network tokens with merchant payments, partner implementations, lifecycle management, and failure handling.
+- [Network Tokens](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/all/rest/tms/tms-net-tkn-intro.md): Information about network tokens with merchant payments, partner implementations, lifecycle management, and failure handling.
+- [Onboard TMS](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/all/rest/tms/tms-onboarding.md): Information about onboarding TMS, covering merchant hierarchy, vault settings, encryption setup, and webhooks.
+- [Payment Instrument Tokens](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/all/rest/tms/tms-pi-tkn.md): Information about payment instruments covering token management and payment processing operations.
+- [Request the TMS API](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/all/rest/tms/tms-create-request.md): Information about how to use the REST API to request creation with headers, metadata, patching, pagination, and test cards.
+- [Shipping Address Tokens](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/all/rest/tms/tms-cust-tkn/tms-ship-tkn.md): Information about how to manage shipping address tokens and make payments using them.
+- [TMS and BIN Lookup](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/all/rest/tms/tms-bin-lookup-service.md): Information about BIN Lookup Service integration with bank identification number functionality.
+- [TMS and Wallet Apps](https://developer.visaacceptance.com/docs/vas/en-us/tms/developer/all/rest/tms/tms-wallet-tkn.md)
+
+## Payments - Digital Acceptance - Token Management Service Implementation for Acquirers
+- [Distribute and Integrate](https://developer.VisaAcceptance.com/docs/vas/en-us/tms/acq/all/na/tms-acq/tms-acq-dist-integ.md)
+- [Implement](https://developer.VisaAcceptance.com/docs/vas/en-us/tms/acq/all/na/tms-acq/tms-acq-implementation.md)
+- [Introduction](https://developer.VisaAcceptance.com/docs/vas/en-us/tms/acq/all/na/tms-acq/home-acq.md)
+- [Merchant Management](https://developer.VisaAcceptance.com/docs/vas/en-us/tms/acq/all/na/tms-acq/tms-acq-merch-mngmt.md)
+- [Position](https://developer.VisaAcceptance.com/docs/vas/en-us/tms/acq/all/na/tms-acq/tms-acq-positioning.md)
+
+## Payments - Digital Acceptance - Unified Click to Pay
+- [API Specifications](https://developer.visaacceptance.com/docs/vas/en-us/unified-click-to-pay/developer/all/rest/unified-click-to-pay/uctp-api-specifications.md): Specifications for all Unified Click to Pay API methods and associated parameters.
+- [Customer Workflows](https://developer.visaacceptance.com/docs/vas/en-us/unified-click-to-pay/developer/all/rest/unified-click-to-pay/uctp-customer-workflows.md): Describes the different customer flows for calling the capture context and loading the SDK.
+- [Get Started](https://developer.visaacceptance.com/docs/vas/en-us/unified-click-to-pay/developer/all/rest/unified-click-to-pay/uctp-getting-started.md): Examples for all Unified Click to Pay API methods and associated parameters.
+- [Integrate](https://developer.visaacceptance.com/docs/vas/en-us/unified-click-to-pay/developer/all/rest/unified-click-to-pay/uctp-integration-details.md): How to integrate and launch Unified Click to Pay on your website and process a transaction.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/unified-click-to-pay/developer/all/rest/unified-click-to-pay/uctp-intro.md): Click to Pay, powered by Unified Checkout, provides a flexible integration that enables merchants to customize their checkout experience for accepting Click to Pay payments from Visa, Mastercard, and American Express.
+- [JSON Web Tokens](https://developer.visaacceptance.com/docs/vas/en-us/unified-click-to-pay/developer/all/rest/unified-click-to-pay/uc-appendix-jwts.md): Tokens that provide a compact, self-contained method for securely transmitting information between parties.
+
+## Payments - Digital Acceptance - Unified Checkout
+- [Client-Side Set Up](https://developer.visaacceptance.com/docs/vas/en-us/unified-checkout/developer/all/rest/unified-checkout/uc-getting-started-cs-setup-intro.md): Information about client-side setup with JavaScript library, buttons, and widget configuration.
+- [Configuration](https://developer.visaacceptance.com/docs/vas/en-us/unified-checkout/developer/all/rest/unified-checkout/uc-intro-setup.md): Information about how to configure Unified Checkout, covering webhooks, digital payment enablement, and permissions.
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/unified-checkout/developer/all/rest/unified-checkout/uc-intro.md): Provides a single interface with which you can accept numerous types of digital payments
+- [Payment Details API](https://developer.visaacceptance.com/docs/vas/en-us/unified-checkout/developer/all/rest/unified-checkout/uc-token-get-pymnt-details.md): Information about payment Details API with token-based retrieval and REST examples.
+- [Payment Methods](https://developer.visaacceptance.com/docs/vas/en-us/unified-checkout/developer/all/rest/unified-checkout/uc-pay-methods-intro.md): Payment methods you can use with Unified Checkout. 
+- [Quick Start](https://developer.visaacceptance.com/docs/vas/en-us/unified-checkout/developer/all/rest/unified-checkout/uc-qs-intro.md): Brief overview of Unified Checkout and guidance for setting it up in your system. 
+- [Server-Side Set Up](https://developer.visaacceptance.com/docs/vas/en-us/unified-checkout/developer/all/rest/unified-checkout/uc-getting-started-ss-setup.md): Information about server-side setup with back-end configuration and capture context.
+- [Sessions API](https://developer.visaacceptance.com/docs/vas/en-us/unified-checkout/developer/all/rest/unified-checkout/uc-setup-capture-context.md): Information about how to use the sessions API to generate a capture context.
+- [Test Your Configuration](https://developer.visaacceptance.com/docs/vas/en-us/unified-checkout/developer/all/rest/unified-checkout/uc-reference-test-cards.md): Information about using the authentication process to test your Unified Checkout configuration.
+- [Transient Tokens](https://developer.visaacceptance.com/docs/vas/en-us/unified-checkout/developer/all/rest/unified-checkout/uc-tokens-intro.md): Information about transient tokens covering format, verification, examples, and dual co-brand support.
+
+## Payments - Digital Acceptance - Unified Checkout Implementation for Acquirers
+- [Implement](https://developer.VisaAcceptance.com/docs/vas/en-us/uc/acq/all/na/uc-acq/uc-acq-implementation.md)
+- [Introduction](https://developer.VisaAcceptance.com/docs/vas/en-us/uc/acq/all/na/uc-acq/home-acq.md)
+- [Reference](https://developer.VisaAcceptance.com/docs/vas/en-us/uc/acq/all/na/uc-acq/uc-acq-reference.md)
+
+## Fraud and Risk Management - Payer Authentication - Introduction
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/payer-authentication/developer/all/rest/payer-auth/pa2-intro-intro.md): Introduction to Payer Authentication, covering 3-D Secure history, benefits, workflows, process overview, acquirer information, account setup, testing, endpoints, and integration guidance.
+
+## Fraud and Risk Management - Payer Authentication - Implement Using Direct API
+- [Implement Using Direct API](https://developer.visaacceptance.com/docs/vas/en-us/payer-authentication/developer/all/rest/payer-auth/pa2-ccdc-intro.md): Covers implementing Payer Authentication using an API, including prerequisites, setup, device data collection, enrollment check, step-up authentication, validation, and combining services.
+
+## Fraud and Risk Management - Payer Authentication - Test
+- [Test](https://developer.visaacceptance.com/docs/vas/en-us/payer-authentication/developer/all/rest/payer-auth/pa-testing-intro.md): Sxtensive testing procedures to test your implementation. 
+
+## Fraud and Risk Management - Payer Authentication - Reports
+- [Reports](https://developer.visaacceptance.com/docs/vas/en-us/payer-authentication/developer/all/rest/payer-auth/pa-reports-intro.md): Information about the type and how to download various reports from the Business Center.
+
+## Fraud and Risk Management - Decision Manager - Decision Manager in the Business Center
+- [Decision Manager in the Business Center](https://businesscenter.visaacceptance.com/content/ebc/docs/cybs/en-us/html/dm-using/user/all/na/index.md): Use Decision Manager to manage administration and user functions using the Business Center. 
+
+## Fraud and Risk Management - Decision Manager - Decision Manager with the REST API
+- [Decision Manager with the REST API](https://businesscenter.visaacceptance.com/content/ebc/docs/cybs/en-us/html/dm-develop/developer/all/rest/index.md): Use Decision Manager to manage administration and user functions using the REST API.
+
+## Fraud and Risk Management - Decision Manager - Account Takeover Protection Service
+- [Account Takeover Protection Service](https://businesscenter.visaacceptance.com/content/ebc/docs/cybs/en-us/html/dm-atp/user/all/rest/index.md): Implement and use the Account Takeover Protection Service using the REST API.
+
+## Fraud and Risk Management - Decision Manager - Device Fingerprinting
+- [Device Fingerprinting](https://businesscenter.visaacceptance.com/content/ebc/docs/cybs/en-us/html/dm-device-fingerprint/user/all/na/index.md): Information about Device Fingerprinting, including an introduction, implementation, testing, service requests, configuration, order review processes, and reference materials for fraud detection.
+
+## Fraud and Risk Management - Decision Manager - Hierarchy
+- [Hierarchy](https://businesscenter.visaacceptance.com/content/ebc/docs/cybs/en-us/html/dm-hierarchies/user/all/na/index.md): Information about managing and using merchant groups, and includes merchant group concepts, management procedures, and reference materials.
+
+## Fraud and Risk Management - Decision Manager - Planning
+- [Planning](https://businesscenter.visaacceptance.com/content/ebc/docs/cybs/en-us/html/dm-planning/user/all/na/index.md): Information about fraud management strategies, implementation planning, profile preparation, profile configuration, case management setup, and list management.
+
+## Fraud and Risk Management - Decision Manager - Reporting
+- [Reporting](https://businesscenter.visaacceptance.com/content/ebc/docs/cybs/en-us/html/dm-reporting/user/all/na/index.md): Information about system performance, monthly trends, detailed reports, performance statistics, replay analysis, case management, conversion tracking, list management results, and reference elements.
+
+## Fraud and Risk Management - Decision Manager - Score Builder
+- [Score Builder](https://businesscenter.visaacceptance.com/content/ebc/docs/cybs/en-us/html/dm-score-builder/user/all/na/index.md): Information for case management administrators, case or transaction reviewers, and anyone who wants to configure custom profile scores to enhance their fraud detection.
+
+## Fraud and Risk Management - Decision Manager - Risk REST API
+- [Risk REST API](https://businesscenter.visaacceptance.com/content/ebc/docs/cybs/en-us/html/dm-api-fields/reference/all/rest/index.md): Risk API field specifications.
+
+## Fraud and Risk Management - Fraud Management Essentials - FME in the Business Center
+- [FME in the Business Center](https://businesscenter.visaacceptance.com/content/ebc/docs/cybs/en-us/html/fme/user/all/na/index.md): Information about Fraud Management Essentials, including getting started and using the Business Center to perform tasks associated with  order search, list management, rule configuration, reports (risk scores, performance, fraud rates), settings, and user roles.
+
+## Fraud and Risk Management - Fraud Management Essentials - FME with the REST API
+- [FME with the REST API](https://businesscenter.visaacceptance.com/content/ebc/docs/cybs/en-us/html/fme/developer/all/rest/index.md): Information about Fraud Management Essentials, including an introduction, development and testing procedures using the API, and reference materials.
+
+## Post-Transaction Processing - Account Updater
+- [Account Updater](/content/dam/docs/cybs/en-us/account-updater/developer/all/rest/account-updater.pdf): Information information about Account Updater, which assists you with keeping stored card data up to date. It includes a product overview, testing procedures, field specifications, and response reason codes.
+
+## Post-Transaction Processing - Offline Transaction File Submission | Simple Order API - Introduction
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/batch/user/all/so/batch-upload/home-merch.md): Preparing offline submission of multiple payment requests in a single file.
+
+## Post-Transaction Processing - Offline Transaction File Submission | Simple Order API - Manage Templates and Batch Files
+- [Manage Templates and Batch Files](https://developer.visaacceptance.com/docs/vas/en-us/batch/user/all/so/batch-upload/batch-files-managing.md): Create a CSV-formatted transaction batch file using a template.
+
+## Post-Transaction Processing - Offline Transaction File Submission | Simple Order API - Upload a Transaction Batch File Using the Business Center
+- [Upload a Transaction Batch File Using the Business Center](https://developer.visaacceptance.com/docs/vas/en-us/batch/user/all/so/batch-upload/batch-uploading-ebc.md): Use the Business Center to upload a transaction batch file.
+
+## Post-Transaction Processing - Offline Transaction File Submission | Simple Order API - Upload a Transaction Batch File Using the Simple Order API
+- [Upload a Transaction Batch File Using the Simple Order API](https://developer.visaacceptance.com/docs/vas/en-us/batch/user/all/so/batch-upload/c_Using_Java_Sample_Code_to_Upload_Files.md): Use the Simple Order API to upload a transaction batch file.
+
+## Post-Transaction Processing - Offline Transaction File Submission | Simple Order API - View Email Notifications
+- [View Email Notifications](https://developer.visaacceptance.com/docs/vas/en-us/batch/user/all/so/batch-upload/batch-results-email-notifs.md): View email notifications to validate transactions included in batch files.
+
+## Post-Transaction Processing - Offline Transaction File Submission | Simple Order API - View Batch File Validation Results
+- [View Batch File Validation Results](https://developer.visaacceptance.com/docs/vas/en-us/batch/user/all/so/batch-upload/batch-results-file-response.md): View the XML-formatted file that shows whether the batch file validation succeeded or failed.
+
+## Post-Transaction Processing - Offline Transaction File Submission | Simple Order API - View Transaction Processing Results
+- [View Transaction Processing Results](https://developer.visaacceptance.com/docs/vas/en-us/batch/user/all/so/batch-upload/batch-results-txns-response.md): View the CSV-formatted files that show the processing results for the batched transaction requests.
+
+## Post-Transaction Processing - Offline Transaction File Submission | Simple Order API - View the Transaction Request Report
+- [View the Transaction Request Report](https://developer.visaacceptance.com/docs/vas/en-us/batch/user/all/so/batch-upload/batch-results-txns-rpt-request.md): The Transaction Request Report with the Batch Upload connection filter shows details of the transactions that were batched using the upload process.
+
+## Post-Transaction Processing - Offline Transaction File Submission | Simple Order API - View the Batch Submission Detail Report
+- [View the Batch Submission Detail Report](https://developer.visaacceptance.com/docs/vas/en-us/batch/user/all/so/batch-upload/batch-results-txns-rpt-submission-details.md): The Batch Submission Detail Report returns a real-time response with details about the transactions that you submitted by uploading a batch file.
+
+## Post-Transaction Processing - Reporting with the Business Center - Get Started
+- [Get Started](https://developer.visaacceptance.com/docs/vas/en-us/reporting/user/all/ebc/reporting-ug/Get_Started_with_Business_Center_Reporting.md): Information for the initial setup and overview of Business Center reporting capabilities, including related information and resources for new users.
+
+## Post-Transaction Processing - Reporting with the Business Center - Create and Access Downloadable Reports
+- [Create and Access Downloadable Reports](https://developer.visaacceptance.com/docs/vas/en-us/reporting/user/all/ebc/reporting-ug/Creating_Accessing_Downloadable_Reports.md): Process for generating, downloading, and managing various report types including one-time, standard, and custom report subscriptions.
+
+## Post-Transaction Processing - Reporting with the Business Center - View On-Demand Reports
+- [View On-Demand Reports](https://developer.visaacceptance.com/docs/vas/en-us/reporting/user/all/ebc/reporting-ug/c_Viewing_On-Demand_Reports.md): Real-time report viewing capabilities including payment batch summaries, payer authentication summaries, and purchase/refund details with lookback ranges.
+
+## Post-Transaction Processing - Reporting with the Business Center - Available Business Center Reports
+- [Available Business Center Reports](https://developer.visaacceptance.com/docs/vas/en-us/reporting/user/all/ebc/reporting-ug/c_Reports_Available_in_the_Business_Center.md): Complete catalog of all available reports including transaction details, billing information, fraud management, and specialized processor reports.
+
+## Post-Transaction Processing - Reporting with the Business Center - Report Fields
+- [Report Fields](https://developer.visaacceptance.com/docs/vas/en-us/reporting/user/all/ebc/reporting-ug/c_Report_Fields_and_Descriptions.md): Detailed field definitions and descriptions for all report types, including downloadable reports, card-present fields, and compound values.
+
+## Post-Transaction Processing - Reporting with the Business Center - Financial and Reconciliation Reports
+- [Financial and Reconciliation Reports](https://developer.visaacceptance.com/docs/vas/en-us/reporting/user/all/ebc/reporting-ug/c_Financial_and_Reconciliation_Reports.md): Specialized financial reports including aging details, chargeback information, deposit details, fee summaries, and net funding reconciliation data.
+
+## Post-Transaction Processing - Reporting with the Business Center - OCT Reports for Acquirers
+- [OCT Reports for Acquirers](https://developer.visaacceptance.com/docs/vas/en-us/reporting/user/all/ebc/reporting-ug/orig_Credit_Txn_Reports_for_Acquirers.md): Acquirer-specific reporting including detail reports, chargeback information, exception handling, and reconciliation summaries for credit transaction processing.
+
+## Post-Transaction Processing - Reporting with the Business Center - Supported Time Zones
+- [Supported Time Zones](https://developer.visaacceptance.com/docs/vas/en-us/reporting/user/all/ebc/reporting-ug/time-zones.md): Reference information about time zone handling and considerations for report generation, scheduling, and data interpretation across different regions.
+
+## Post-Transaction Processing - Reporting with the REST API - Reporting API
+- [Reporting API](https://developer.visaacceptance.com/docs/vas/en-us/reporting/developer/all/rest/reporting/reporting_api.md): Complete API reference for reporting services including client applications, definitions, subscriptions management, report retrieval, downloads, and on-demand reporting capabilities.
+
+## Post-Transaction Processing - Reporting with the REST API - Reporting Fields
+- [Reporting Fields](https://developer.visaacceptance.com/docs/vas/en-us/reporting/developer/all/rest/reporting/reporting_fields.md): Comprehensive field reference documentation covering all data fields used in reporting APIs, organized by category including application, authorization, payment, and specialized fields.
+
+## Post-Transaction Processing - Reporting with the REST API - Supported Time Zones
+- [Supported Time Zones](https://developer.visaacceptance.com/docs/vas/en-us/reporting/developer/all/rest/reporting/time-zones.md): Reference information about time zone handling and considerations for report generation, scheduling, and data interpretation across different regions.
+
+## Post-Transaction Processing - Transaction Batch - Create a Request with a Client Application
+- [Create a Request with a Client Application](https://developer.visaacceptance.com/docs/vas/en-us/txn-batch/developer/all/rest/txn-batch/txn_batch_api_intro/create_request_with_client_application.md): Instructions for creating transaction batch requests using client applications, including authentication setup and request formatting requirements.
+
+## Post-Transaction Processing - Transaction Batch - Retrieve a List of Batch Files
+- [Retrieve a List of Batch Files](https://developer.visaacceptance.com/docs/vas/en-us/txn-batch/developer/all/rest/txn-batch/txn_batch_api_intro/retrieve_list_of_txn_batches.md): API methods for retrieving and filtering lists of existing transaction batches, including query parameters and response formats.
+
+## Post-Transaction Processing - Transaction Batch - Retrieve a Specific Transaction Batch File
+- [Retrieve a Specific Transaction Batch File](https://developer.visaacceptance.com/docs/vas/en-us/txn-batch/developer/all/rest/txn-batch/txn_batch_api_intro/retrieve_specific_txn_batch.md): Detailed instructions for retrieving information about a specific transaction batch using batch identifiers and status queries.
+
+## Post-Transaction Processing - Transaction Batch - Retrieve Batch Submission Detail Report
+- [Retrieve Batch Submission Detail Report](https://developer.visaacceptance.com/docs/vas/en-us/txn-batch/developer/all/rest/txn-batch/txn_batch_api_intro/retrieve_batch_detail.md): Methods for accessing detailed information about transaction batch contents, including individual transaction status and processing results.
+
+## Post-Transaction Processing - Transaction Search and Details - Introduction
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/txn-search/developer/all/rest/txn-search/txn-intro.md): Overview and introduction to the Transaction Search and Details API, including basic concepts, authentication, and general usage guidelines.
+
+## Post-Transaction Processing - Transaction Search and Details - Transaction Search API
+- [Transaction Search API](https://developer.visaacceptance.com/docs/vas/en-us/txn-search/developer/all/rest/txn-search/txn-search-intro.md): Detailed instructions for creating transaction search requests, including API endpoints, parameters, request formatting, and response handling procedures.
+
+## Post-Transaction Processing - Transaction Search and Details - Transaction Details API
+- [Transaction Details API](https://developer.visaacceptance.com/docs/vas/en-us/txn-search/developer/all/rest/txn-search/txn-details-intro.md): Detailed instructions for retrieving specific transaction details using API calls, including query parameters, filters, and response data structures.
+
+## Post-Transaction Processing - Transaction Search and Details - Services Returned by the API
+- [Services Returned by the API](https://developer.visaacceptance.com/docs/vas/en-us/txn-search/developer/all/rest/txn-search/txn-applications.md): Information about client applications and integration methods for implementing Transaction Search and Details API in various development environments.
+
+## Post-Transaction Processing - Transaction Search and Details - Supported Time Zones
+- [Supported Time Zones](https://developer.visaacceptance.com/docs/vas/en-us/txn-search/developer/all/rest/txn-search/time-zones.md): Reference information about time zone handling and considerations for report generation, scheduling, and data interpretation across different regions.
+
+## Post-Transaction Processing - User Management - Create a Request with a Client Application
+- [Create a Request with a Client Application](https://developer.visaacceptance.com/docs/vas/en-us/user-mgmnt/developer/all/rest/user-mgmnt/user_management_api_intro/create_request_with_client_application.md): Instructions for setting up client applications and creating API requests for user management operations, including authentication and request formatting.
+
+## Post-Transaction Processing - User Management - Retrieve a List of Users
+- [Retrieve a List of Users](https://developer.visaacceptance.com/docs/vas/en-us/user-mgmnt/developer/all/rest/user-mgmnt/user_management_api_intro/retrieve_list_of_users.md): API methods for retrieving and filtering lists of users, including query parameters, pagination options, and response data structures.
+
+## Platform Services - Boarding Using the REST API - Introduction
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/boarding/developer/all/rest/boarding/boarding-intro-overview.md): Overview of merchant boarding concepts, API fundamentals, authentication requirements, and general usage patterns for onboarding new merchants.
+
+## Platform Services - Boarding Using the REST API - Product Templates
+- [Product Templates](https://developer.visaacceptance.com/docs/vas/en-us/boarding/developer/all/rest/boarding/boarding-intro-template.md): Introduction to product templates for merchant boarding, explaining template concepts, usage patterns, and benefits for streamlined merchant onboarding processes.
+
+## Platform Services - Boarding Using the REST API - Using Templates
+- [Using Templates](https://developer.visaacceptance.com/docs/vas/en-us/boarding/developer/all/rest/boarding/templates-tasks.md): Template management for merchant boarding processes, including predefined configurations, customization options, and template-based merchant setup procedures.
+
+## Platform Services - Boarding Using the REST API - Template Reference
+- [Product Boarding Template Reference](https://developer.visaacceptance.com/docs/vas/en-us/boarding/developer/all/rest/boarding/templates-matrix-intro.md): Product boarding template reference matrix, explaining template usage, configuration options, and compatibility guidelines for merchant onboarding processes.
+- [Template Reference](https://developer.visaacceptance.com/docs/vas/en-us/boarding/developer/all/rest/boarding/templates-matrix-intro.md): Introduction to product templates for merchant boarding, explaining template concepts, usage patterns, and benefits for streamlined merchant onboarding processes.
+
+## Platform Services - Boarding Using the REST API - Create Organizations
+- [Create Organizations](https://developer.visaacceptance.com/docs/vas/en-us/boarding/developer/all/rest/boarding/boarding-reg-intro.md): Complete merchant registration processes, including account creation, verification procedures, documentation requirements, and initial setup configurations.
+
+## Platform Services - Boarding Using the REST API - Manage Organizations
+- [Manage Organizations](https://developer.visaacceptance.com/docs/vas/en-us/boarding/developer/all/rest/boarding/boarding-manage-org-intro.md): Organization management capabilities including creating, updating, retrieving, and deleting merchant organizations through API endpoints and administrative functions.
+
+## Platform Services - Boarding Using the REST API - Enable and Configure Products (BRS API)
+- [Enable and Configure Products (BRS API)](https://developer.visaacceptance.com/docs/vas/en-us/boarding/developer/all/rest/boarding/boarding-products-intro.md): Introduction to Business Requirements Specifications (BRS) for product boarding, explaining product enablement processes and configuration requirements for merchant onboarding.
+
+## Platform Services - Boarding Using the REST API - Enable and Configure Products (PECS API)
+- [Enable and Configure Products (PECS API)](https://developer.visaacceptance.com/docs/vas/en-us/boarding/developer/all/rest/boarding/boarding-products.md): Overview of product enablement and configuration processes using the PECS (Product Enablement and Configuration Service) API for merchant organization management.
+
+## Platform Services - Boarding Using the REST API - Extend the Hierarchy
+- [Extend the Hierarchy](https://developer.visaacceptance.com/docs/vas/en-us/boarding/developer/all/rest/boarding/boarding-extend-hierarchy.md): Guide to extending merchant organization hierarchies, including structural relationships, parent-child configurations, and multi-level organizational management for merchant boarding.
+
+## Platform Services - Boarding Using the REST API - ISO Standard Currency Codes
+- [ISO Standard Currency Codes](https://developer.visaacceptance.com/docs/vas/en-us/boarding/developer/all/rest/boarding/boarding-currency-codes.md): Reference of ISO standard currency codes including alphabetic codes, numerical codes, currency names, and decimal places for international payment processing.
+
+## Platform Services - Boarding Using the REST API - Reason Codes
+- [Reason Codes](https://developer.visaacceptance.com/docs/vas/en-us/boarding/developer/all/rest/boarding/boarding-error-codes.md): Reference of reason codes, status values, and error responses for Boarding Registration Service (BRS) and Product Enablement Configuration Service (PECS) APIs.
+
+## Platform Services - Boarding Using the Business Center - Introduction
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/boarding/user/all/ebc/boarding-user/boarding-intro-overview.md): Overview of merchant boarding concepts, user interface navigation, basic workflows, and getting started information for new users.
+
+## Platform Services - Boarding Using the Business Center - Product Templates
+- [Product Templates](https://developer.visaacceptance.com/docs/vas/en-us/boarding/user/all/ebc/boarding-user/boarding-intro-template.md): Introduction to product templates for merchant boarding user interface, explaining template concepts, usage patterns, and benefits for streamlined onboarding.
+
+## Platform Services - Boarding Using the Business Center - Using Templates
+- [Using Templates](https://developer.visaacceptance.com/docs/vas/en-us/boarding/user/all/ebc/boarding-user/templates-tasks.md): Overview of template management tasks and operations available for merchant boarding templates, including workflow guidance and task organization.
+
+## Platform Services - Boarding Using the Business Center - Product Boarding Template Reference
+- [Product Boarding Template Reference](https://developer.visaacceptance.com/docs/vas/en-us/boarding/user/all/ebc/boarding-user/templates-matrix-intro.md): Product boarding template reference matrix, explaining template usage, configuration options, and compatibility guidelines for merchant onboarding processes.
+
+## Platform Services - Boarding Using the Business Center - Create Organizations
+- [Create Organizations](https://developer.visaacceptance.com/docs/vas/en-us/boarding/user/all/ebc/boarding-user/boarding-reg-intro.md): Detailed procedures for creating merchant organizations through the user interface, including form completion, validation requirements, and merchant setup processes.
+
+## Platform Services - Boarding Using the Business Center - Search for Organizations
+- [Search for Organizations](https://developer.visaacceptance.com/docs/vas/en-us/boarding/user/all/ebc/boarding-user/merchants-v2-search.md): Instructions for searching merchant organizations in the Manage Merchants page, including using search filters, adding custom filters, and resetting searches.
+
+## Platform Services - Boarding Using the Business Center - Manage Organization Information
+- [Manage Organization Information](https://developer.visaacceptance.com/docs/vas/en-us/boarding/user/all/ebc/boarding-user/merchants-v2-edit-intro.md): Introduction to managing merchant organization information through the Business Center, including editing capabilities and workflow overview.
+
+## Platform Services - Boarding Using the Business Center - Update Organization Products
+- [Update Organization Products](https://developer.visaacceptance.com/docs/vas/en-us/boarding/user/all/ebc/boarding-user/merchants-v2-edit-products-intro.md): Procedures for managing merchant organization products through the Business Center, including product configuration and management workflow overview.
+
+## Platform Services - Boarding Using the Business Center - Switch Merchants
+- [Switch Merchants](https://developer.visaacceptance.com/docs/vas/en-us/boarding/user/all/ebc/boarding-user/merchants-v2-switch.md): Information about switching to the new Merchants V2 interface, including migration procedures, feature differences, and transition guidance.
+
+## Platform Services - Boarding Using the Business Center - Send a Registration Email
+- [Send a Registration Email](https://developer.visaacceptance.com/docs/vas/en-us/boarding/user/all/ebc/boarding-user/merchants-v2-email.md): Email configuration and management features in the Merchants V2 interface, including notification settings and communication preferences.
+
+## Platform Services - Boarding Using the Business Center - Extend the Hierarchy
+- [Extend the Hierarchy](https://developer.visaacceptance.com/docs/vas/en-us/boarding/user/all/ebc/boarding-user/boarding-extend-hierarchy.md): Merchant hierarchy management through the Business Center, including parent-child relationships, organizational structures, and multi-level account configurations.
+
+## Platform Services - Boarding Using the Business Center - ISO Standard Currency Codes
+- [ISO Standard Currency Codes](https://developer.visaacceptance.com/docs/vas/en-us/boarding/user/all/ebc/boarding-user/boarding-currency-codes.md): ISO standard currency codes reference including alphabetic codes, numerical codes, currency names, and decimal places for international processing.
+
+## Platform Services - Boarding Using the Business Center - Reason Codes
+- [Reason Codes](https://developer.visaacceptance.com/docs/vas/en-us/boarding/user/all/ebc/boarding-user/boarding-error-codes.md): Complete reference of error codes, messages, and troubleshooting information for merchant boarding operations and common user interface issues.
+
+## Platform Services - REST API Fields
+- [REST API Fields](https://developer.visaacceptance.com/docs/vas/en-us/api-fields/reference/all/rest/api-fields/rest-api-fields-intro.md): Detailed specifications for the REST API fields that are available through the VisaAcceptance platform.
+
+## Platform Services - Security Keys - Introduction
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/security-keys/user/all/ada/security-keys/keys-intro.md): Create and use security keys to send and receive API messages
+
+## Platform Services - Security Keys - Create a Security Key
+- [Create a Security Key](https://developer.visaacceptance.com/docs/vas/en-us/security-keys/user/all/ada/security-keys/keys-manage.md): Describes how to create security keys using the Business Center.
+
+## Platform Services - Security Keys - Manage a Security Key
+- [Manage a Security Key](https://developer.visaacceptance.com/docs/vas/en-us/security-keys/user/all/ada/security-keys/keys-managing.md): Detailed task-oriented procedures for managing security keys including creation, rotation, validation, and maintenance operations across different systems.
+
+## Platform Services - Security Keys - Create and Manage a Meta Key
+- [Create and Manage a Meta Key](https://developer.visaacceptance.com/docs/vas/en-us/security-keys/user/all/ada/security-keys/keys-meta-intro.md): Metadata management for security keys including key properties, attributes, configuration parameters, and administrative information for key lifecycle management.
+
+## Platform Services - Security Keys - Meta Keys in API Requests
+- [Meta Keys in API Requests](https://developer.visaacceptance.com/docs/vas/en-us/security-keys/user/all/ada/security-keys/keys-meta-edit.md): Describes how to include meta keys in API requests.
+
+## Platform Services - OAuth - Introduction
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/oauth/developer/all/rest/oauth/home.md): Securely grant your web-application permission to perform actions on their behalf, such as accessing their customer data and processing transactions.
+
+## Platform Services - OAuth - Register Your Application
+- [Register Your Application](https://developer.visaacceptance.com/docs/vas/en-us/oauth/developer/all/rest/oauth/register-application.md): Register your application in the Business Center so you can use OAuth credentials.
+
+## Platform Services - OAuth - Submit API Requests Using OAuth
+- [Submit API Requests Using OAuth](https://developer.visaacceptance.com/docs/vas/en-us/oauth/developer/all/rest/oauth/submitting-api-request-using-cybs-extend.md): Submit API requests on behalf of the merchant using the access token
+
+## Platform Services - Webhooks - Introduction
+- [Introduction](https://developer.visaacceptance.com/docs/vas/en-us/webhooks/implementation/all/rest/webhooks/wh-fg-intro.md): Automated notifications generated by system events that occur for your organization
+
+## Platform Services - Webhooks - Webhook Subscriptions
+- [Webhook Subscriptions](https://developer.visaacceptance.com/docs/vas/en-us/webhooks/implementation/all/rest/webhooks/wh-fg-workflow-options.md): Introduction to webhook subscription processes, including subscription types, authentication methods, and workflow overview for webhook event registration.
+
+## Platform Services - Webhooks - Set Up Server Security
+- [Set Up Server Security](https://developer.visaacceptance.com/docs/vas/en-us/webhooks/implementation/all/rest/webhooks/wh-fg-server-security.md): Security requirements and best practices for webhook server implementation, including authentication methods, encryption protocols, and secure communication guidelines.
+
+## Platform Services - Webhooks - Create REST API Keys
+- [Create REST API Keys](https://developer.visaacceptance.com/docs/vas/en-us/webhooks/implementation/all/rest/webhooks/webhooks-keys-intro.md): Introduction to creating REST API keys for webhooks, including shared secret key pairs for HTTP signature authentication and P12 certificates for JWT authentication.
+
+## Platform Services - Webhooks - Create Digital Signature Key
+- [Create Digital Signature Key](https://developer.visaacceptance.com/docs/vas/en-us/webhooks/implementation/all/rest/webhooks/wh-fg-key-dig-sig-intro.md): Instructions for creating digital signature keys required for webhook notifications, including optional notification validation, security considerations, and API endpoints.
+
+## Platform Services - Webhooks - Provide OAuth Credentials
+- [Provide OAuth Credentials](https://developer.VisaAcceptance.com/docs/barclays/en-us/webhooks/implementation/all/rest/webhooks/wh-fg-oauth-cred-intro.md): OAuth credential setup and management for webhook authentication, including token generation, refresh procedures, and OAuth flow implementation.
+
+## Platform Services - Webhooks - Retrieve Products and Event Types
+- [Retrieve Products and Event Types](https://developer.visaacceptance.com/docs/vas/en-us/webhooks/implementation/all/rest/webhooks/wh-fg-product-event-types.md): Instructions for retrieving enabled products and event types for webhook subscriptions, including API endpoints and guidance for subscription creation.
+
+## Platform Services - Webhooks - Create Webhook Subscription
+- [Create Webhook Subscription](https://developer.visaacceptance.com/docs/vas/en-us/webhooks/implementation/all/rest/webhooks/wh-fg-subscribe-intro.md): Introduction to creating webhook subscriptions using REST API, explaining three security policy options: mutual trust (default), OAuth, and OAuth with JWT.
+
+## Platform Services - Webhooks - Optional Subscription Set Up Tasks
+- [Optional Subscription Set Up Tasks](https://developer.visaacceptance.com/docs/vas/en-us/webhooks/implementation/all/rest/webhooks/wh-fg-optional-intro.md): Optional webhook features and configurations including advanced settings, customization options, and enhanced functionality for webhook implementations.
+
+## Platform Services - Webhooks - Notification Fields
+- [Notification Fields](https://developer.visaacceptance.com/docs/vas/en-us/webhooks/implementation/all/rest/webhooks/wh-fg-notification-format.md): Detailed descriptions of webhook notification headers and message body fields, including digital signatures, event types, organization identifiers, and payload structures.
+
+## Platform Services - Webhooks - Manage Webhook Subscription Requests
+- [Manage Webhook Subscription Requests](https://developer.visaacceptance.com/docs/vas/en-us/webhooks/implementation/all/rest/webhooks/wh-fg-subscription-manage-intro.md): Introduction to webhook subscription management operations, including overview of available management tasks and workflow guidance for subscription administration.
+
+## Platform Services - Webhooks - Troubleshoot Webhook Subscriptions
+- [Troubleshoot Webhook Subscriptions](https://developer.visaacceptance.com/docs/vas/en-us/webhooks/implementation/all/rest/webhooks/wh-fg-subscription-troubleshooting.md): Troubleshooting information for webhook subscription issues including digital signature verification, server configuration, notification scope, and subscription status problems.
+
+## Technology Partners - Become a Partner
+- [Become a Partner](https://developer.visaacceptance.com/docs/vas/en-us/isv-plugins/get-started/all/na/isv-getting-started/isv-partner-starter-intro.md): Comprehensive getting started guide for Independent Software Vendor (ISV) partners, including partner starter information for integration.
+
+## Technology Partners - Our Solutions - Adobe Commerce
+- [Adobe Commerce](https://developer.visaacceptance.com/docs/vas/en-us/isv-plugins/admin/all/na/isv-plugin-o/built-by-us/adobe-commerce-m-overview.md): Comprehensive information for integrating Adobe Commerce with payment processing services, including installation, configuration, security credentials, and payment method setup.
+
+## Technology Partners - Our Solutions - OpenCart
+- [OpenCart](https://developer.visaacceptance.com/docs/vas/en-us/isv-plugins/admin/all/na/isv-plugin-o/built-by-us/opencart-overview.md): Comprehensive information for OpenCart payment extension including installation, configuration, fraud management, 3D Secure, eCheck, reporting, order management, and troubleshooting.
+
+## Technology Partners - Our Solutions - PrestaShop
+- [PrestaShop](https://developer.visaacceptance.com/docs/vas/en-us/isv-plugins/admin/all/na/isv-plugin-o/built-by-us/pshop-overview.md): Comprehensive information for PrestaShop payment plugin including installation, configuration, Apple Pay, Google Pay, SCA, installments, order management, and troubleshooting.
+
+## Technology Partners - Our Solutions - Shopify
+- [Shopify](https://developer.visaacceptance.com/docs/vas/en-us/isv-plugins/admin/all/na/isv-plugin-o/built-by-us/shopify-overview.md): Comprehensive information for Shopify payment integration including overview, credential configuration, installation procedures, system configuration, and reference information.
+
+## Technology Partners - Our Solutions - WooCommerce
+- [WooCommerce](https://developer.visaacceptance.com/docs/vas/en-us/isv-plugins/admin/all/na/isv-plugin-o/built-by-us/vas-woocommerce-intro.md): Comprehensive information for WooCommerce payment integration that enables you to accept Unified Checkout payments directly on your website, such as Payment Cards, Google Pay, and Click to Pay.
+
+## Technology Partners - Our Partner Solutions - BigCommerce
+- [BigCommerce](https://developer.visaacceptance.com/docs/vas/en-us/isv-plugins/admin/all/na/isv-plugin-o/built-by-them/bigcommerce-overview.md): Comprehensive information for BigCommerce payment integration including overview, release information, product requirements, features, configuration settings, installments, and upgrade procedures.
+
+## Reference Information - Additional Amount Types
+- [Additional Amount Types](https://developer.visaacceptance.com/docs/vas/en-us/additional-amount-types/reference/all/na/additional-amount-types/additional-amount-types.md): Codes for the goods and services considered as additional amount types in transactions.
+
+## Reference Information - AVS Codes
+- [AVS Codes](https://developer.visaacceptance.com/docs/vas/en-us/avs-codes/reference/all/na/avs-codes/avs-codes-intro.md): Codes for the address verification service information that is included in an authorization response.
+
+## Reference Information - VisaAcceptance Endpoints
+- [VisaAcceptance Endpoints](https://developer.visaacceptance.com/docs/vas/en-us/endpoints/reference/all/na/endpoints/endpoints.md): Endpoints that are used when sending various API requests to VisaAcceptance.
+
+## Reference Information - ISO Standard Country Codes
+- [ISO Standard Country Codes](https://developer.visaacceptance.com/docs/vas/en-us/country-codes/reference/all/na/country-codes/country-codes.md): ISO standard codes for specific countries, regions, and territories.
+
+## Reference Information - ISO Standard Currency Codes
+- [ISO Standard Currency Codes](https://developer.visaacceptance.com/docs/vas/en-us/currency-codes/reference/all/na/currency-codes/currency-codes.md): ISO standard codes for specific currencies.
+
+## Reference Information - ISO Standard Language Codes
+- [ISO Standard Language Codes](https://developer.visaacceptance.com/docs/vas/en-us/language-codes/reference/all/na/language-codes/language-codes.md): ISO standard language codes for specific languages.
+
+## Reference Information - Reason Codes | Simple Order API
+- [Reason Codes | Simple Order API](https://developer.visaacceptance.com/docs/vas/en-us/reason-codes-so/reference/all/so/reason-codes-so/reason-codes-so.md): Codes that indicate the status of Simple Order API requests for standard payment transactions, which are included in responses to processed requests.
+
+## Reference Information - Reason Codes for Alternative Payments | Simple Order API
+- [Reason Codes for Alternative Payments | Simple Order API](https://developer.visaacceptance.com/docs/vas/en-us/reason-codes-ap/reference/all/so/reason-codes-so-ap/reason-codes-so-ap.md): Codes that indicate the status of Simple Order API requests for alternate payment transactions, which are included in responses to processed requests.
+
+## Reference Information - State, Province, and Territory Codes
+- [State, Province, and Territory Codes](https://developer.visaacceptance.com/docs/vas/en-us/state-codes/reference/all/na/state-codes/state-codes.md): Standard 2-character codes for the different state, province, and territories in the United States and Canada.
+
+## Reference Information - Time Zones
+- [Time Zones](https://developer.visaacceptance.com/docs/vas/en-us/time-zones/reference/all/na/time-zones/time-zones.md): Codes for the different times zones.
+
+## Additional Information - ACH Services
+- [ACH Services](/content/dam/new-documentation/documentation/en/e-checks/developer/all/so/e-checks-so.pdf): Learn how to collect and process ACH transactions with our gateway solutions
+
+## Additional Information - Secure Acceptance Checkout API
+- [Secure Acceptance Checkout API](https://developer.visaacceptance.com/docs/vas/en-us/sa/developer/all/sa-checkout/secure-acceptance/home-merch.md): Information about customizing and controlling your customer checkout experience using the Secure Acceptance Checkout API.
+
+## Additional Information - Secure Acceptance Hosted Checkout
+- [Secure Acceptance Hosted Checkout](https://developer.visaacceptance.com/docs/vas/en-us/sa/developer/all/sa-hosted/secure-acceptance/home-merch.md): Information about processing payments without handling or storing sensitive payment data using the Secure Acceptance Hosted Checkout integration.
+
+## Additional Information - Secure Acceptance API Services Fees
+- [Secure Acceptance API Services Fees](/content/dam/new-documentation/documentation/en/service-fees/user/all/sa/sa-chk-api-service-fees.pdf): Information about creating a Secure Acceptance Checkout API profile that includes service fee functionality.
+
+## Additional Information - Simple Order API Fields
+- [Simple Order API Fields](https://developer.visaacceptance.com/docs/vas/en-us/api-fields/reference/all/so/api-fields/api-fields-so-intro.md): Detailed specifications for the Simple Order API fields that are available through the VisaAcceptance platform.

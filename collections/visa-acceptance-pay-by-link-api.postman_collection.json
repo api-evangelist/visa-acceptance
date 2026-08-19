@@ -1,0 +1,576 @@
+{
+  "item": [
+    {
+      "id": "1dfc0d00-0fee-4d1d-8714-db8c3ef4d182",
+      "name": "Pay by Link",
+      "description": {
+        "content": "Generate and manage payment links",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4c62deb1-5063-499f-b9be-635fcfee977a",
+          "name": "Create Pay by Link",
+          "request": {
+            "name": "Create Pay by Link",
+            "description": {
+              "content": "Generate a payment link that can be shared with customers via email, SMS, or messaging apps. The link redirects customers to a hosted payment page.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pts",
+                "v2",
+                "paybylinks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderInformation\": {\n    \"amountDetails\": {\n      \"totalAmount\": \"<string>\",\n      \"currency\": \"<string>\"\n    },\n    \"description\": \"<string>\"\n  },\n  \"expirationDate\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "93c4f902-bcbc-4aea-94e3-d8a85f471259",
+              "name": "Payment link created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "paybylinks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"orderInformation\": {\n    \"amountDetails\": {\n      \"totalAmount\": \"<string>\",\n      \"currency\": \"<string>\"\n    },\n    \"description\": \"<string>\"\n  },\n  \"expirationDate\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"COMPLETED\",\n  \"paymentLink\": \"https://QmNzQELrhiyZvgmyx.jun5V,TwOrBrOTzKbgjeIgjUjav\",\n  \"expirationDate\": \"1972-10-08T02:42:38.736Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bce2b62c-dea4-4925-86fe-01b8e667edec",
+              "name": "Invalid request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "paybylinks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"orderInformation\": {\n    \"amountDetails\": {\n      \"totalAmount\": \"<string>\",\n      \"currency\": \"<string>\"\n    },\n    \"description\": \"<string>\"\n  },\n  \"expirationDate\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ce9cc6b9-c6fe-4460-8d84-a2b6f7117853",
+          "name": "List Pay by Links",
+          "request": {
+            "name": "List Pay by Links",
+            "description": {
+              "content": "Retrieve a list of all payment links with their current status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pts",
+                "v2",
+                "paybylinks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d9fcc086-c25b-4314-b01e-2aa2afffa666",
+              "name": "List of payment links",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "paybylinks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"links\": [\n    {\n      \"id\": \"string\",\n      \"status\": \"COMPLETED\",\n      \"paymentLink\": \"https://cIP.fgYgo59n\",\n      \"expirationDate\": \"1982-04-11T05:35:30.988Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"status\": \"EXPIRED\",\n      \"paymentLink\": \"https://pFgdFYjqFWgTQ.txwjJmBS2s8uy19\",\n      \"expirationDate\": \"2005-04-11T06:38:49.099Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bf883d93-d50b-4363-a99e-261a11b5b04f",
+          "name": "Get Pay by Link",
+          "request": {
+            "name": "Get Pay by Link",
+            "description": {
+              "content": "Retrieve details of a specific payment link including its status and transaction history.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pts",
+                "v2",
+                "paybylinks",
+                ":linkId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "linkId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6309252b-d915-44a9-aec3-ec6aa8637102",
+              "name": "Payment link details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "paybylinks",
+                    ":linkId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "linkId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"COMPLETED\",\n  \"paymentLink\": \"https://QmNzQELrhiyZvgmyx.jun5V,TwOrBrOTzKbgjeIgjUjav\",\n  \"expirationDate\": \"1972-10-08T02:42:38.736Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "da76bf66-d885-4cff-8318-96dbd994e808",
+              "name": "Payment link not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "paybylinks",
+                    ":linkId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "linkId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0918aec8-3677-4e27-9a87-2aca1866cd5b",
+          "name": "Cancel Pay by Link",
+          "request": {
+            "name": "Cancel Pay by Link",
+            "description": {
+              "content": "Cancel an active payment link so it can no longer be used for payments.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pts",
+                "v2",
+                "paybylinks",
+                ":linkId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "linkId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ca72043e-2fcf-4753-b032-7f76b4e6b3b4",
+              "name": "Payment link cancelled",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "paybylinks",
+                    ":linkId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "linkId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0c6691a8-70b3-44d0-8518-0891e71f2f0c",
+              "name": "Payment link not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "paybylinks",
+                    ":linkId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "linkId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.visaacceptance.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "0a893b67-82f4-48c2-beb2-6d8f4ceb2f00",
+    "name": "Visa Acceptance Payments Captures Pay by Link API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Visa Acceptance Payments API (powered by CyberSource) provides REST endpoints for accepting payments online, in-person, and via mobile. The API supports authorization, capture, refund, void, and reversal operations for credit cards, debit cards, digital wallets (Apple Pay, Google Pay), and other payment methods. Authentication uses JSON Web Token (JWT) with RSA key pairs.\n\nContact Support:\n Name: Visa Acceptance Developer Portal",
+      "type": "text/plain"
+    }
+  }
+}

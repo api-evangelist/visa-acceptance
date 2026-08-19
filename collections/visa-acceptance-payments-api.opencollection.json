@@ -1,0 +1,62 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Visa Acceptance Captures Payments API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Payments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Authorize Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.visaacceptance.com/pts/v2/payments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Authorize a payment transaction. An authorization places a hold on the customer's funds without completing the transfer. Supports credit cards, debit cards, Apple Pay, Google Pay, and other payment methods."
+        },
+        {
+          "info": {
+            "name": "Reverse Authorization",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.visaacceptance.com/pts/v2/payments/:paymentId/reversals",
+            "params": [
+              {
+                "name": "paymentId",
+                "value": "",
+                "type": "path",
+                "description": "The authorization payment ID to reverse"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reverse an authorization to release the held funds back to the customer. An authorization reversal is faster than a void and releases the hold without waiting for settlement."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

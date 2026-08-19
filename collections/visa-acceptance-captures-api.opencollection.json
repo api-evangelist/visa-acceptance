@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Visa Acceptance Payments Captures API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Captures",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Capture Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.visaacceptance.com/pts/v2/payments/:paymentId/captures",
+            "params": [
+              {
+                "name": "paymentId",
+                "value": "",
+                "type": "path",
+                "description": "The payment ID returned from the authorization request"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Capture a previously authorized payment, transferring the held funds to the merchant account. Must be performed within the authorization's validity period."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

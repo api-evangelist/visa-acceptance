@@ -1,0 +1,104 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Visa Acceptance Payments Captures Invoices API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Invoices",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.visaacceptance.com/pts/v2/invoices",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by invoice status"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of invoices to return"
+              }
+            ]
+          },
+          "docs": "Retrieve a list of invoices with optional filtering by status and date range."
+        },
+        {
+          "info": {
+            "name": "Create Invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.visaacceptance.com/pts/v2/invoices",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an invoice for payment collection. Invoices can be sent to customers via email and include a payment link. Supports line items, tax, and custom due dates."
+        },
+        {
+          "info": {
+            "name": "Get Invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.visaacceptance.com/pts/v2/invoices/:invoiceId",
+            "params": [
+              {
+                "name": "invoiceId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific invoice by its ID."
+        },
+        {
+          "info": {
+            "name": "Update Invoice",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.visaacceptance.com/pts/v2/invoices/:invoiceId",
+            "params": [
+              {
+                "name": "invoiceId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a draft invoice before sending it to the customer."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

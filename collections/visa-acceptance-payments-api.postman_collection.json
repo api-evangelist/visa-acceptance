@@ -1,0 +1,477 @@
+{
+  "item": [
+    {
+      "id": "a13f49c4-8f11-4394-8f2e-f5e4528e0493",
+      "name": "Payments",
+      "description": {
+        "content": "Payment authorization, capture, sale, and reversal",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "003c1b31-bde1-4f0a-b6e6-d1dfd939106c",
+          "name": "Authorize Payment",
+          "request": {
+            "name": "Authorize Payment",
+            "description": {
+              "content": "Authorize a payment transaction. An authorization places a hold on the customer's funds without completing the transfer. Supports credit cards, debit cards, Apple Pay, Google Pay, and other payment methods.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pts",
+                "v2",
+                "payments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"paymentInformation\": {\n    \"card\": {\n      \"number\": \"<string>\",\n      \"expirationMonth\": \"<string>\",\n      \"expirationYear\": \"<string>\",\n      \"securityCode\": \"<string>\"\n    }\n  },\n  \"orderInformation\": {\n    \"amountDetails\": {\n      \"totalAmount\": \"<string>\",\n      \"currency\": \"<string>\"\n    },\n    \"billTo\": {\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"address1\": \"<string>\",\n      \"address2\": \"<string>\",\n      \"locality\": \"<string>\",\n      \"administrativeArea\": \"<string>\",\n      \"postalCode\": \"<string>\",\n      \"country\": \"<string>\",\n      \"email\": \"<email>\",\n      \"phoneNumber\": \"<string>\"\n    },\n    \"shipTo\": {\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"address1\": \"<string>\",\n      \"address2\": \"<string>\",\n      \"locality\": \"<string>\",\n      \"administrativeArea\": \"<string>\",\n      \"postalCode\": \"<string>\",\n      \"country\": \"<string>\",\n      \"email\": \"<email>\",\n      \"phoneNumber\": \"<string>\"\n    }\n  },\n  \"clientReferenceInformation\": {\n    \"code\": \"<string>\"\n  },\n  \"processingInformation\": {\n    \"capture\": false,\n    \"commerceIndicator\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "aabd69c4-5b89-4520-948b-3c61a7e6aebd",
+              "name": "Payment authorized successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clientReferenceInformation\": {\n    \"code\": \"order-1234\"\n  },\n  \"processingInformation\": {\n    \"capture\": false\n  },\n  \"paymentInformation\": {\n    \"card\": {\n      \"number\": \"4111111111111111\",\n      \"expirationMonth\": \"12\",\n      \"expirationYear\": \"2030\",\n      \"securityCode\": \"123\"\n    }\n  },\n  \"orderInformation\": {\n    \"amountDetails\": {\n      \"totalAmount\": \"100.00\",\n      \"currency\": \"USD\"\n    },\n    \"billTo\": {\n      \"firstName\": \"Jane\",\n      \"lastName\": \"Doe\",\n      \"address1\": \"123 Main St\",\n      \"locality\": \"San Francisco\",\n      \"administrativeArea\": \"CA\",\n      \"postalCode\": \"94105\",\n      \"country\": \"US\",\n      \"email\": \"jane.doe@example.com\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"DECLINED\",\n  \"submitTimeUtc\": \"1950-09-17T03:42:16.388Z\",\n  \"processorInformation\": {\n    \"approvalCode\": \"string\",\n    \"responseCode\": \"string\",\n    \"transactionId\": \"string\"\n  },\n  \"orderInformation\": {\n    \"amountDetails\": {\n      \"authorizedAmount\": \"string\",\n      \"currency\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6723e50c-2831-48e6-89d0-1eadf0f076f8",
+              "name": "Invalid request or declined transaction",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clientReferenceInformation\": {\n    \"code\": \"order-1234\"\n  },\n  \"processingInformation\": {\n    \"capture\": false\n  },\n  \"paymentInformation\": {\n    \"card\": {\n      \"number\": \"4111111111111111\",\n      \"expirationMonth\": \"12\",\n      \"expirationYear\": \"2030\",\n      \"securityCode\": \"123\"\n    }\n  },\n  \"orderInformation\": {\n    \"amountDetails\": {\n      \"totalAmount\": \"100.00\",\n      \"currency\": \"USD\"\n    },\n    \"billTo\": {\n      \"firstName\": \"Jane\",\n      \"lastName\": \"Doe\",\n      \"address1\": \"123 Main St\",\n      \"locality\": \"San Francisco\",\n      \"administrativeArea\": \"CA\",\n      \"postalCode\": \"94105\",\n      \"country\": \"US\",\n      \"email\": \"jane.doe@example.com\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"string\",\n  \"reason\": \"string\",\n  \"message\": \"string\",\n  \"details\": [\n    {\n      \"field\": \"string\",\n      \"reason\": \"string\"\n    },\n    {\n      \"field\": \"string\",\n      \"reason\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "95618473-5f98-419f-b9b1-c25eab3b5df7",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clientReferenceInformation\": {\n    \"code\": \"order-1234\"\n  },\n  \"processingInformation\": {\n    \"capture\": false\n  },\n  \"paymentInformation\": {\n    \"card\": {\n      \"number\": \"4111111111111111\",\n      \"expirationMonth\": \"12\",\n      \"expirationYear\": \"2030\",\n      \"securityCode\": \"123\"\n    }\n  },\n  \"orderInformation\": {\n    \"amountDetails\": {\n      \"totalAmount\": \"100.00\",\n      \"currency\": \"USD\"\n    },\n    \"billTo\": {\n      \"firstName\": \"Jane\",\n      \"lastName\": \"Doe\",\n      \"address1\": \"123 Main St\",\n      \"locality\": \"San Francisco\",\n      \"administrativeArea\": \"CA\",\n      \"postalCode\": \"94105\",\n      \"country\": \"US\",\n      \"email\": \"jane.doe@example.com\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "281860c3-6e9b-48c7-8ddf-345498714806",
+              "name": "Processor error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clientReferenceInformation\": {\n    \"code\": \"order-1234\"\n  },\n  \"processingInformation\": {\n    \"capture\": false\n  },\n  \"paymentInformation\": {\n    \"card\": {\n      \"number\": \"4111111111111111\",\n      \"expirationMonth\": \"12\",\n      \"expirationYear\": \"2030\",\n      \"securityCode\": \"123\"\n    }\n  },\n  \"orderInformation\": {\n    \"amountDetails\": {\n      \"totalAmount\": \"100.00\",\n      \"currency\": \"USD\"\n    },\n    \"billTo\": {\n      \"firstName\": \"Jane\",\n      \"lastName\": \"Doe\",\n      \"address1\": \"123 Main St\",\n      \"locality\": \"San Francisco\",\n      \"administrativeArea\": \"CA\",\n      \"postalCode\": \"94105\",\n      \"country\": \"US\",\n      \"email\": \"jane.doe@example.com\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8a65293d-e23e-4121-9314-37477b512f2f",
+          "name": "Reverse Authorization",
+          "request": {
+            "name": "Reverse Authorization",
+            "description": {
+              "content": "Reverse an authorization to release the held funds back to the customer. An authorization reversal is faster than a void and releases the hold without waiting for settlement.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pts",
+                "v2",
+                "payments",
+                ":paymentId",
+                "reversals"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "paymentId",
+                  "description": "(Required) The authorization payment ID to reverse"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientReferenceInformation\": {\n    \"code\": \"<string>\"\n  },\n  \"reversalInformation\": {\n    \"amountDetails\": {\n      \"totalAmount\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fee695d5-3749-4fa4-8b1b-cee3200627f5",
+              "name": "Authorization reversed successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "payments",
+                    ":paymentId",
+                    "reversals"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentId",
+                      "description": "(Required) The authorization payment ID to reverse"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clientReferenceInformation\": {\n    \"code\": \"<string>\"\n  },\n  \"reversalInformation\": {\n    \"amountDetails\": {\n      \"totalAmount\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"status\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "251a7f22-b413-4b48-a9e9-9caa173510e5",
+              "name": "Invalid reversal request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pts",
+                    "v2",
+                    "payments",
+                    ":paymentId",
+                    "reversals"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "paymentId",
+                      "description": "(Required) The authorization payment ID to reverse"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clientReferenceInformation\": {\n    \"code\": \"<string>\"\n  },\n  \"reversalInformation\": {\n    \"amountDetails\": {\n      \"totalAmount\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.visaacceptance.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b09b016d-ad08-4032-9ef2-7ffe00276407",
+    "name": "Visa Acceptance Captures Payments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Visa Acceptance Payments API (powered by CyberSource) provides REST endpoints for accepting payments online, in-person, and via mobile. The API supports authorization, capture, refund, void, and reversal operations for credit cards, debit cards, digital wallets (Apple Pay, Google Pay), and other payment methods. Authentication uses JSON Web Token (JWT) with RSA key pairs.\n\nContact Support:\n Name: Visa Acceptance Developer Portal",
+      "type": "text/plain"
+    }
+  }
+}

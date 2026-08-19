@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Visa Acceptance Payments Captures Voids API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Voids",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Void Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.visaacceptance.com/pts/v2/payments/:paymentId/voids",
+            "params": [
+              {
+                "name": "paymentId",
+                "value": "",
+                "type": "path",
+                "description": "The payment or capture ID to void"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Void an authorization or capture before it settles. After voiding, the funds are released back to the customer's account. A new transaction must be created for any subsequent capture."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

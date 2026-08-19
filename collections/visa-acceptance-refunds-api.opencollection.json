@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Visa Acceptance Payments Captures Refunds API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Refunds",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Refund Payment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.visaacceptance.com/pts/v2/payments/:paymentId/refunds",
+            "params": [
+              {
+                "name": "paymentId",
+                "value": "",
+                "type": "path",
+                "description": "The payment ID of the captured transaction to refund"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Refund a captured payment, returning funds to the customer. Refunds must be requested within 180 days of the original authorization. Partial refunds are supported."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
