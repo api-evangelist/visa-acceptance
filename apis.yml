@@ -30,6 +30,14 @@ tags:
   - Credit Cards
   - Invoicing
   - Payment Links
+  - Digital Wallet
+tags_raw:
+  - Payments
+  - E-Commerce
+  - Fintech
+  - Credit Cards
+  - Invoicing
+  - Payment Links
   - Digital Wallets
 created: '2025-02-17'
 modified: '2026-05-19'
@@ -40,6 +48,8 @@ apis:
   description: Capture previously authorized payments
   humanURL: https://developer.visaacceptance.com/
   tags:
+  - Capture
+  tags_raw:
   - Captures
   properties:
   - type: OpenAPI
