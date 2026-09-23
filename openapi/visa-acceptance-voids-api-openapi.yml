@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Visa Acceptance Payments Captures Voids API
+  title: Visa Acceptance Payments Voids API
   description: The Visa Acceptance Payments API (powered by CyberSource) provides REST endpoints for accepting payments online, in-person, and via mobile. The API supports authorization, capture, refund, void, and reversal operations for credit cards, debit cards, digital wallets (Apple Pay, Google Pay), and other payment methods. Authentication uses JSON Web Token (JWT) with RSA key pairs.
   version: '2.0'
   contact:

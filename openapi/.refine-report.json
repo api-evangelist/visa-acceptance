@@ -1,12 +1,7 @@
 {
   "provider": "visa-acceptance",
   "sources": [
-    "visa-acceptance-captures-api-openapi.yml",
-    "visa-acceptance-invoices-api-openapi.yml",
-    "visa-acceptance-pay-by-link-api-openapi.yml",
-    "visa-acceptance-payments-api-openapi.yml",
-    "visa-acceptance-refunds-api-openapi.yml",
-    "visa-acceptance-voids-api-openapi.yml"
+    "_original/visa-acceptance-payments-openapi.yml"
   ],
   "outputs": [
     "visa-acceptance-captures-api-openapi.yml",
@@ -19,6 +14,17 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "visa-acceptance-payments-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "visa-acceptance-captures-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "visa-acceptance-invoices-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "visa-acceptance-pay-by-link-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "visa-acceptance-payments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "visa-acceptance-refunds-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "visa-acceptance-voids-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
