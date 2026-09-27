@@ -107,28 +107,6 @@ paths:
           description: Payment link not found
 components:
   schemas:
-    PayByLinkRequest:
-      type: object
-      required:
-      - orderInformation
-      properties:
-        orderInformation:
-          type: object
-          properties:
-            amountDetails:
-              type: object
-              properties:
-                totalAmount:
-                  type: string
-                currency:
-                  type: string
-            description:
-              type: string
-              description: Payment description shown to customer
-        expirationDate:
-          type: string
-          format: date-time
-          description: When the payment link expires
     PayByLinkResponse:
       type: object
       properties:
@@ -155,6 +133,28 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PayByLinkResponse'
+    PayByLinkRequest:
+      type: object
+      required:
+      - orderInformation
+      properties:
+        orderInformation:
+          type: object
+          properties:
+            amountDetails:
+              type: object
+              properties:
+                totalAmount:
+                  type: string
+                currency:
+                  type: string
+            description:
+              type: string
+              description: Payment description shown to customer
+        expirationDate:
+          type: string
+          format: date-time
+          description: When the payment link expires
   securitySchemes:
     JWT:
       type: http
