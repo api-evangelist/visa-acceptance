@@ -125,38 +125,17 @@ paths:
                 $ref: '#/components/schemas/InvoiceResponse'
 components:
   schemas:
-    InvoiceListResponse:
+    LineItem:
       type: object
       properties:
-        invoices:
-          type: array
-          items:
-            $ref: '#/components/schemas/InvoiceResponse'
-        totalCount:
+        productName:
+          type: string
+        quantity:
           type: integer
-    InvoiceResponse:
-      type: object
-      properties:
-        id:
+        unitPrice:
           type: string
-        status:
+        totalAmount:
           type: string
-          enum:
-          - CREATED
-          - SENT
-          - PAID
-          - CANCELLED
-          - EXPIRED
-        invoiceUrl:
-          type: string
-          format: uri
-          description: URL where the customer can pay the invoice
-        createdDate:
-          type: string
-          format: date-time
-        dueDate:
-          type: string
-          format: date
     InvoiceRequest:
       type: object
       required:
@@ -189,17 +168,38 @@ components:
           type: string
           format: date
           description: Due date for the invoice payment
-    LineItem:
+    InvoiceResponse:
       type: object
       properties:
-        productName:
+        id:
           type: string
-        quantity:
+        status:
+          type: string
+          enum:
+          - CREATED
+          - SENT
+          - PAID
+          - CANCELLED
+          - EXPIRED
+        invoiceUrl:
+          type: string
+          format: uri
+          description: URL where the customer can pay the invoice
+        createdDate:
+          type: string
+          format: date-time
+        dueDate:
+          type: string
+          format: date
+    InvoiceListResponse:
+      type: object
+      properties:
+        invoices:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceResponse'
+        totalCount:
           type: integer
-        unitPrice:
-          type: string
-        totalAmount:
-          type: string
   securitySchemes:
     JWT:
       type: http
