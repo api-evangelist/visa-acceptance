@@ -202,6 +202,9 @@ apis:
     url: >-
       https://developer.visaacceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.html
 common:
+  - type: CapabilityMap
+    url: capabilities/visa-acceptance-capability-edges.yml
+    name: Visa Acceptance Business Capability Map
   - type: AgenticAccess
     url: agentic-access/visa-acceptance-agentic-access.yml
   - type: DomainSecurity
