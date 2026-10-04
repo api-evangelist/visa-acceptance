@@ -53,6 +53,17 @@ paths:
           description: Payment not found
 components:
   schemas:
+    RefundResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - PENDING
+          - TRANSMITTED
+          - FAILED
     RefundRequest:
       type: object
       properties:
@@ -67,17 +78,6 @@ components:
                   description: Amount to refund (can be less than original for partial refund)
                 currency:
                   type: string
-    RefundResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-          enum:
-          - PENDING
-          - TRANSMITTED
-          - FAILED
   securitySchemes:
     JWT:
       type: http

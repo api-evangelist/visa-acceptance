@@ -125,6 +125,38 @@ paths:
                 $ref: '#/components/schemas/InvoiceResponse'
 components:
   schemas:
+    InvoiceListResponse:
+      type: object
+      properties:
+        invoices:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceResponse'
+        totalCount:
+          type: integer
+    InvoiceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - CREATED
+          - SENT
+          - PAID
+          - CANCELLED
+          - EXPIRED
+        invoiceUrl:
+          type: string
+          format: uri
+          description: URL where the customer can pay the invoice
+        createdDate:
+          type: string
+          format: date-time
+        dueDate:
+          type: string
+          format: date
     LineItem:
       type: object
       properties:
@@ -168,38 +200,6 @@ components:
           type: string
           format: date
           description: Due date for the invoice payment
-    InvoiceResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-          enum:
-          - CREATED
-          - SENT
-          - PAID
-          - CANCELLED
-          - EXPIRED
-        invoiceUrl:
-          type: string
-          format: uri
-          description: URL where the customer can pay the invoice
-        createdDate:
-          type: string
-          format: date-time
-        dueDate:
-          type: string
-          format: date
-    InvoiceListResponse:
-      type: object
-      properties:
-        invoices:
-          type: array
-          items:
-            $ref: '#/components/schemas/InvoiceResponse'
-        totalCount:
-          type: integer
   securitySchemes:
     JWT:
       type: http

@@ -107,25 +107,6 @@ paths:
           description: Payment link not found
 components:
   schemas:
-    PayByLinkResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-          enum:
-          - ACTIVE
-          - EXPIRED
-          - COMPLETED
-          - CANCELLED
-        paymentLink:
-          type: string
-          format: uri
-          description: The URL to share with customers for payment
-        expirationDate:
-          type: string
-          format: date-time
     PayByLinkListResponse:
       type: object
       properties:
@@ -155,6 +136,25 @@ components:
           type: string
           format: date-time
           description: When the payment link expires
+    PayByLinkResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - EXPIRED
+          - COMPLETED
+          - CANCELLED
+        paymentLink:
+          type: string
+          format: uri
+          description: The URL to share with customers for payment
+        expirationDate:
+          type: string
+          format: date-time
   securitySchemes:
     JWT:
       type: http
