@@ -202,6 +202,12 @@ apis:
     url: >-
       https://developer.visaacceptance.com/docs/vas/en-us/agent-toolkit/quick-start/all/na/agent-toolkit/agent-toolkit-intro.html
 common:
+  - type: Plans
+    url: plans/visa-acceptance-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/visa-acceptance-rate-limits.yml
+  - type: FinOps
+    url: finops/visa-acceptance-finops.yml
   - type: CapabilityMap
     url: capabilities/visa-acceptance-capability-edges.yml
     name: Visa Acceptance Business Capability Map
