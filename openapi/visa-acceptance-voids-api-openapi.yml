@@ -53,14 +53,6 @@ paths:
           description: Payment not found
 components:
   schemas:
-    VoidRequest:
-      type: object
-      properties:
-        clientReferenceInformation:
-          type: object
-          properties:
-            code:
-              type: string
     VoidResponse:
       type: object
       properties:
@@ -71,6 +63,14 @@ components:
           enum:
           - VOIDED
           - FAILED
+    VoidRequest:
+      type: object
+      properties:
+        clientReferenceInformation:
+          type: object
+          properties:
+            code:
+              type: string
   securitySchemes:
     JWT:
       type: http

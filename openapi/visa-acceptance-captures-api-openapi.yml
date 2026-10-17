@@ -53,17 +53,6 @@ paths:
           description: Payment not found
 components:
   schemas:
-    CaptureResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          type: string
-          enum:
-          - PENDING
-          - TRANSMITTED
-          - FAILED
     CaptureRequest:
       type: object
       properties:
@@ -77,6 +66,17 @@ components:
                   type: string
                 currency:
                   type: string
+    CaptureResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+          - PENDING
+          - TRANSMITTED
+          - FAILED
   securitySchemes:
     JWT:
       type: http

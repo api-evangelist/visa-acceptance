@@ -125,6 +125,17 @@ paths:
                 $ref: '#/components/schemas/InvoiceResponse'
 components:
   schemas:
+    LineItem:
+      type: object
+      properties:
+        productName:
+          type: string
+        quantity:
+          type: integer
+        unitPrice:
+          type: string
+        totalAmount:
+          type: string
     InvoiceListResponse:
       type: object
       properties:
@@ -157,17 +168,6 @@ components:
         dueDate:
           type: string
           format: date
-    LineItem:
-      type: object
-      properties:
-        productName:
-          type: string
-        quantity:
-          type: integer
-        unitPrice:
-          type: string
-        totalAmount:
-          type: string
     InvoiceRequest:
       type: object
       required:
