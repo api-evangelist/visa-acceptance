@@ -1,5 +1,5 @@
 generated: '2026-10-12'
-method: none
+method: searched
 source:
 - https://zapier.com/apps/visa-acceptance/integrations
 - https://n8n.io/integrations/visa-acceptance/
@@ -10,7 +10,29 @@ checked:
 - https://monid.ai/tools/visa-acceptance
 - https://n8n.io/integrations/visa-acceptance/
 - https://zapier.com/apps/visa-acceptance/integrations
+- salesforce-commerce-cloud/integrations/salesforce-commerce-cloud-integration-edges.yml
 summary: null
 marketplace_apps: []
-edges: []
+edges:
+- partner_name: Salesforce Commerce Cloud (own)
+  partner: salesforce-commerce-cloud
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://appexchange.salesforce.com/appxListingDetail?listingId=a0N3A00000FeGiEUAV
+  mirror_of: salesforce-commerce-cloud/integrations/salesforce-commerce-cloud-integration-edges.yml
+  apps:
+  - Cybersource for Salesforce Order Management
+  - Cybersource Payments for Commerce on Core (B2B/D2C)
+  - Cybersource for Salesforce Billing
+  - Visa Acceptance Solutions Cartridge for B2C Commerce
+  - Cybersource SOAP Cartridge for B2C Commerce
+  listing_count: 5
+  detected: '2026-10-20'
+  detected_by: mirror-platform-listings.py
+  category: paymentsProcessing
 templates: []
